@@ -1,0 +1,8 @@
+# node.js
+#
+node_modules/
+
+# Build
+#
+distribution
+source/config.js

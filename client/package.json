@@ -1,0 +1,60 @@
+{
+	"name": "woa",
+	"version": "1.0.0",
+	"description": "Client for World of Atoms",
+	"scripts": {
+		"start": "webpack-dev-server --mode development --progress --colors --inline --config webpack.development.js",
+		"build": "webpack --mode production --optimize-minimize --progress --config webpack.production.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Weemee/woa.git"
+	},
+	"engines": {
+		"node": ">=8.9.4"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Weemee/woa/issues"
+	},
+	"homepage": "https://github.com/Weemee/woa#readme",
+	"dependencies": {
+		"axios": "^0.18.0",
+		"bootstrap": "^4.0.0",
+		"history": "^4.7.2",
+		"jsonwebtoken": "^8.2.0",
+		"react": "^16.2.0",
+		"react-dom": "^16.2.0",
+		"react-redux": "^5.0.7",
+		"react-router": "^4.2.0",
+		"react-router-dom": "^4.2.2",
+		"react-router-redux": "^5.0.0-alpha.9",
+		"reactstrap": "^5.0.0",
+		"redux": "^3.7.2",
+		"redux-saga": "^0.16.0"
+	},
+	"devDependencies": {
+		"babel-core": "^6.26.0",
+		"babel-eslint": "^8.2.2",
+		"babel-loader": "^7.1.4",
+		"babel-polyfill": "^6.26.0",
+		"babel-preset-env": "^1.6.1",
+		"babel-preset-react": "^6.24.1",
+		"babel-preset-stage-0": "^6.24.1",
+		"cross-env": "^5.1.4",
+		"css-loader": "^0.28.11",
+		"eslint": "^4.19.1",
+		"eslint-plugin-babel": "^4.1.2",
+		"eslint-plugin-react": "^7.7.0",
+		"extract-text-webpack-plugin": "^3.0.2",
+		"html-webpack-plugin": "^3.1.0",
+		"node-sass": "^4.8.3",
+		"sass-loader": "^6.0.7",
+		"style-loader": "^0.20.3",
+		"webpack": "^4.4.1",
+		"webpack-cli": "^2.0.13",
+		"webpack-dev-server": "^3.1.1"
+	}
+}

@@ -6,8 +6,8 @@ This is a game project of mine about rebuilding your own world, solar system, cl
 
 This project would not have been possible without the help of MrEliasen@Github, sharing his knowledge to us all!
 
-**Link github:** https://github.com/MrEliasen
-**Link Twitch:** https://www.twitch.tv/sirmre
+[@Github](https://github.com/MrEliasen)
+[@Twitch](https://www.twitch.tv/sirmre)
 
 The main reason I got stuck at his channel @Twitch, is because I was stuck in my own project with a Node.js server/client based game. I was browsing the web and Twitch for knowledge, a sensei I could admire and learn from. Then I found Mr.E, trying to answer my stupi... special questions (to be honest, I don't even know myself what I tried to ask 80% of the time).
 

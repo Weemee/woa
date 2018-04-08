@@ -1,27 +1,31 @@
-$body-bg:                   #111;
-$input-bg:                  $gray-100;
-$primary:                   #4b488e;
-$primary-dark:              #2b284e;
-$link-color:                $primary;
-$text-color:                $primary;
+// Customize Bootstrap Variables
+// Source: https://raw.githubusercontent.com/twbs/bootstrap/v4-dev/scss/_variables.scss
+$link-color: 				$light;
 
 $font-family-sans-serif:    'Roboto', sans-serif;
 $link-hover-decoration:     none;
 $navbar-nav-link-padding-x: .8rem;
-$list-group-active-bg:       $primary;
-$list-group-active-border-color: $list-group-active-bg;
 
 $progress-height:           1.5rem;
 
 $card-border-width:         0;
-$card-cap-bg:               $primary-dark;
 
 // Rebuild some maps/loops
 // Documentation:   https://getbootstrap.com/docs/4.0/getting-started/theming/#maps-and-loops
 
 $theme-colors: (
-    "primary": $primary,
-    "primary-dark": $primary-dark,
+	"dark": $dark,
+	"light": $light,
+	"pink": $pink,
+	"blue": $blue,
+	"indigo": $indigo,
+	"purple": $purple,
+	"red": $red,
+	"orange": $orange,
+	"yellow": $yellow,
+	"green": $green,
+	"teal": $teal,
+	"cyan": $cyan,
 );
 
 // Customize Bootstrap Components
@@ -29,19 +33,103 @@ $theme-colors: (
 // Documentation:   https://getbootstrap.com/docs/4.0/components/
 
 .card {
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, .2);
-    margin-bottom: $grid-gutter-width;
+	box-shadow: 0px 1px 3px rgba(0, 0, 0, .2);
+	margin-bottom: $grid-gutter-width;
+}
 
-    .card-header {
-        color: $white;
-    }
+.theme-blue {
+	background: blue;
+	&.header-blue {
+		background: $blue;
+	}
+}
+
+.theme-indigo {
+	background: indigo;
+	&.header-indigo {
+		background: $indigo;
+	}
+}
+
+.theme-purple {
+	background: purple;
+	&.header-purple {
+		background: $purple;
+	}
+}
+
+.theme-pink {
+	background: pink;
+	&.header-pink {
+		background: $pink;
+	}
+}
+
+.theme-red {
+	background: red;
+	&.header-red {
+		background: $red;
+	}
+}
+
+.theme-orange {
+	background: orange;
+	&.header-orange {
+		background: $orange;
+	}
+}
+
+.theme-yellow {
+	background: yellow;
+	&.header-yellow {
+		background: $yellow;
+	}
+}
+
+.theme-green {
+	background: green;
+	&.header-green {
+		background: $green;
+	}
+}
+
+.theme-teal {
+	background: teal;
+	&.header-teal {
+		background: $teal;
+	}
+}
+
+.theme-cyan {
+	background: cyan;
+	&.header-cyan {
+		background: $cyan;
+	}
+}
+
+.theme-dark {
+	background: #2C2C2CFF;
+	&.header-dark {
+		background: $dark;
+	}
+}
+
+.theme-light {
+	$link-color: $dark;
+	background: $light;
+	&.header-light {
+		background: #DDDDDDFF;
+		a {
+			color: $dark;
+		}
+	}
 }
 
 .progress {
-    margin-bottom: .5rem;
+	margin-bottom: .5rem;
 }
 
 .btn:hover {
-    transition: transform 100ms linear;
-    // transform: translateY(-2px);
+	transition: transform 100ms linear;
+	// transform: translateY(-2px);
 }

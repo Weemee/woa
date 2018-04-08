@@ -69,7 +69,7 @@ class AuthenticationLogin extends React.Component {
 			return null;
 		}
 
-		return <p className={`alert alert-$(this.state.status.isError ? 'danger' : 'success'}`}>
+		return <p className={'alert alert-`${this.state.status.isError ? danger : success}`'}>
 			{this.state.status.message}
 		</p>;
 	}

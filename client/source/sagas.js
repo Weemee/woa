@@ -85,8 +85,6 @@ function* setupWebSocket() {
 	}
 }
 
-//TODO
-
 function watchMessages(socket) {
 	return eventChannel((emit) => {
 		socket

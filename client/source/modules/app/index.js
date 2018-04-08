@@ -34,7 +34,7 @@ class App extends React.Component {
 		return (
 			<React.Fragment>
 				<Header/>
-				<main id="main">
+				<main className={`theme-${this.props.selectedTheme}`} id="main">
 					<Container>
 						<Switch>
 							<Route exact path="/" render={() => this.renderGameRoute(<Page/>)} />
@@ -59,6 +59,7 @@ function mapStateToProps(state) {
 	return {
 		isConnected: state.app.connected,
 		loggedIn: state.account.loggedIn || false,
+		selectedTheme: state.theme.name,
 	};
 }
 

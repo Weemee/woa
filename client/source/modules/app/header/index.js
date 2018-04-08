@@ -48,7 +48,7 @@ class Header extends React.Component {
 
     render() {
     	return (
-            <Navbar color="primary-dark" dark expand="md" id="header">
+            <Navbar className={`theme-${this.props.selectedTheme} header-${this.props.selectedTheme}`} expand="md" id="header">
                 <Container>
                     <NavbarBrand href="#" onClick={() => this.props.history.push('/')}>Penis</NavbarBrand>
                     <NavbarToggler onClick={this.toggle.bind(this)} className="mr-2" />
@@ -80,6 +80,7 @@ function mapStateToProps(state) {
         isConnected: state.app.connected,
         loggedIn: state.account.loggedIn,
         socket: state.app.socket,
+        selectedTheme: state.theme.name,
     };
 }
 

@@ -1,4 +1,4 @@
-import {MOUSE_POS, MOUSE_MOVE} from './types';
+import {MOUSE_POS} from './types';
 
 export function setMousePos(x, y) {
     return {

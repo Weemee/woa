@@ -20,26 +20,26 @@ The content of this repository (8th of April, 2018) is where I am now since I fo
 ## So what have I learned during this time (28 days / 4 weeks)?
 
 General:
-> ⋅⋅* Don't copy (copy + paste), rather write it yourself line by line and learn what you type. Google everything new/weird
-> ⋅⋅* Git
-> ⋅⋅* Linux (removed Windows, because **censored** that!)
-> ⋅⋅* Setting up and saving my local development environment, while also working with the global environment
+> * Don't copy (copy + paste), rather write it yourself line by line and learn what you type. Google everything new/weird
+> * Git
+> * Linux (removed Windows, because **censored** that!)
+> * Setting up and saving my local development environment, while also working with the global environment
 
 Development:
-> ⋅⋅* **Libs:** React, dom, router, redux, saga, bootstrap, axios, babel, eslint, loaders, webpack, bluebird, dotenv, express, helmet, jsonwebtoken, passport, sequelize, uuid, bcrypt
-> ⋅⋅* Knowledge about the interaction between server and client
-> ⋅⋅* ES6, SASS
+> * **Libs:** React, dom, router, redux, saga, bootstrap, axios, babel, eslint, loaders, webpack, bluebird, dotenv, express, helmet, jsonwebtoken, passport, sequelize, uuid, bcrypt
+> * Knowledge about the interaction between server and client
+> * ES6, SASS
 
 Resources (good reading and practice):
-> ⋅⋅* [Esprima](http://esprima.org/index.html)
-> ⋅⋅* [ES6 book](http://exploringjs.com/es6/)
-> ⋅⋅* [Bluebird](http://bluebirdjs.com/docs/getting-started.html)
-> ⋅⋅* [React](https://reactjs.org/)
-> ⋅⋅* [Redux](https://redux.js.org/)
-> ⋅⋅* [Redux saga](https://redux-saga.js.org/)
-> ⋅⋅* [Sequelize](http://docs.sequelizejs.com/)
-> ⋅⋅* [PDO](https://www.npmjs.com/package/pdo)
-> ⋅⋅* [Game dev](https://developer.mozilla.org/en-US/docs/Games/Introduction)
+> * [Esprima](http://esprima.org/index.html)
+> * [ES6 book](http://exploringjs.com/es6/)
+> * [Bluebird](http://bluebirdjs.com/docs/getting-started.html)
+> * [React](https://reactjs.org/)
+> * [Redux](https://redux.js.org/)
+> * [Redux saga](https://redux-saga.js.org/)
+> * [Sequelize](http://docs.sequelizejs.com/)
+> * [PDO](https://www.npmjs.com/package/pdo)
+> * [Game dev](https://developer.mozilla.org/en-US/docs/Games/Introduction)
 
 ## License
 

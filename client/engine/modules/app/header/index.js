@@ -17,14 +17,15 @@ class Header extends React.Component {
     }
 
     logout() {
-
+        localStorage.removeItem('authToken');
+        this.props.authLogout();
     }
 
     renderNavAuth() {
         if (this.props.loggedIn) {
             return (
                 <React.Fragment>
-                    <NavLink className="nav-link" to="/game">Play Game</NavLink>
+                    <NavLink className="nav-link" to="/session">Play Game</NavLink>
                     <NavLink className="nav-link" to="/account">Account</NavLink>
                     <a className="nav-link" href="/authentication/logout" onClick={this.logout.bind(this)}>Logout</a>
                 </React.Fragment>
@@ -77,6 +78,7 @@ class Header extends React.Component {
 
 function mapStateToProps(state) {
     return {
+        character: state.character.selected,
         isConnected: state.app.connected,
         loggedIn: state.account.loggedIn,
         socket: state.app.socket,

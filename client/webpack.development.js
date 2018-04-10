@@ -6,7 +6,7 @@ module.exports = {
     entry: [
         'babel-polyfill',
         'webpack-dev-server/client',
-        './source/index.js',
+        './engine/index.js',
     ],
 
     target: 'web',
@@ -31,8 +31,8 @@ module.exports = {
                 default: false,
                 commons: {
                     test: /node_modules/,
-                    name: "vendor",
-                    chunks: "initial",
+                    name: 'vendor',
+                    chunks: 'initial',
                     minSize: 1
                 }
             }

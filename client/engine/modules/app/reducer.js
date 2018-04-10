@@ -5,10 +5,15 @@ import {
     NOTIFICATION_CLEAR,
 } from './types';
 
+import {
+    ACCOUNT_LOGOUT,
+} from 'vars/constants';
+
 const defaultState = {
     connected: false,
     connectedEvent: false,
     socket: null,
+    notes: null,
 };
 
 export default function(state = defaultState, action) {
@@ -26,13 +31,14 @@ export default function(state = defaultState, action) {
         case NOTIFICATION_SET:
             return {
                 ...state,
-                notification: action.payload,
+                notes: action.payload,
             };
         case NOTIFICATION_CLEAR:
             return {
                 ...state,
-                notification: null,
+                notes: null,
             };
+        case ACCOUNT_LOGOUT:
     }
 
     return state;

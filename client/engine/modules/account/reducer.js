@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
 import {
-    USER_AUTHENTICATE_SUCCESS,
-    USER_LOGOUT,
+    ACCOUNT_AUTHENTICATE_SUCCESS,
+    ACCOUNT_LOGOUT,
 } from 'vars/constants';
-import {USER_DETAILS} from './types';
+import {ACCOUNT_DETAILS} from './types';
 
 const defaultState = {
     authToken: null,
@@ -12,10 +12,10 @@ const defaultState = {
 
 export default function(state = defaultState, action) {
     switch (action.type) {
-        case USER_LOGOUT:
+        case ACCOUNT_LOGOUT:
             return defaultState;
 
-        case USER_DETAILS:
+        case ACCOUNT_DETAILS:
             return {
                 ...state,
                 user: {
@@ -24,7 +24,7 @@ export default function(state = defaultState, action) {
                 },
             };
 
-        case USER_AUTHENTICATE_SUCCESS:
+        case ACCOUNT_AUTHENTICATE_SUCCESS:
             const decoded = jwt.decode(action.payload.authToken);
 
             return {

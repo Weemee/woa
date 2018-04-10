@@ -1,6 +1,6 @@
 import {
-    USER_AUTHENTICATE,
-    USER_LOGOUT,
+    ACCOUNT_AUTHENTICATE,
+    ACCOUNT_LOGOUT,
 } from 'vars/constants';
 
 import {
@@ -8,6 +8,7 @@ import {
     AUTH_STRATEGIES_GET,
     AUTH_LINK,
     AUTH_SAVE,
+    AUTH_SIGNUP,
     AUTH_PROVIDER,
 } from './types';
 
@@ -37,7 +38,7 @@ export function linkProvider(authToken, providerToken) {
 
 export function authLogout() {
     return {
-        type: USER_LOGOUT,
+        type: ACCOUNT_LOGOUT,
         payload: {},
     };
 }
@@ -51,7 +52,7 @@ export function authLogin(jwt) {
 
 export function authLocal(username, password) {
     return {
-        type: USER_AUTHENTICATE,
+        type: ACCOUNT_AUTHENTICATE,
         payload: {
             username,
             password,
@@ -64,6 +65,18 @@ export function authProvider(providerToken) {
         type: AUTH_PROVIDER,
         payload: {
             providerToken,
+        },
+    };
+}
+
+export function authSignUp(username, email, password, passwordConfirm) {
+    return {
+        type: AUTH_SIGNUP,
+        payload: {
+            username,
+            email,
+            password,
+            passwordConfirm
         },
     };
 }

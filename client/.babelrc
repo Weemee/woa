@@ -1,8 +1,8 @@
 {
-"presets": [
-"react",
-"stage-0",
-"env"
-],
-"plugins": []
+	"presets": [
+	"react",
+	"stage-0",
+	"env"
+	],
+	"plugins": []
 }

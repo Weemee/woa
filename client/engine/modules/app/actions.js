@@ -1,4 +1,8 @@
-import {CONNECTION_STATUS, SOCKET_CONNECT, SOCKET_SEND} from './types';
+import {
+    CONNECTION_STATUS,
+    SOCKET_CONNECT,
+    SOCKET_SEND,
+} from './types';
 
 export function setConnectionStatus(connected, connectedEvent) {
     return {

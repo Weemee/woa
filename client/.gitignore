@@ -5,4 +5,4 @@ node_modules/
 # Build
 #
 distribution
-source/config.js
+engine/config.js

@@ -5,32 +5,19 @@ import config from '../../../config.json';
 
 module.exports = (sequelize, DataTypes) =>
 {
-	const User = sequelize.define('user',
+	const Characters = sequelize.define('characters',
 	{
-		usr:
+		userID:
 		{
 			type: DataTypes.STRING,
 		},
-		email:
+		name:
 		{
 			type: DataTypes.STRING,
 		},
-		password:
+		nameLowercase:
 		{
 			type: DataTypes.STRING,
-		},
-		validated:
-		{
-			type: DataTypes.BOOLEAN,
-			defaultValue: false
-		},
-		validationToken:
-		{
-			type: DataTypes.STRING,
-		},
-		sessionToken:
-		{
-			type: DataTypes.UUID,
 		},
 		createdAt:
 		{
@@ -45,17 +32,13 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	User.beforeSave('user', async function() {
+	Characters.beforeSave('characters', async function() {
 		this.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 
-		if(!this.sessionToken) {
-			this.sessionToken = uuid();
+		if(this.name) {
+			this.nameLowercase = this.name.toLowerCase();
 		}
 	});
-
-	User.verifyPassword = function(string) {
-		return string;
-	};
 	
-	return User;
+	return Characters;
 }

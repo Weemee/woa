@@ -1,3 +1,7 @@
+// Required for compiling
+require('babel-core/register');
+require('babel-polyfill');
+
 import express from 'express';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
@@ -5,16 +9,24 @@ import contentFilter from 'content-filter';
 import passport from 'passport';
 
 import {
-    loadStrategies,
+	loadStrategies,
 	authenticate,
-    getAuthList,
+	getAuthList,
+	isAuthenticated,
 } from './authentication';
+
+import {
+	createAccount,
+	updateAccount,
+	deleteAccount,
+	getAccount,
+} from './account';
 
 export default function(app, config) {
 	app.set('config', config);
 	app.use(bodyParser.json());
 	app.use(helmet());
-    app.use(passport.initialize());
+	app.use(passport.initialize());
 	app.use(bodyParser.urlencoded({
 		extended: true,
 	}));
@@ -24,37 +36,45 @@ export default function(app, config) {
 	}));
 
 	// Set needed headers for the application.
-    app.use(function(req, res, next) {
-        // Website you wish to allow to connect
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        // Request methods you wish to allow
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
-        // Request headers you wish to allow
-        res.setHeader('Access-Control-Allow-Headers', 'Authorization, Accept, X-Requested-With, Content-Type');
-        // Whether requests needs to include cookies in the requests sent to the API. We shouldn't use this unless we retained sessions etc. which we don't!
-        res.setHeader('Access-Control-Allow-Credentials', false);
-        // Pass to next middleware
-        next();
-    });
+	app.use(function(req, res, next) {
+		// Website you wish to allow to connect
+		res.setHeader('Access-Control-Allow-Origin', '*');
+		// Request methods you wish to allow
+		res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
+		// Request headers you wish to allow
+		res.setHeader('Access-Control-Allow-Headers', 'Authorization, Accept, X-Requested-With, Content-Type');
+		// Whether requests needs to include cookies in the requests sent to the API. We shouldn't use this unless we retained sessions etc. which we don't!
+		res.setHeader('Access-Control-Allow-Credentials', false);
+		// Pass to next middleware
+		next();
+	});
 
-    loadStrategies(passport, app.get('customLogger'));
+	loadStrategies(passport, app.get('customLogger'));
 
-    //API routes
+	//API routes
 	const routes = express.Router({
 		caseSensitive: false,
 	});
 
-    // Authentication Routes
-    // user/password authentication
-    routes.route('/authentication')
-        .get(getAuthList)
-        .post(authenticate);
+	//Account routes
+	routes.route('/account')
+		.post(createAccount);
+	routes.route('/account/:userID')
+		.get(isAuthenticated, getAccount)
+		.delete(isAuthenticated, deleteAccount)
+		.patch(isAuthenticated, updateAccount);
 
-    // OAuth
-    routes.route('/authentication/provider/:provider')
-        .get(authenticate);
-    routes.route('/authentication/provider/:provider/callback')
-        .get(authenticate);
+	// Authentication routes
+	// user/password authentication
+	routes.route('/authentication')
+		.get(getAuthList)
+		.post(authenticate);
+
+	// OAuth
+	routes.route('/authentication/provider/:provider')
+		.get(authenticate);
+	routes.route('/authentication/provider/:provider/callback')
+		.get(authenticate);
 
 
 	app.use('/api', routes);

@@ -4,14 +4,16 @@ import {put, call, all, take, takeLatest, race} from 'redux-saga/effects';
 import {push} from 'react-router-redux';
 import axios from 'axios';
 
+import {saveAccountDetails} from './modules/account/actions';
 import {setConnectionStatus} from './modules/app/actions';
 import {authLogin, saveStrategies} from './modules/authentication/actions';
 
 import {
-	USER_AUTHENTICATE,
-	USER_AUTHENTICATE_ERROR,
-	USER_AUTHENTICATE_SUCCESS,
-	USER_LOGOUT,
+	ACCOUNT_AUTHENTICATE,
+	ACCOUNT_AUTHENTICATE_ERROR,
+	ACCOUNT_AUTHENTICATE_SUCCESS,
+	ACCOUNT_LOGOUT,
+	CHARACTER_LOGOUT,
 } from 'vars/constants';
 const derp = '€';
 import {
@@ -19,11 +21,14 @@ import {
 	AUTH_LINK,
 	AUTH_PROVIDER,
 	AUTH_SAVE,
+	AUTH_SIGNUP,
 } from './modules/authentication/types';
 
 import {
-	USER_DETAILS_GET,
-	USER_DETAILS_UPDATE,
+	ACCOUNT_DETAILS_GET,
+	ACCOUNT_DETAILS_UPDATE,
+	ACCOUNT_DETAILS_DELETE,
+	ACCOUNT_DETAILS,
 } from './modules/account/types';
 
 import config from './config';
@@ -50,7 +55,7 @@ function* doAPICall(endpoint, data, method = 'get', additionalHeaders = null) {
 
 		return yield call(request[method], `${endpoint}`, data);
 	} catch (err) {
-		let errorMsg = 'Something went wrong. Please try again in a moment.';
+		let errorMsg = 'Something went wrong. Please try again in a moment.' + err;
 
 		if (err.response) {
 			errorMsg = err.response.data.error || errorMsg;
@@ -120,7 +125,7 @@ function* internalListener(socket) {
 function* externalListener(channel) {
 	while (true) {
 		let action = yield take(channel);
-
+		
 		yield put(action);
 	}
 }
@@ -129,14 +134,14 @@ function* saveAuthDetails(action) {
 	yield put({
 		type: SOCKET_SEND,
 		payload: {
-			type: USER_AUTHENTICATE,
+			type: ACCOUNT_AUTHENTICATE,
 			payload: action.payload,
 		},
 	});
 
 	const result = yield race([
-		take(USER_AUTHENTICATE_ERROR),
-		take(USER_AUTHENTICATE_SUCCESS),
+		take(ACCOUNT_AUTHENTICATE_ERROR),
+		take(ACCOUNT_AUTHENTICATE_SUCCESS),
 		]);
 
 	if (result[0]) {
@@ -172,9 +177,17 @@ function* logoutAccount(action = null) {
 			payload: action,
 		});
 
-		yield put(push('/authentication/register'));
+		yield put(push('/authentication/logout'));
 		return action;
 	}
+}
+
+function* logoutSession(action) {
+	yield put({
+		type: SOCKET_SEND,
+		payload: action,
+	});
+	return action;
 }
 
 function* checkLocalAuth(action) {
@@ -191,6 +204,30 @@ function* checkLocalAuth(action) {
 	}
 
 	yield put(authLogin(response.data.authToken));
+}
+
+function* authSignUp(action) {
+	const data = {
+		username: action.payload.username,
+		email: action.payload.email,
+		password: action.payload.password,
+		passwordConfirm: action.payload.passwordConfirm,
+		method: 'local',
+	};
+
+	const response = yield call(doAPICall, 'account', data, 'post');
+
+	if(!response) {
+		return;
+	}
+
+	yield put({
+		type: NOTIFICATION_SET,
+		payload: {
+			message: response.data.message,
+			type: 'success',
+		},
+	});
 }
 
 function* getAuthStrategies(action) {
@@ -210,28 +247,48 @@ function* getAuthStrategies(action) {
 	yield put(saveStrategies(authList));
 }
 
+function* getAccountDetials(action) {
+	const response = yield call(doAPICall, `account/${action.payload.userID}`, null, 'get', {
+		Authorization: `Bearer ${action.payload.authToken}`,
+	});
+
+	if(!response) {
+		return;
+	}
+
+	yield put(saveAccountDetails(response.data.user));
+}
+
 function* onAuthAttempt() {
-	yield takeLatest(USER_AUTHENTICATE, checkLocalAuth);
+	yield takeLatest(ACCOUNT_AUTHENTICATE, checkLocalAuth);
 }
 
 function* onProviderAuthAttempt() {
 	yield takeLatest(AUTH_PROVIDER, checkProviderAuth);
 }
 
-function* onGameLogout() {
-	yield takeLatest(CHARACTER_LOGOUT, logoutGame);
+function* onSessionLogout() {
+	yield takeLatest(CHARACTER_LOGOUT, logoutSession);
 }
 
 function* onAccountLogout() {
-	yield takeLatest(USER_LOGOUT, logoutAccount);
+	yield takeLatest(ACCOUNT_LOGOUT, logoutAccount);
 }
 
 function* onAuthSuccess() {
 	yield takeLatest(AUTH_SAVE, saveAuthDetails);
 }
 
+function* onSignUpAttempt() {
+	yield takeLatest(AUTH_SIGNUP, authSignUp);
+}
+
 function* onFetchStrategies() {
 	yield takeLatest(AUTH_STRATEGIES_GET, getAuthStrategies);
+}
+
+function* onFetchAccountDetials() {
+	yield takeLatest(ACCOUNT_DETAILS_GET, getAccountDetials);
 }
 
 function* routeChanged() {
@@ -250,9 +307,12 @@ function* Sagas() {
 		onAuthSuccess(),
 		onAccountLogout(),
 		onAuthAttempt(),
+		onSignUpAttempt(),
+		onSessionLogout(),
 		setupWebSocket(),
 		onRouteChange(),
 		onFetchStrategies(),
+		onFetchAccountDetials(),
 		]);
 }
 

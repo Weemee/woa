@@ -21,8 +21,8 @@ if(!fs.existsSync(`${__dirname}/../config.json`))
 
 //control data folder for data
 if (!fs.existsSync(`${__dirname}/data`)) {
-    console.error('ERROR: No data folder found.');
-    process.exit();
+	console.error('ERROR: No data folder found.');
+	process.exit();
 }
 
 let config = require(`${__dirname}/../config.json`);
@@ -30,7 +30,7 @@ let config = require(`${__dirname}/../config.json`);
 const Server = require('./server').Server;
 const app = express();
 
-Promise.promisifyAll(db.sequelize);
+Promise.promisifyAll(db);
 db.sequelize.authenticate().then(
 	() =>
 	{
@@ -60,6 +60,6 @@ db.sequelize.authenticate().then(
 	},
 	(err) =>
 	{
-    	return console.error('Unable to connect to the database:', err);
+		return console.error('Unable to connect to the database:', err);
 	}
 );

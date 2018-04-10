@@ -1,134 +1,172 @@
 import passport from 'passport';
 import config from '../../../config.json';
 import uuid from 'uuid/v4';
-//import UserModel from '../models/user';
-//import IdentityModel from '../models/identity';
 import jwt from 'jsonwebtoken';
 
 import * as localAuth from './strategies/local';
 import oauthSetup from './strategies/oauth';
 
+import db from '../models';
+
 function output(req, res, output) {
-    const redirect = req.params.provider ? true : false;
-    const errorUrl = `${req.app.get('config').clientUrl}/auth?error=`;
+	const redirect = req.params.provider ? true : false;
+	const errorUrl = `${req.app.get('config').clientUrl}/authentication?error=`;
 
-    if (redirect) {
-        return res.redirect(`${errorUrl}${output.error || output.message}`);
-    }
+	if (redirect) {
+		return res.redirect(`${errorUrl}${output.error || output.message}`);
+	}
 
-    res.status(output.status || 200).json(output);
+	res.status(output.status || 200).json(output);
 }
 
 export function loadStrategies(passport, logger) {
-    config.api.authentication.providers.forEach((provider) => {
-        let callbackUrl = `${config.api.domain}${[80, 443].includes(config.api.post) ? '' : `:${config.api.port}`}/api/auth/provider/${provider.id}/callback`;
+	config.api.authentication.providers.forEach((provider) => {
+		let callbackUrl = `${config.api.domain}${[80, 443].includes(config.api.post) ? '' : `:${config.api.port}`}/api/authentication/provider/${provider.id}/callback`;
 
-        if (provider.enabled) {
-            // if its the local auth provider, we have to use a separate strategy from OAuth.
-            if (provider.id === 'local') {
-                return localAuth.setup(passport, logger);
-            }
+		if (provider.enabled) {
+				// if its the local auth provider, we have to use a separate strategy from OAuth.
+				if (provider.id === 'local') {
+					return localAuth.setup(passport, logger);
+				}
 
-            try {
-                oauthSetup(
-                    passport,
-                    {
-                        ...provider,
-                        callbackUrl,
-                    },
-                    logger
-                );
-            } catch (err) {
-                logger.error(err);
-            }
-        }
-    });
+				try {
+					oauthSetup(
+						passport,
+						{
+							...provider,
+							callbackUrl,
+						},
+						logger
+						);
+				} catch (err) {
+					logger.error(err);
+				}
+			}
+		});
 }
 
 export function authenticate(req, res, next) {
-    // check if we are authenticating a provider token
-    if (req.body.providerToken) {
-        return authenticateProvider(req, res);
-    }
+	// check if we are authenticating a provider token
+	/*if(req.body.providerToken) {
+		return authenticateProvider(req, res);
+	}*/
 
-    // continue with account authentication
-    let method = (req.body.method || req.params.provider) + ''.toLowerCase();
+	// continue with account authentication
+	let method = (req.body.method || req.params.provider) + ''.toLowerCase();
 
-    if (!method) {
-        return output(req, res, {
-            status: 400,
-            error: 'Invalid authentication method.',
-        });
-    }
+	if(!method) {
+		return output(req, res, {
+			status: 400,
+			error: 'Invalid authentication method.',
+		});
+	}
 
-    const provider = req.app.get('config').api.authentication.providers.find((obj) => obj.id === method);
+	const provider = req.app.get('config').api.authentication.providers.find((obj) => obj.id === method);
 
-    if (!provider) {
-        return output(req, res, {
-            status: 400,
-            error: 'Invalid authentication method.',
-        });
-    }
+	if(!provider) {
+		return output(req, res, {
+			status: 400,
+			error: 'Invalid authentication method.',
+		});
+	}
 
-    return passport.authenticate(provider.id, Object.assign({session: false}, {scope: provider.scope || null}), (err, userDetails, info, status) => {
-        if (err) {
-            req.app.get('customLogger').error(err);
+	return passport.authenticate(provider.id, Object.assign({session: false}, {scope: provider.scope || null}), (err, userDetails, info, status) => {
+		if(err) {
+			req.app.get('customLogger').error(err);
 
-            return output(req, res, {
-                status: 400,
-                error: 'Invalid authentication method.',
-            });
-        }
+			return output(req, res, {
+				status: 400,
+				error: 'Invalid authentication method.',
+			});
+		}
 
-        if (userDetails) {
-            return onAuth(req, res, userDetails, method !== 'local');
-        }
+		if(userDetails) {
+			return onAuth(req, res, userDetails, method !== 'local');
+		}
 
-        return output(req, res, {
-            status: status || 400,
-            error: err || info.message,
-        });
-    })(req, res, next);
+		return output(req, res, {
+			status: status || 400,
+			error: err || info.message,
+		});
+	})(req, res, next);
+}
+
+export function isAuthenticated(req, res, next) {
+	const token = req.headers['authorization'];
+
+	if(!token) {
+		console.log('First');
+		return output(req, res, {
+			status: 401,
+			message: 'Invalid authorisation token first.',
+		});
+	}
+
+	jwt.verify(token.replace('Bearer ', ''), process.env.SIGNING_SECRET, (err, decoded) => {
+		if (err) {
+			return output(req, res, {
+				status: 401,
+				message: 'Invalid authorisation token second.',
+			});
+		}
+
+		db.user.findOne({
+		where:
+		{
+			[db.Op.and]: [
+			{
+				id:
+				{
+					[db.Op.like]: [decoded.id]
+				}
+			},
+			{
+				sessionToken:
+				{
+					[db.Op.like]: [decoded.sessionToken]
+				}
+			}]
+		},
+		}).then(result =>
+		{
+			const userDetails = result;
+			userDetails.password = userDetails.password ? true : false;
+			req.user = userDetails;
+			next()
+		});
+	});
 }
 
 export function onAuth(req, res, data, redirect) {
-    let tok;
-    if(!data.user.dataValues.sessionToken) {
-        tok = uuid();
-    }
-    else
-    {
-        tok = data.user.dataValues.sessionToken;
-    }
-    const token = jwt.sign({
-        id: data.user.dataValues.id || null,
-        sessionToken: tok,
-        //identity: data.identity.id || null,
-    }, process.env.SIGNING_SECRET, {expiresIn: '1h'});
+	const token = jwt.sign({
+		id: data.user.dataValues.id || null,
+		sessionToken: data.user.dataValues.sessionToken,
+		identity: data.identity.id || null,
+	}, process.env.SIGNING_SECRET, {expiresIn: '1h'});
 
-    if (redirect) {
-        return res.redirect(`${req.app.get('config').clientUrl}/auth?token=${token}`);
-    }
+	if(redirect) {
+		return res.redirect(`${req.app.get('config').clientUrl}/authentication?token=${token}`);
+	}
 
-    // send JWT back to client
-    output(req, res, {
-        status: 200,
-        authToken: token,
-    });
+	// send JWT back to client
+	output(req, res, {
+		status: 200,
+		authToken: token,
+	});
 }
 
 export function getAuthList(req, res) {
-    const providers = config.api.authentication.providers.filter((provider) => provider.enabled);
-    const authlist = providers.map((provider) => {
-        return {
-            id: provider.id,
-            name: provider.name,
-            authUrl: `${config.api.domain}${[80, 443].includes(config.api.post) ? '' : `:${config.api.port}`}/api/authentication/provider/${provider.id}`,
-        };
-    });
+	const providers = config.api.authentication.providers.filter((provider) => provider.enabled);
+	const authlist = providers.map((provider) => {
+		return {
+			id: provider.id,
+			name: provider.name,
+			authUrl: `${config.api.domain}${[80, 443].includes(config.api.post) ? '' : `:${config.api.port}`}/api/authentication/provider/${provider.id}`,
+		};
+	});
 
-    output(req, res, {
-        status: 200,
-        authlist,
-    });
+	output(req, res, {
+		status: 200,
+		authlist,
+	});
 }

@@ -6,7 +6,6 @@ class AuthLogout extends React.Component {
         super(props);
     }
 
-    // TODO: Move logout logic/state from app/header to this component
     render() {
         return (
             <Card className="card-small">

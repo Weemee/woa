@@ -7,7 +7,13 @@ import {bindActionCreators} from 'redux';
 import {Card, CardHeader, CardBody, Input, Button, Form, FormGroup} from 'reactstrap';
 import Note from '../ui/notes';
 
-import {authLocal, authProvider, authLogin, getStrategies, linkProvider} from './actions';
+import {
+	authLocal,
+	authProvider,
+	authLogin,
+	getStrategies,
+	linkProvider,
+} from './actions';
 
 class AuthenticationLogin extends React.Component {
 	constructor(props) {
@@ -30,6 +36,7 @@ class AuthenticationLogin extends React.Component {
             error: error || null,
         });
 
+        this.props.getStrategies();
         this.autoLogin(error ? false : true);
     }
 
@@ -50,8 +57,6 @@ class AuthenticationLogin extends React.Component {
                 return this.props.authProvider(GETtoken);
             }
         }
-
-        return this.props.getStrategies();
     }
 
 	authenticate() {
@@ -77,39 +82,42 @@ class AuthenticationLogin extends React.Component {
 	render() {
 		return (
 			<Card className="card-small">
-				<Form>
-				<Note />
-				<FormGroup>
-				<Input
-				type="username"
-				name="username"
-				placeholder="Username"
-				autoComplete="username"
-				onChange={(e) => {
-					this.setState({
-						username: e.target.value,
-					});
-				}}
-				value={this.state.username}
-				/>
-				</FormGroup>
-				<FormGroup>
-				<Input
-				type="password"
-				name="password"
-				placeholder="Password"
-				autoComplete="current-password"
-				onChange={(e) => {
-					this.setState({
-						password: e.target.value,
-					});
-				}}
-				value={this.state.password}
-				/>
-				</FormGroup>
-				<Button onClick={this.authenticate} color="primary">Login</Button>
-				<hr />
-				</Form>
+				<CardHeader>Login</CardHeader>
+					<CardBody>
+						<Form>
+							<Note />
+							<FormGroup>
+							<Input
+							type="username"
+							name="username"
+							placeholder="Username"
+							autoComplete="username"
+							onChange={(e) => {
+								this.setState({
+									username: e.target.value,
+								});
+							}}
+							value={this.state.username}
+							/>
+							</FormGroup>
+							<FormGroup>
+							<Input
+							type="password"
+							name="password"
+							placeholder="Password"
+							autoComplete="current-password"
+							onChange={(e) => {
+								this.setState({
+									password: e.target.value,
+								});
+							}}
+							value={this.state.password}
+							/>
+							</FormGroup>
+							<Button onClick={this.authenticate} color="primary">Login</Button>
+							<hr />
+						</Form>
+					</CardBody>
 			</Card>
 		);
 	}
@@ -118,18 +126,18 @@ class AuthenticationLogin extends React.Component {
 function mapStateToProps(state) {
 	return {
 		authToken: state.account.authToken,
-        loggedIn: state.account.loggedIn,
-        strategies: state.auth.strategies || [],
+      loggedIn: state.account.loggedIn,
+      strategies: state.auth.strategies || [],
 	}
 }
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
     	authLogin,
-        authLocal,
-        getStrategies,
-        linkProvider,
-        authProvider,
+      authLocal,
+      getStrategies,
+      linkProvider,
+      authProvider,
     }, dispatch);
 }
 

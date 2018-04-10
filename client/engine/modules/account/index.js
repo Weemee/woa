@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux';
 
 import {Row, Col, Card, CardHeader, ListGroup} from 'reactstrap';
 
+import {getAccountDetails} from './actions';
 import {getStrategies} from '../authentication/actions';
 
 class Account extends React.Component {
@@ -18,7 +19,7 @@ class Account extends React.Component {
         }
 
         this.props.getStrategies();
-        //this.props.getUserDetails(this.props.user.id, this.props.authToken);
+        this.props.getAccountDetails(this.props.user.id, this.props.authToken);
     }
 
     render() {
@@ -37,7 +38,7 @@ class Account extends React.Component {
 function mapStateToProps(state) {
     return {
         strategies: state.auth.strategies || [],
-        //user: state.account.user,
+        user: state.account.user,
         authToken: state.account.authToken,
         loggedIn: state.account.loggedIn,
     };
@@ -45,6 +46,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
+        getAccountDetails,
         getStrategies,
     }, dispatch);
 }

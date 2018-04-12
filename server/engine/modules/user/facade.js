@@ -5,7 +5,7 @@ import {
 	ACCOUNT_AUTHENTICATE,
 	ACCOUNT_AUTHENTICATE_ERROR,
 	ACCOUNT_AUTHENTICATE_SUCCESS,
-} from 'vars/constants';
+} from 'libs/constants';
 
 import db from '../../api/models';
 const Op = db.Sequelize.Op;

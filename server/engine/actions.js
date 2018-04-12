@@ -1,6 +1,6 @@
 import {
 	SERVER_EVENT,
-} from 'vars/constants';
+} from 'libs/constants';
 
 export function newEvent(type, message, ignore =[]) {
 	return {

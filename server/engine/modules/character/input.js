@@ -2,7 +2,7 @@ import {
 	CHARACTER_LOGIN,
 	CHARACTER_CREATE_ERROR,
 	CHARACTER_CREATE_SUCCESS,
-} from 'vars/constants';
+} from 'libs/constants';
 
 async function inputCreateCharacter(socket, character, input, params, inputObject, Server) {
 	let name = params[0];

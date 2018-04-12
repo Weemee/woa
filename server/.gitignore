@@ -6,8 +6,12 @@ node_modules/
 # Build
 #
 distribution
+
+# personal vars
+#
 config.json
+libs/config
 
 # logs
 #
-server.error.log
+*.log

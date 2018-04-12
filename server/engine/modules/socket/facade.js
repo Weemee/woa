@@ -6,7 +6,7 @@ import {
 	ACCOUNT_LOGOUT,
 	CHARACTER_LOGOUT,
 	CHARACTER_REMOTE_LOGOUT,
-} from 'vars/constants';
+} from 'libs/constants';
 
 export default class SocketFacade extends EventEmitter
 {

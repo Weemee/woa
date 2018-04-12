@@ -6,7 +6,7 @@ import {
 	CHARACTER_OFFLINE,
 	GET_CHARACTER_LIST,
 	CHARACTER_LIST,
-} from 'vars/constants';
+} from 'libs/constants';
 
 import Character from './object';
 import characterInput from './input';

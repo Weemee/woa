@@ -1,5 +1,5 @@
-import {parsedJsonData} from '../../utils';
-import {ACCOUNT_INPUT} from 'vars/constants';
+import {parsedJsonData} from '../../../libs/utils';
+import {ACCOUNT_INPUT} from 'libs/constants';
 
 export default class InputFacade {
 	constructor(Server) {

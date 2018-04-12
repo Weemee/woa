@@ -125,7 +125,7 @@ function* internalListener(socket) {
 function* externalListener(channel) {
 	while (true) {
 		let action = yield take(channel);
-		
+
 		yield put(action);
 	}
 }

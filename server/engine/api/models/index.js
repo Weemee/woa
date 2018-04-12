@@ -5,7 +5,6 @@ import config from 'libs/conf/database';
 const basename = path.basename(__filename);
 const db = {};
 
-console.log(config);
 const sequelize = new Sequelize(config.databaseTypes.mysql);
 
 fs.readdirSync(__dirname).filter(file => {

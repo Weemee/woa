@@ -14,7 +14,7 @@ class Server {
 
 		this.config = config;
 
-		if(process.env.NODE_ENV === 'development') {
+		if (process.env.NODE_ENV === 'development') {
 			Promise.longStackTraces();
 		}
 
@@ -28,18 +28,22 @@ class Server {
 		this.characterFacade = new CharacterFacade(this);
 		this.inputFacade = new InputFacade(this);
 
-		if(autoIni){
+		if (autoIni) {
 			this.init();
 		}
 	}
 
-	async init(){
-		this.version = child_process.execSync('git rev-parse --short=7 HEAD').toString().trim();
+	async init() {
+		this.version = this.config.server.serverVersion;
+		console.log(this.version);
 
 		await this.characterFacade.init();
 		await this.inputFacade.init();
+		try {
+			this.setupServerTimers();
+		} catch (err) {
 
-		this.setupServerTimers();
+		}
 
 		this.socketFacade.listen();
 	}
@@ -69,7 +73,7 @@ class Server {
 	}
 
 	setupServerTimers() {
-		this.timers = this.config.server.timers.filter((timer) => timer.enabled).map((timer) => {
+		this.timers = this.config.server.serverTimers.filter((timer) => timer.enabled).map((timer) => {
 			return {
 				name: timer.name,
 				timer: setInterval(this.onTimer.bind(this), timer.frequency, timer.name),

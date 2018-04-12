@@ -45,7 +45,7 @@ export default function(app, webServerAPI, config) {
 		next();
 	});
 
-	loadStrategies(passport, app.get('customLogger'));
+	loadStrategies(passport, app.get('customLogger'), config);
 
 	//API routes
 	const routes = express.Router({
@@ -75,6 +75,6 @@ export default function(app, webServerAPI, config) {
 
 	app.use('/api', routes);
 
-	webServerAPI.listen(config.api.port);
-	console.log(`API listening on port ${config.api.port}`);
+	webServerAPI.listen(config.api.restPort);
+	console.log(`API listening on port ${config.api.restPort}`);
 }

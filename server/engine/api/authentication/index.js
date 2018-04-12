@@ -1,5 +1,4 @@
 import passport from 'passport';
-import config from '../../../config.json';
 import uuid from 'uuid/v4';
 import jwt from 'jsonwebtoken';
 
@@ -19,9 +18,9 @@ function output(req, res, output) {
 	res.status(output.status || 200).json(output);
 }
 
-export function loadStrategies(passport, logger) {
-	config.api.authentication.providers.forEach((provider) => {
-		let callbackUrl = `${config.api.domain}${[80, 443].includes(config.api.post) ? '' : `:${config.api.port}`}/api/authentication/provider/${provider.id}/callback`;
+export function loadStrategies(passport, logger, config) {
+	config.authentication.providers.forEach((provider) => {
+		let callbackUrl = `${config.api.restURL}${[80, 443].includes(config.api.post) ? '' : `:${config.api.port}`}/api/authentication/provider/${provider.id}/callback`;
 
 		if (provider.enabled) {
 				// if its the local auth provider, we have to use a separate strategy from OAuth.
@@ -156,12 +155,13 @@ export function onAuth(req, res, data, redirect) {
 }
 
 export function getAuthList(req, res) {
+	const config = req.app.get('config');
 	const providers = config.api.authentication.providers.filter((provider) => provider.enabled);
 	const authlist = providers.map((provider) => {
 		return {
 			id: provider.id,
 			name: provider.name,
-			authUrl: `${config.api.domain}${[80, 443].includes(config.api.post) ? '' : `:${config.api.port}`}/api/authentication/provider/${provider.id}`,
+			authUrl: `${config.api.restURL}${[80, 443].includes(config.api.post) ? '' : `:${config.api.port}`}/api/authentication/provider/${provider.id}`,
 		};
 	});
 

@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 
 import {newEvent} from './'
 import {gameLogout, newInput} from './actions';
-import {socketSend} from './character/actions';
+import {socketSend} from '../app/actions';
 
 import {Container, Row, Col, Input, Button, Form} from 'reactstrap';
 import Character from './character';

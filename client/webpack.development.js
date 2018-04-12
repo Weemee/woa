@@ -9,7 +9,6 @@ module.exports = {
         './engine/index.js',
     ],
 
-    target: 'web',
     devServer: {
             historyApiFallback: true,
             contentBase: './',

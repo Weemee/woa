@@ -26,8 +26,6 @@ export default class SocketFacade extends EventEmitter
 
 		this.onDisconnect = this.onDisconnect.bind(this);
 		this.clearTimer = this.clearTimer.bind(this);
-
-		this.Server.log.info('SocketFacade::constructor loaded');
 	}
 
 	get(userID) {
@@ -43,9 +41,9 @@ export default class SocketFacade extends EventEmitter
 	listen()
 	{
 		this.io.on('connection', this.onConnection.bind(this));
-		this.server.listen(this.Server.config.server.port);
+		this.server.listen(this.Server.config.app.serverPort);
 
-		console.log(`Socket is listening on port ${this.Server.config.server.port}`);
+		console.log(`Socket is listening on port ${this.Server.config.app.serverPort}`);
 	}
 
 	onConnection(socket)

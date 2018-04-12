@@ -1,10 +1,7 @@
-require('babel-core/register');
-require('babel-polyfill');
-require('dotenv').config();
-
 import fs from 'fs';
 import http from 'http';
 
+import dotenv from 'dotenv';
 import express from 'express';
 import Promise from 'bluebird';
 
@@ -12,20 +9,14 @@ import API from './api';
 import db from './api/models';
 import Log from './modules/log';
 
-//control that we have a config file
-if(!fs.existsSync(`${__dirname}/../config.json`))
-{
-	console.error('Error: No config file found.');
-	process.exit();
+import {buildConfig} from '../libs/config';
+const dotEnvLoaded = dotenv.config();
+
+if(dotEnvLoaded.error) {
+	throw new Error(dotEnvLoaded.result.error);
 }
 
-//control data folder for data
-if (!fs.existsSync(`${__dirname}/data`)) {
-	console.error('ERROR: No data folder found.');
-	process.exit();
-}
-
-let config = require(`${__dirname}/../config.json`);
+let config = buildConfig();
 
 const Server = require('./server').Server;
 const app = express();
@@ -35,21 +26,24 @@ db.sequelize.authenticate().then(
 	() =>
 	{
 		let webServer;
+		let webServerAPI;
+
 		webServer = http.createServer(app);
+		webServerAPI = http.createServer(app);
 
 		const customLogger = new Log(
 		{
 			level: (process.env.NODE_ENV === 'development' ? 'info' : 'error'),
-			debugFile: './server.debug.log',
-			infoFile: './server.info.log',
-			warnFile: './server.warn.log',
-			errorFile: './server.error.log',
+			debugFile: `${__dirname}/../logs/debug.log`,
+			infoFile: `${__dirname}/../logs/info.log`,
+			warnFile: `${__dirname}/../logs/warn.log`,
+			errorFile: `${__dirname}/../logs/error.log`,
 		});
 
 		app.set('customLogger', customLogger);
 
 		const gameServer = new Server(webServer, config, customLogger);
-		const restServer = new API(app, config);
+		const restServer = new API(app, webServerAPI, config);
 
 		process.on('SIGTERM', async function()
 		{

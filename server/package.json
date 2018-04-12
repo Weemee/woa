@@ -1,9 +1,9 @@
 {
 	"name": "woa",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "Server for World of Atoms",
 	"scripts": {
-		"start": "cross-env NODE_ENV=development nodemon -L ./engine --exec babel-node --presets env,stage-2",
+		"start": "cross-env NODE_ENV=development nodemon -L ./engine --inspect --exec babel-node --presets env,stage-2",
 		"build": "babel engine --out-dir distribution --source-maps inline --copy-files"
 	},
 	"engines": {
@@ -13,14 +13,20 @@
 		"type": "git",
 		"url": "git+https://github.com/Weemee/woa.git"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"author": "Chris Jager",
+	"license": "CC-BY-3.0",
 	"bugs": {
 		"url": "https://github.com/Weemee/woa/issues"
 	},
+	"nodemonConfig": {
+		"ignore": [
+			"node_modules/*",
+			"config.json"
+		]
+	},
 	"dependencies": {
 		"babel-preset-stage-2": "^6.24.1",
+		"babel-runtime": "^6.26.0",
 		"bcrypt": "^1.0.3",
 		"bluebird": "^3.5.1",
 		"body-parser": "^1.18.2",
@@ -41,10 +47,12 @@
 		"babel-cli": "^6.26.0",
 		"babel-eslint": "^8.2.2",
 		"babel-plugin-module-resolver": "^3.1.0",
+		"babel-plugin-transform-runtime": "^6.23.0",
 		"babel-polyfill": "^6.26.0",
 		"babel-preset-env": "^1.6.1",
 		"babel-register": "^6.26.0",
 		"cross-env": "^5.1.4",
+		"eslint": "^4.19.1",
 		"nodemon": "^1.17.1"
 	},
 	"homepage": "https://github.com/Weemee/woa#readme"

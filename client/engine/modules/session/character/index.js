@@ -1,5 +1,5 @@
 import {
-	GET_CHARACTER_LIST,
+	CHARACTER_GET_LIST,
 } from 'libs/constants';
 
 import React from 'react';
@@ -33,7 +33,7 @@ class Character extends React.Component {
 
 	componentDidMount() {
 		this.props.socketSend({
-			type: GET_CHARACTER_LIST,
+			type: CHARACTER_GET_LIST,
 			payload: null,
 		});
 	}

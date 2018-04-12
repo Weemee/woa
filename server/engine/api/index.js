@@ -1,7 +1,3 @@
-// Required for compiling
-require('babel-core/register');
-require('babel-polyfill');
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
@@ -22,7 +18,7 @@ import {
 	getAccount,
 } from './account';
 
-export default function(app, config) {
+export default function(app, webServerAPI, config) {
 	app.set('config', config);
 	app.use(bodyParser.json());
 	app.use(helmet());
@@ -79,6 +75,6 @@ export default function(app, config) {
 
 	app.use('/api', routes);
 
-	app.listen(config.api.port);
+	webServerAPI.listen(config.api.port);
 	console.log(`API listening on port ${config.api.port}`);
 }

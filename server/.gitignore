@@ -10,7 +10,8 @@ distribution
 # personal vars
 #
 config.json
-libs/config
+libs/conf
+.env
 
 # logs
 #

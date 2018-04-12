@@ -1,7 +1,6 @@
 import moment from 'moment';
 import uuid from 'uuid/v4';
 import bcrypt from 'bcrypt';
-import config from '../../../config.json';
 
 module.exports = (sequelize, DataTypes) =>
 {

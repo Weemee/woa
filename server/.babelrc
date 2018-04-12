@@ -1,14 +1,40 @@
 {
-    "presets": [
-        "env",
-        "stage-2"
-    ],
-    "plugins": [
-        ["module-resolver", {
-            "root": ["./"],
-            "alias": {
-                "vars": "./vars"
-            }
-        }]
-    ]
+	"presets": [
+		["env", {
+			"modules": "commonjs"
+		}],
+		"stage-2"
+	],
+	"plugins": [
+		["transform-runtime", {
+			"polyfill": false,
+			"regenerator": true
+		}]
+	],
+	"env": {
+		"development": {
+			"plugins": [
+				["module-resolver", {
+					"roor": ["./"],
+					"alias": {
+						"libs": "./libs",
+						"config": "./libs/conf",
+						"utils": "./libs"
+					}
+				}]
+			]
+		},
+		"production": {
+			"plugins": [
+				["module-resolver", {
+					"roor": ["./"],
+					"alias": {
+						"libs": "./distribution/libs",
+						"config": "./distribution/libs/config",
+						"utils": "./distribution/libs/utils"
+					}
+				}]
+			]
+		}
+	}
 }

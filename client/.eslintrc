@@ -1,4 +1,13 @@
 {
+	"extends": "google",
+	"ecmaFeatures": {
+		"jsx": true,
+		"modules": true
+	},
+	"env": {
+		"browser": true,
+		"node": false
+	},
 	"parser": "babel-eslint",
 	"rules": {
 		"quotes": [2, "single"],

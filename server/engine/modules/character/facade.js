@@ -4,7 +4,7 @@ import {
 	CHARACTER_UPDATE,
 	CHARACTER_ONLINE,
 	CHARACTER_OFFLINE,
-	GET_CHARACTER_LIST,
+	CHARACTER_GET_LIST,
 	CHARACTER_LIST,
 } from 'libs/constants';
 
@@ -34,7 +34,7 @@ export default class CharacterFacade {
 
 	onDispatch(socket, action) {
 		switch(action.type) {
-			case GET_CHARACTER_LIST:
+			case CHARACTER_GET_LIST:
 				return this.getCharacterList(socket, action);
 		}
 

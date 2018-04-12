@@ -72,7 +72,7 @@ class Server {
 		this.timers = this.config.server.timers.filter((timer) => timer.enabled).map((timer) => {
 			return {
 				name: timer.name,
-				timer: setInterval(this.onTimer.bind(this), timer.interval, timer.name),
+				timer: setInterval(this.onTimer.bind(this), timer.frequency, timer.name),
 			};
 		});
 	}

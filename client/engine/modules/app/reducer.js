@@ -7,7 +7,7 @@ import {
 
 import {
     ACCOUNT_LOGOUT,
-} from 'vars/constants';
+} from 'libs/constants';
 
 const defaultState = {
     connected: false,

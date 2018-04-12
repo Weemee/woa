@@ -14,7 +14,7 @@ import {
 	ACCOUNT_AUTHENTICATE_SUCCESS,
 	ACCOUNT_LOGOUT,
 	CHARACTER_LOGOUT,
-} from 'vars/constants';
+} from 'libs/constants';
 const derp = '€';
 import {
 	AUTH_STRATEGIES_GET,

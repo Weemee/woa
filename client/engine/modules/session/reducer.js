@@ -4,7 +4,7 @@ import {
 	CHARACTER_LOGIN,
 	CHARACTER_LOGOUT,
 	ACCOUNT_AUTHENTICATE_SUCCESS,
-} from 'vars/constants';
+} from 'libs/constants';
 
 const defualtState = {
 	players: [],

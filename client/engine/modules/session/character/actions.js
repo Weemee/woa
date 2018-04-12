@@ -1,4 +1,4 @@
-import {CHARACTER_DESTINATION} from 'vars/constants';
+import {CHARACTER_DESTINATION} from 'libs/constants';
 
 export function changeLocation(destination) {
 	return {

@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import {
     ACCOUNT_AUTHENTICATE_SUCCESS,
     ACCOUNT_LOGOUT,
-} from 'vars/constants';
+} from 'libs/constants';
 import {ACCOUNT_DETAILS} from './types';
 
 const defaultState = {

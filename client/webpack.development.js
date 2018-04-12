@@ -45,7 +45,7 @@ module.exports = {
         alias: {
             react: path.resolve(__dirname, './node_modules/react'),
             React: path.resolve(__dirname, './node_modules/react'),
-            vars: path.resolve(__dirname, '../server/vars'),
+            libs: path.resolve(__dirname, '../server/libs'),
         },
     },
 

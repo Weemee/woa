@@ -4,7 +4,7 @@ import {
 	CHARACTER_LIST,
 	CHARACTER_UPDATE,
 	CHARACTER_CREATE_SUCCESS,
-} from 'vars/constants';
+} from 'libs/constants';
 
 const defaultState = {
 	selected: null,

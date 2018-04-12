@@ -1,7 +1,7 @@
 import {
     ACCOUNT_AUTHENTICATE,
     ACCOUNT_LOGOUT,
-} from 'vars/constants';
+} from 'libs/constants';
 
 import {
     AUTH_STRATEGIES_SAVE,

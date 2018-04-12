@@ -1,6 +1,6 @@
 import {
 	GET_CHARACTER_LIST,
-} from 'vars/constants';
+} from 'libs/constants';
 
 import React from 'react';
 import {withRouter} from 'react-router-dom';

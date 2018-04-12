@@ -1,7 +1,7 @@
 import {
 	CHARACTER_LOGOUT,
 	ACCOUNT_INPUT,
-} from 'vars/constants';
+} from 'libs/constants';
 
 import {socketSend} from '../app/actions';
 

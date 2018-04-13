@@ -35,10 +35,14 @@ function Auth(username, password, done) {
 				}
 			}]
 		},
-	}).then(async(result) =>
-	{
+	}).then(async(result) => {
 		return done(null, {
 			user: result,
+			identity: {},
+		});
+	}).catch(err => {
+		return done(err, {
+			user: null,
 			identity: {},
 		});
 	});

@@ -24,7 +24,7 @@ export default class UserFacade {
 			case ACCOUNT_AUTHENTICATE:
 				return this.authenticate(socket, action);
 		}
-		
+
 		return null;
 	}
 
@@ -33,7 +33,7 @@ export default class UserFacade {
 			return;
 		}
 
-		jwt.verify(action.payload, process.env.SIGNING_SECRET, async (err, decoded) => {
+		jwt.verify(action.payload, this.Server.config.protocol.signingSecret, async (err, decoded) => {
 			if (err) {
 				return this.Server.socketFacade.dispatchToSocket(socket, {
 					type: ACCOUNT_AUTHENTICATE_ERROR,

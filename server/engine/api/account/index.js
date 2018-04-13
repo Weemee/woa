@@ -141,7 +141,7 @@ export function createAccount(req, res) {
 			let token;
 
 			if(requireActivation) {
-				token = crypto.createHmac('sha256', process.env.SIGNING_SECRET);
+				token = crypto.createHmac('sha256', req.app.get('config').protocol.signingSecret);
 				token.update(uuid());
 			}
 

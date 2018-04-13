@@ -9,7 +9,7 @@ import db from '../models';
 
 function output(req, res, output) {
 	const redirect = req.params.provider ? true : false;
-	const errorUrl = `${req.app.get('config').clientUrl}/authentication?error=`;
+	const errorUrl = `${req.app.get('config').app.clientURL}/authentication?error=`;
 
 	if (redirect) {
 		return res.redirect(`${errorUrl}${output.error || output.message}`);
@@ -20,7 +20,7 @@ function output(req, res, output) {
 
 export function loadStrategies(passport, logger, config) {
 	config.authentication.providers.forEach((provider) => {
-		let callbackUrl = `${config.api.restURL}${[80, 443].includes(config.api.post) ? '' : `:${config.api.port}`}/api/authentication/provider/${provider.id}/callback`;
+		let callbackUrl = `${config.api.restURL}${[80, 443].includes(config.api.restPort) ? '' : `:${config.api.port}`}/api/authentication/provider/${provider.id}/callback`;
 
 		if (provider.enabled) {
 				// if its the local auth provider, we have to use a separate strategy from OAuth.
@@ -46,9 +46,9 @@ export function loadStrategies(passport, logger, config) {
 
 export function authenticate(req, res, next) {
 	// check if we are authenticating a provider token
-	/*if(req.body.providerToken) {
+	if(req.body.providerToken) {
 		return authenticateProvider(req, res);
-	}*/
+	}
 
 	// continue with account authentication
 	let method = (req.body.method || req.params.provider) + ''.toLowerCase();
@@ -60,7 +60,7 @@ export function authenticate(req, res, next) {
 		});
 	}
 
-	const provider = req.app.get('config').api.authentication.providers.find((obj) => obj.id === method);
+	const provider = req.app.get('config').authentication.providers.find((obj) => obj.id === method);
 
 	if(!provider) {
 		return output(req, res, {
@@ -101,7 +101,7 @@ export function isAuthenticated(req, res, next) {
 		});
 	}
 
-	jwt.verify(token.replace('Bearer ', ''), process.env.SIGNING_SECRET, (err, decoded) => {
+	jwt.verify(token.replace('Bearer ', ''), req.app.get('config').protocol.signingSecret, (err, decoded) => {
 		if (err) {
 			return output(req, res, {
 				status: 401,
@@ -126,12 +126,16 @@ export function isAuthenticated(req, res, next) {
 				}
 			}]
 		},
-		}).then(result =>
-		{
+		}).then(result => {
 			const userDetails = result;
 			userDetails.password = userDetails.password ? true : false;
 			req.user = userDetails;
 			next()
+		}).catch(err => {
+			return output(req, res, {
+				status: 401,
+				message: 'Invalid authorisation token third.',
+			});
 		});
 	});
 }
@@ -141,10 +145,10 @@ export function onAuth(req, res, data, redirect) {
 		id: data.user.dataValues.id || null,
 		sessionToken: data.user.dataValues.sessionToken,
 		identity: data.identity.id || null,
-	}, process.env.SIGNING_SECRET, {expiresIn: '1h'});
+	}, req.app.get('config').protocol.signingSecret, {expiresIn: '1h'});
 
 	if(redirect) {
-		return res.redirect(`${req.app.get('config').clientUrl}/authentication?token=${token}`);
+		return res.redirect(`${req.app.get('config').app.clientURL}/authentication?token=${token}`);
 	}
 
 	// send JWT back to client
@@ -156,12 +160,12 @@ export function onAuth(req, res, data, redirect) {
 
 export function getAuthList(req, res) {
 	const config = req.app.get('config');
-	const providers = config.api.authentication.providers.filter((provider) => provider.enabled);
+	const providers = config.authentication.providers.filter((provider) => provider.enabled);
 	const authlist = providers.map((provider) => {
 		return {
 			id: provider.id,
 			name: provider.name,
-			authUrl: `${config.api.restURL}${[80, 443].includes(config.api.post) ? '' : `:${config.api.port}`}/api/authentication/provider/${provider.id}`,
+			authUrl: `${config.api.restURL}${[80, 443].includes(config.api.post) ? '' : `:${config.api.restPort}`}/api/authentication/provider/${provider.id}`,
 		};
 	});
 

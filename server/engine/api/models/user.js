@@ -42,6 +42,29 @@ module.exports = (sequelize, DataTypes) =>
 	},
 	{
 		freezeTableName: true,
+		instanceMethods: {
+			comparePassword: function(comp, cb) {
+				cb('penis');
+			}
+		},
+		hooks: {
+			beforeCreate: async function(user, options) {
+				console.log('Show me your: ');
+				if(this.sessionToken === null) {
+					console.log('What about sessionToken generator?');
+					this.sessionToken = uuid();
+				}
+			}
+		}
+	});
+
+	User.beforeCreate(function(user, options) {
+		console.log('Is this even triggered');
+		if(!user.sessionToken) {
+			user.sessionToken = uuid();
+			console.log('What about sessionToken: ' + user.sessionToken);
+		}
+		return user.sessionToken;
 	});
 
 	User.beforeSave('user', async function() {
@@ -55,6 +78,6 @@ module.exports = (sequelize, DataTypes) =>
 	User.verifyPassword = function(string) {
 		return string;
 	};
-	
+
 	return User;
 }

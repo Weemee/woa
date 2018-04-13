@@ -87,7 +87,7 @@ export function createAccount(req, res) {
 		});
 	}
 
-	const minimumLength = req.app.get('config').api.authentication.password.minimumLength;
+	const minimumLength = req.app.get('config').security.passwordSecurity.minimumLength;
 	if(req.body.password < minimumLength) {
 		return res.status(400).json({
 			status: 400,
@@ -135,7 +135,7 @@ export function createAccount(req, res) {
 				});
 			}
 
-			const localAuth = req.app.get('config').api.authentication.providers.find((obj) => obj.id === 'local');
+			const localAuth = req.app.get('config').authentication.providers.find((obj) => obj.id === 'local');
 			const requireActivation = localAuth.activationLink;
 			let newAccount;
 			let token;

@@ -90,4 +90,4 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({authLogout}, dispatch);
 }
 
-export default withRouter(connect(mapStateToProps)(Header));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

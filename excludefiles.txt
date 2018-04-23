@@ -1,0 +1,16 @@
+README.md
+TODO.todo
+.git
+.eslintrc
+.eslintignore
+.editorconfig
+.gitattributes
+.gitignore
+client
+node_modules
+benchmark
+docs
+excludefiles.txt
+libs
+distribution
+logs

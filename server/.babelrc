@@ -15,7 +15,7 @@
 		"development": {
 			"plugins": [
 				["module-resolver", {
-					"roor": ["./"],
+					"root": ["./"],
 					"alias": {
 						"libs": "./libs",
 						"config": "./libs/conf",
@@ -27,11 +27,11 @@
 		"production": {
 			"plugins": [
 				["module-resolver", {
-					"roor": ["./"],
+					"root": ["./"],
 					"alias": {
 						"libs": "./distribution/libs",
-						"config": "./distribution/libs/config",
-						"utils": "./distribution/libs/utils"
+						"config": "./distribution/libs/conf",
+						"utils": "./distribution/libs"
 					}
 				}]
 			]

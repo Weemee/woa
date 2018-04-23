@@ -24,25 +24,25 @@ const sagaMiddleware = createSagaMiddleware();
 let store;
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'production') {
-    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    store = createStore(
-        reducers,
-        composeEnhancers(
-            applyMiddleware(sagaMiddleware, middleware)
-        )
-    );
+	const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+	store = createStore(
+		reducers,
+		composeEnhancers(
+			applyMiddleware(sagaMiddleware, middleware)
+		)
+	);
 } else {
-    const createStoreWithMiddleware = applyMiddleware(sagaMiddleware, middleware)(createStore);
-    store = createStoreWithMiddleware(reducers);
+	const createStoreWithMiddleware = applyMiddleware(sagaMiddleware, middleware)(createStore);
+	store = createStoreWithMiddleware(reducers);
 }
 
 sagaMiddleware.run(sagas);
 
 ReactDOM.render(
-    <Provider store={store}>
-        <ConnectedRouter history={history}>
-            <App/>
-        </ConnectedRouter>
-    </Provider>,
-    document.querySelector('#root')
+	<Provider store={store}>
+		<ConnectedRouter history={history}>
+			<App/>
+		</ConnectedRouter>
+	</Provider>,
+	document.querySelector('#root')
 );

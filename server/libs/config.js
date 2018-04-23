@@ -20,7 +20,7 @@ export function buildConfig() {
 
 	fs.readdirSync(configDirectory).forEach((file) => {
 		if (!file.includes('.js')) {
-			console.log('Cant find file');
+			console.log('Can not find file');
 			return;
 		}
 

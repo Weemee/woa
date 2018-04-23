@@ -9,7 +9,7 @@ import API from './api';
 import db from './api/models';
 import Log from './modules/log';
 
-import {buildConfig} from '../libs/config';
+import {buildConfig} from 'libs/config';
 const dotEnvLoaded = dotenv.config();
 
 if(dotEnvLoaded.error) {

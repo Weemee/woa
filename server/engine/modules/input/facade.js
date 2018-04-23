@@ -1,4 +1,4 @@
-import {parsedJsonData} from '../../../libs/utils';
+import {parsedJsonData} from 'libs/utils';
 import {ACCOUNT_INPUT} from 'libs/constants';
 
 export default class InputFacade {
@@ -47,7 +47,7 @@ export default class InputFacade {
 			return;
 		}
 
-		
+
 		if(action.payload.constructor === Object && Object.keys(action.payload).length === 0) {
 			return;
 		}

@@ -10,7 +10,7 @@ module.exports = {
 
     output: {
         path: path.resolve(__dirname, 'distribution'),
-		publicPath: '/',
+		publicPath: '',
         filename: '[name].js',
     },
 

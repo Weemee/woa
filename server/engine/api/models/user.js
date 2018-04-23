@@ -1,6 +1,7 @@
 import moment from 'moment';
 import uuid from 'uuid/v4';
 import bcrypt from 'bcrypt';
+import config from 'config/security';
 
 module.exports = (sequelize, DataTypes) =>
 {
@@ -31,6 +32,11 @@ module.exports = (sequelize, DataTypes) =>
 		{
 			type: DataTypes.UUID,
 		},
+		accountLevel:
+		{
+			type: DataTypes.INTEGER,
+			defaultValue: 0,
+		},
 		createdAt:
 		{
 			type: DataTypes.DATE,
@@ -41,43 +47,29 @@ module.exports = (sequelize, DataTypes) =>
 		},
 	},
 	{
-		freezeTableName: true,
-		instanceMethods: {
-			comparePassword: function(comp, cb) {
-				cb('penis');
-			}
-		},
-		hooks: {
-			beforeCreate: async function(user, options) {
-				console.log('Show me your: ');
-				if(this.sessionToken === null) {
-					console.log('What about sessionToken generator?');
-					this.sessionToken = uuid();
-				}
-			}
-		}
+		freezeTableName: true
 	});
 
-	User.beforeCreate(function(user, options) {
-		console.log('Is this even triggered');
+	//External hooks
+	User.beforeCreate(async function (user, options) {
+		user.password = await bcrypt.hash(user.password, config.passwordSecurity.rounds);
+	});
+
+	User.beforeSave(async function(user, options) {
+		user.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
+
+		if(!user.createdAt) {
+			user.createdAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
+		}
+
 		if(!user.sessionToken) {
 			user.sessionToken = uuid();
-			console.log('What about sessionToken: ' + user.sessionToken);
-		}
-		return user.sessionToken;
-	});
-
-	User.beforeSave('user', async function() {
-		this.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
-
-		if(!this.sessionToken) {
-			this.sessionToken = uuid();
 		}
 	});
 
-	User.verifyPassword = function(string) {
-		return string;
-	};
+	User.verifyHash = function(string, password) {
+		return bcrypt.compare(string, password);
+	}
 
 	return User;
 }

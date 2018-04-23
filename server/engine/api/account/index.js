@@ -35,7 +35,7 @@ export async function deleteAccount(req, res) {
 	}
 }
 
-export function getAccount(req, res) {
+export async function getAccount(req, res) {
 	try {
 		const identities = 'local';
 		res.json({
@@ -88,10 +88,10 @@ export function createAccount(req, res) {
 	}
 
 	const minimumLength = req.app.get('config').security.passwordSecurity.minimumLength;
-	if(req.body.password < minimumLength) {
+	if(req.body.password.length < minimumLength) {
 		return res.status(400).json({
 			status: 400,
-			error: 'Password must be at least ${minimumLength} characters long.',
+			error: `Password must be at least ${minimumLength} characters long.`,
 		});
 	}
 
@@ -119,7 +119,7 @@ export function createAccount(req, res) {
 			});
 		}
 
-		db.user.findOne({
+		user = db.user.findOne({
 			where:
 			{
 				email:
@@ -167,13 +167,25 @@ export function createAccount(req, res) {
 					message: 'Your account was created!',
 				});
 			}
+		}).catch(err => {
+			if(err) {
+				req.app.get('customLogger').error(err);
+				return res.status(500).json({
+					status: 500,
+					error: 'Oops! Email! Maybe Windows 10 is still alive...',
+					err: err,
+				});
+			}
 		});
+
+		return user;
+
 	}).catch(err => {
 		if(err) {
 			req.app.get('customLogger').error(err);
 			return res.status(500).json({
 				status: 500,
-				error: 'Oops! Maybe Windows 10 is still alive...',
+				error: 'Oops! Username! Maybe Windows 10 is still alive...',
 				err: err,
 			});
 		}

@@ -6,7 +6,6 @@ TODO.todo
 .editorconfig
 .gitattributes
 .gitignore
-client
 node_modules
 benchmark
 docs
@@ -14,3 +13,5 @@ excludefiles.txt
 libs
 distribution
 logs
+client/engine/config.js
+client/package.json

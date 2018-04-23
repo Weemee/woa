@@ -3,7 +3,7 @@
 	"version": "0.0.61",
 	"description": "Client for World of Atoms",
 	"scripts": {
-		"start": "webpack-dev-server --mode development --progress --colors --inline --config webpack.development.js",
+		"start": "webpack-dev-server --port 8193 --mode development --progress --colors --inline --config webpack.development.js",
 		"build": "webpack --mode production --optimize-minimize --progress --config webpack.production.js"
 	},
 	"repository": {

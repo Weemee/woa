@@ -21,21 +21,22 @@ function Auth(username, password, done) {
 	db.user.findOne({
 		where:
 		{
-			[db.Op.and]: [
+			usr:
 			{
-				usr:
-				{
-					[db.Op.like]: [username]
-				}
-			},
-			{
-				password:
-				{
-					[db.Op.like]: [password]
-				}
-			}]
+				[db.Op.like]: [username]
+			}
 		},
 	}).then(async(result) => {
+		if(!result) {
+			return done('Invalid input combination.');
+		}
+
+		const check = await db.user.verifyHash(password, result.password);
+
+		if(!check) {
+			return done('Invalid hash.');
+		}
+
 		return done(null, {
 			user: result,
 			identity: {},

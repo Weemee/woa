@@ -11,6 +11,8 @@ import {
 import Character from './object';
 import characterInput from './input';
 
+import {joinedServer} from './actions';
+
 import db from '../../api/models';
 
 export default class CharacterFacade {
@@ -155,20 +157,21 @@ export default class CharacterFacade {
 	}
 
 	async create(userID, characterName) {
-		console.log('Start create!');
-		const character = this.databaseCreate(userID, characterName);//await this.databaseCreate(userID, characterName);
-		console.log('New create!');
+		const character = await this.databaseCreate(userID, characterName);
 		const newCharacter = new Character(this.Server, character);
-		console.log('Created: ' + newCharacter);
 
 		return newCharacter;
 	}
 
-	databaseCreate(userID, characterName) {
-		const newCharacter = {
+	async databaseCreate(userID, characterName) {
+		const newCharacter = await db.characters.create({
 			userID: userID,
 			name: characterName,
-		};
+		}).catch(err => {
+			if(err) {
+				return 'Error create character.';
+			}
+		});
 		return newCharacter;
 	}
 

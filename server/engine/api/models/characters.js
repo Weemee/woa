@@ -18,6 +18,16 @@ module.exports = (sequelize, DataTypes) =>
 		{
 			type: DataTypes.STRING,
 		},
+		spec:
+		{
+			type: DataTypes.INTEGER,
+			defaultValue: 0,
+		},
+		loggedIn:
+		{
+			type: DataTypes.BOOLEAN,
+			defaultValue: false,
+		},
 		createdAt:
 		{
 			type: DataTypes.DATE,
@@ -31,11 +41,11 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	Characters.beforeSave('characters', async function() {
-		this.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
+	Characters.beforeCreate(async function(characters, options) {
+		characters.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 
-		if(this.name) {
-			this.nameLowercase = this.name.toLowerCase();
+		if(characters.name) {
+			characters.nameLowercase = characters.name.toLowerCase();
 		}
 	});
 

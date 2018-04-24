@@ -26,6 +26,7 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 				},
 			});
 		}
+		Server.onError(err, socket);
 	}
 }
 

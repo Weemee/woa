@@ -4,7 +4,9 @@ export default class Character {
 	constructor(Server, character) {
 		this.Server = Server;
 
-		this.id = uuid();
+		this.id = character.id;
+		this.userID = character.userID;
+		this.name = character.name;
 
 		Object.assign(this, {
 			...character,

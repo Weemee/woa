@@ -55,7 +55,7 @@ function* doAPICall(endpoint, data, method = 'get', additionalHeaders = null) {
 
 		return yield call(request[method], `${endpoint}`, data);
 	} catch (err) {
-		let errorMsg = 'Something went wrong. Please try again in a moment.' + err;
+		let errorMsg = 'Something went wrong! Please try again in a moment.' + err;
 
 		if (err.response) {
 			errorMsg = err.response.data.error || errorMsg;

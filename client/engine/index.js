@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {createStore, applyMiddleware, combineReducers} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
 import createHistory from 'history/createBrowserHistory';
@@ -44,5 +44,5 @@ ReactDOM.render(
 			<App/>
 		</ConnectedRouter>
 	</Provider>,
-	document.querySelector('#root')
+document.querySelector('#root')
 );

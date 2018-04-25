@@ -6,7 +6,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {CardDeck, Card, CardTitle, CardBody, Button, FormGroup, Input} from 'reactstrap';
+import {Container, Row, Col, Button} from 'reactstrap';
 
 import {newInput} from '../actions';
 import {socketSend} from '../../app/actions';
@@ -22,7 +22,6 @@ class Character extends React.Component {
 		};
 
 		this.selectCharacter = this.selectCharacter.bind(this);
-		this.createCharacter = this.createCharacter.bind(this);
 	}
 
 	componentWillMount() {
@@ -42,42 +41,32 @@ class Character extends React.Component {
 		this.props.newInput(`selectcharacter ${name}`);
 	}
 
-	createCharacter() {
-		const {name} = this.state;
-		this.props.newInput(`createcharacter ${name}`);
+	derpFunction() {
+
 	}
 
 	render() {
 		return (
 			<React.Fragment>
-				{
-					!this.props.characterList &&
-					<p>Loading character list...</p>
-				}
-				<CardDeck>
-					{
-						this.props.characterList &&
-						this.props.characterList.map((obj, index) => <CharacterCard key={index} onSelect={this.selectCharacter} character={obj} />)
-					}
-					<Card>
-						<CardBody>
-							<CardTitle>Create character</CardTitle>
-							<FormGroup>
-								<Input
-									type="text"
-									placeholder="Character name"
-									onChange={(e) => {
-										this.setState({
-											name: e.target.value,
-										});
-									}}
-									value={this.state.name}
-								/>
-							</FormGroup>
-							<Button color='blue' block={true} onClick={this.createCharacter}>Create character</Button>
-						</CardBody>
-					</Card>
-				</CardDeck>
+				<Container>
+					<Row>
+						<Col>
+						{
+							!this.props.characterList &&
+							<p>Loading character list...</p>
+						}
+						</Col>
+					</Row>
+					<Row>
+						<Col>
+							{
+								this.props.characterList &&
+								this.props.characterList.map((obj, index) => <CharacterCard key={index} onSelect={this.selectCharacter} character={obj} />)
+							}
+							<Button color="blue">Create</Button>
+						</Col>
+					</Row>
+				</Container>
 			</React.Fragment>
 		);
 	}

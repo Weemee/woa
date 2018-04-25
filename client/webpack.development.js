@@ -10,8 +10,10 @@ module.exports = {
     ],
 
     devServer: {
-            historyApiFallback: true,
-            contentBase: './',
+         port: 8193,
+         historyApiFallback: true,
+         contentBase: './',
+         hot: true,
     },
 
     output: {
@@ -20,25 +22,22 @@ module.exports = {
         filename: '[name].js',
     },
 
-    optimization: {
-        minimize: false,
-        runtimeChunk: {
-            name: 'vendor'
-        },
-        splitChunks: {
-            cacheGroups: {
-                default: false,
-                commons: {
-                    test: /node_modules/,
-                    name: 'vendor',
-                    chunks: 'initial',
-                    minSize: 1
-                }
-            }
-        }
-    },
+   optimization: {
+      splitChunks: {
+         cacheGroups: {
+            commons: {
+               name: 'commons',
+               chunks: 'initial',
+               minChunks: 3,
+               enforce: true,
+            },
+         },
+      },
+   },
 
-    devtool: '#inline-source-map',
+    mode: 'development',
+
+    devtool: 'inline-source-map',
 
     resolve: {
         alias: {
@@ -59,20 +58,45 @@ module.exports = {
                 test: /\.(scss|css)$/,
                 loader: 'style-loader!css-loader?sourceMap!sass-loader?sourceMap',
             },
+            {
+               test: /\.svg$/,
+               use: [
+                  {
+                     loader: 'file-loader',
+                  },
+                  {
+                     loader: 'svgo-loader',
+                     options: {
+                        plugins: [
+                           {
+                              removeTitle: true
+                           },
+                           {
+                              convertColors: {
+                                 shortHex: false,
+                              },
+                           },
+                           {
+                              convertPathData: false,
+                           },
+                        ],
+                     }
+                  },
+               ],
+            },
         ],
     },
 
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NamedModulesPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new webpack.LoaderOptionsPlugin({
+         new webpack.HotModuleReplacementPlugin(),
+         new webpack.NoEmitOnErrorsPlugin(),
+         new webpack.LoaderOptionsPlugin({
             debug: true,
             minimize: false,
-        }),
-        new HTMLWebpackPlugin({
+         }),
+         new HTMLWebpackPlugin({
             template: 'index.html',
             inject: true,
-        }),
+         }),
     ],
 };

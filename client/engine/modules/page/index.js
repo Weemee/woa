@@ -22,8 +22,8 @@ class Page extends React.Component {
 
     render() {
         return (
-            <div>                
-                <div className={`theme-${this.props.selectedTheme}`} style={{width:'200px', height:'200px'}} onMouseMove={(e) => this.mouseMove(e)}>
+            <div>
+                <div className={`theme-${this.props.selectedTheme}`} style={{width:'250px', height:'250px'}} onMouseMove={(e) => this.mouseMove(e)}>
                     <p>Move here and your MouseX: {this.props.pos.x} and MouseY: {this.props.pos.y} will show!</p>
                 </div>
                 <button type="button" className="btn btn-blue" onClick={() => this.changeTheme('blue')}>Blue</button>

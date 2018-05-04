@@ -51,10 +51,10 @@ class Character extends React.Component {
 				<Container>
 					<Row>
 						<Col>
-						{
-							!this.props.characterList &&
-							<p>Loading character list...</p>
-						}
+							{
+								!this.props.characterList &&
+								<p>Loading character list...</p>
+							}
 						</Col>
 					</Row>
 					<Row>

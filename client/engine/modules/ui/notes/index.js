@@ -3,36 +3,36 @@ import {connect} from 'react-redux';
 import {Alert} from 'reactstrap';
 
 class Notes extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+	constructor(props) {
+		super(props);
+	}
 
-    getType() {
-        let type = this.props.notes.type || 'info';
+	getType() {
+		let type = this.props.notes.type || 'info';
 
-        // convert to react-strap "error" class name, "danger"
-        if (type === 'error') {
-            type = 'danger';
-        }
+		  // convert to react-strap "error" class name, "danger"
+		  if (type === 'error') {
+		  	type = 'danger';
+		  }
 
-        return type;
-    }
+		  return type;
+		}
 
-    render() {
-        if (!this.props.notes) {
-            return null;
-        }
+	render() {
+		if (!this.props.notes) {
+			return null;
+		}
 
-        return (
-            <Alert color={this.getType()}>{this.props.notes.message}</Alert>
-        );
-    }
+		return (
+			<Alert color={this.getType()}>{this.props.notes.message}</Alert>
+		);
+	}
 }
 
 function mapStateToProps(state) {
-    return {
-        notes: state.app.notes,
-    };
+	return {
+		notes: state.app.notes,
+	};
 }
 
 export default connect(mapStateToProps)(Notes);

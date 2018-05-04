@@ -15,10 +15,12 @@ export default function(state = defaultState, action) {
 				defaultState,
 				themes,
 		};
+
 		case SET_THEME:
 			return {
 				name: action.payload
 		};
+
 		case SET_CUSTOM_THEME:
 			return {
 				name: action.payload,

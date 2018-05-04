@@ -12,9 +12,9 @@ import ThemeReducer from './modules/theme/reducer';
 const rootReducer = combineReducers({
 	app: AppReducer,
 	auth: AuthReducer,
-   account: AccountReducer,
-   character: CharacterReducer,
-   session: SessionReducer,
+	account: AccountReducer,
+	character: CharacterReducer,
+	session: SessionReducer,
 	utils: UtilsReducer,
 	theme: ThemeReducer,
 	router: routerReducer,

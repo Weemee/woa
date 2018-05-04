@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 import {Card, CardHeader, CardBody, Input, Button, Form, FormGroup} from 'reactstrap';
-import Note from '../ui/notes';
+import Notes from '../ui/notes';
 
 import {
 	authLocal,
@@ -20,44 +20,44 @@ class AuthenticationLogin extends React.Component {
 		super(props);
 
 		this.state = {
-            username: '',
-            password: '',
-            error: '',
-        };
+			username: '',
+			password: '',
+			error: '',
+		};
 
 		this.authenticate = this.authenticate.bind(this);
 	}
 
 	componentDidMount() {
-        const url = new URL(document.location);
-        const error = url.searchParams.get('error');
+		const url = new URL(document.location);
+		const error = url.searchParams.get('error');
 
-        this.setState({
-            error: error || null,
-        });
+		this.setState({
+			error: error || null,
+		});
 
-        this.props.getStrategies();
-        this.autoLogin(error ? false : true);
-    }
+		this.props.getStrategies();
+		this.autoLogin(error ? false : true);
+	}
 
-    autoLogin(doLogin = true) {
-        const GETtoken = window.location.search.replace('?token=', '');
-        let authToken = localStorage.getItem('authToken');
+	autoLogin(doLogin = true) {
+		const GETtoken = window.location.search.replace('?token=', '');
+		let authToken = localStorage.getItem('authToken');
 
-        if (doLogin) {
-            if (authToken) {
-                if (GETtoken) {
-                    this.props.linkProvider(authToken, GETtoken);
-                }
+		if (doLogin) {
+			if (authToken) {
+				if (GETtoken) {
+					this.props.linkProvider(authToken, GETtoken);
+				}
 
-                return this.props.authLogin(authToken);
-            }
+				return this.props.authLogin(authToken);
+			}
 
-            if (GETtoken) {
-                return this.props.authProvider(GETtoken);
-            }
-        }
-    }
+			if (GETtoken) {
+				return this.props.authProvider(GETtoken);
+			}
+		}
+	}
 
 	authenticate() {
 		const state = {...this.state};
@@ -75,7 +75,7 @@ class AuthenticationLogin extends React.Component {
 		}
 
 		return <p className={'alert alert-`${this.state.status.isError ? danger : success}`'}>
-			{this.state.status.message}
+		{this.state.status.message}
 		</p>;
 	}
 
@@ -83,10 +83,10 @@ class AuthenticationLogin extends React.Component {
 		return (
 			<Card className="card-small">
 				<CardHeader>Login</CardHeader>
-					<CardBody>
-						<Form>
-							<Note />
-							<FormGroup>
+				<CardBody>
+					<Form>
+						<Notes />
+						<FormGroup>
 							<Input
 							type="username"
 							name="username"
@@ -99,8 +99,8 @@ class AuthenticationLogin extends React.Component {
 							}}
 							value={this.state.username}
 							/>
-							</FormGroup>
-							<FormGroup>
+						</FormGroup>
+						<FormGroup>
 							<Input
 							type="password"
 							name="password"
@@ -113,11 +113,11 @@ class AuthenticationLogin extends React.Component {
 							}}
 							value={this.state.password}
 							/>
-							</FormGroup>
-							<Button onClick={this.authenticate} color="primary">Login</Button>
-							<hr />
-						</Form>
-					</CardBody>
+						</FormGroup>
+						<Button onClick={this.authenticate} color="primary">Login</Button>
+						<hr />
+					</Form>
+				</CardBody>
 			</Card>
 		);
 	}
@@ -126,19 +126,19 @@ class AuthenticationLogin extends React.Component {
 function mapStateToProps(state) {
 	return {
 		authToken: state.account.authToken,
-      loggedIn: state.account.loggedIn,
-      strategies: state.auth.strategies || [],
+		loggedIn: state.account.loggedIn,
+		strategies: state.auth.strategies || [],
 	}
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-    	authLogin,
-      authLocal,
-      getStrategies,
-      linkProvider,
-      authProvider,
-    }, dispatch);
+	return bindActionCreators({
+		authLogin,
+		authLocal,
+		getStrategies,
+		linkProvider,
+		authProvider,
+	}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AuthenticationLogin));

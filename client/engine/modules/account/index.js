@@ -11,6 +11,10 @@ import {getStrategies} from '../authentication/actions';
 class Account extends React.Component {
     constructor(props) {
         super(props);
+
+         this.state = {
+            keyToken: '',
+         };
     }
 
     componentWillMount() {

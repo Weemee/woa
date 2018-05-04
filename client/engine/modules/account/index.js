@@ -28,6 +28,20 @@ class Account extends React.Component {
                 <Col sm="3">
                     <Card>
                         <CardHeader>Account</CardHeader>
+                        <ListGroup>
+                           <NavLink exact to="/account" className="list-group-item">Info</NavLink>
+                           {
+                              //Stuff
+                           }
+                           <NavLink exact to="/account/safety" className="list-group-item">Login & Safety</NavLink>
+                           {
+                              this.props.strategies.find((strategy) => strategy.id !== 'local') &&
+                              <NavLink exact to="/account/strategies" className="list-group-item">Linked</NavLink>
+                           }
+                           {
+                              //Stuff
+                           }
+                        </ListGroup>
                     </Card>
                 </Col>
             </Row>

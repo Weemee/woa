@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) =>
 		{
 			type: DataTypes.UUID,
 		},
+		keyToken:
+		{
+			type: DataTypes.STRING,
+		},
 		accountLevel:
 		{
 			type: DataTypes.INTEGER,

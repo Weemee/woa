@@ -30,7 +30,7 @@ class App extends React.Component {
 
 		if(this.props.loggedIn && !this.props.isConnected && nextProps.isConnected) {
 			this.props.history.push('/authentication');
-		} 
+		}
 	}
 
 	renderSessionRoute(component) {

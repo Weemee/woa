@@ -148,6 +148,7 @@ export function onAuth(req, res, data, redirect) {
 		identity: data.identity.id || null,
 	}, req.app.get('config').protocol.signingSecret, {expiresIn: '1h'});
 
+	//Move this if statement to account action
 	if(!data.user.dataValues.keyToken) {
 		console.log('No keyToken seen');
 		const key = randomKey(10);
@@ -166,6 +167,7 @@ export function onAuth(req, res, data, redirect) {
 	});
 }
 
+//Move this to opt facade
 function randomKey(len){
   var buf = []
     , chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
@@ -181,6 +183,7 @@ function randomKey(len){
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+//Until here
 
 export function getAuthList(req, res) {
 	const config = req.app.get('config');

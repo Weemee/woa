@@ -13,17 +13,25 @@ class Account extends React.Component {
 		super(props);
 
 		this.state = {
-			keyToken: '',
+			keyToken: 'derp',
 		};
 	}
 
 	componentWillMount() {
-	if (!this.props.loggedIn) {
-		return this.props.history.push('/authentication');
-	}
+		if (!this.props.loggedIn) {
+			return this.props.history.push('/authentication');
+		}
 
 		this.props.getStrategies();
 		this.props.getAccountDetails(this.props.user.id, this.props.authToken);
+	}
+
+	componentDidUpdate() {
+		if (this.state.keyToken !== this.props.user.keyToken) {
+			this.setState({
+				keyToken: this.props.user.keyToken,
+			});
+		}
 	}
 
 	render() {
@@ -39,13 +47,16 @@ class Account extends React.Component {
 							}
 							<NavLink exact to="/account/safety" className="list-group-item">Login & Safety</NavLink>
 							{
-								his.props.strategies.find((strategy) => strategy.id !== 'local') &&
+								this.props.strategies.find((strategy) => strategy.id !== 'local') &&
 								<NavLink exact to="/account/strategies" className="list-group-item">Linked</NavLink>
 							}
 							{
 								//Stuff
 							}
 						</ListGroup>
+						<div>
+							Key token: {this.state.keyToken}
+						</div>
 					</Card>
 				</Col>
 			</Row>

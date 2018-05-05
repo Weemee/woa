@@ -25,18 +25,18 @@ class Header extends React.Component {
 		if (this.props.loggedIn) {
 			return (
 				<React.Fragment>
-				<NavLink className="nav-link" to="/session">Play Game</NavLink>
-				<NavLink className="nav-link" to="/account">Account</NavLink>
-				<a className="nav-link" href="/authentication/logout" onClick={this.logout.bind(this)}>Logout</a>
+					<NavLink className="nav-link" to="/session">Play Game</NavLink>
+					<NavLink className="nav-link" to="/account">Account</NavLink>
+					<a className="nav-link" href="/authentication/logout" onClick={this.logout.bind(this)}>Logout</a>
 				</React.Fragment>
-				);
+			);
 		} else {
 			return (
 				<React.Fragment>
-				<NavLink className="nav-link" exact to="/authentication">Login</NavLink>
-				<NavLink className="nav-link" to="/authentication/register">Sign up</NavLink>
+					<NavLink className="nav-link" exact to="/authentication">Login</NavLink>
+					<NavLink className="nav-link" to="/authentication/register">Sign up</NavLink>
 				</React.Fragment>
-				);
+			);
 		}
 	}
 
@@ -50,27 +50,27 @@ class Header extends React.Component {
 	render() {
 		return (
 			<Navbar className={`theme-${this.props.selectedTheme} header-${this.props.selectedTheme}`} expand="md" id="header">
-			<Container>
-			<NavbarBrand href="#" onClick={() => this.props.history.push('/')}>Penis</NavbarBrand>
-			<NavbarToggler onClick={this.toggle.bind(this)} className="mr-2" />
-			<Collapse isOpen={!this.state.isOpen} navbar>
-			<Nav className="mr-auto" navbar>
-			{
-				this.props.pages && this.props.pages.length > 0 &&
-				this.props.pages.map((page, index) => {
-					if (!page.meta.showInNav) {
-						return null;
-					}
+				<Container>
+				<NavbarBrand href="#" onClick={() => this.props.history.push('/')}>Penis</NavbarBrand>
+				<NavbarToggler onClick={this.toggle.bind(this)} className="mr-2" />
+					<Collapse isOpen={!this.state.isOpen} navbar>
+						<Nav className="mr-auto" navbar>
+						{
+							this.props.pages && this.props.pages.length > 0 &&
+							this.props.pages.map((page, index) => {
+								if (!page.meta.showInNav) {
+									return null;
+								}
 
-					return <NavLink className="nav-link" key={index} exact to={'/' + page.meta.path}>{page.meta.title}</NavLink>;
-				})
-			}
-			</Nav>
-			<Nav className="ml-auto" navbar>
-			{this.renderNavAuth()}
-			</Nav>
-			</Collapse>
-			</Container>
+								return <NavLink className="nav-link" key={index} exact to={'/' + page.meta.path}>{page.meta.title}</NavLink>;
+							})
+						}
+						</Nav>
+						<Nav className="ml-auto" navbar>
+							{this.renderNavAuth()}
+						</Nav>
+					</Collapse>
+				</Container>
 			</Navbar>
 			);
 	}

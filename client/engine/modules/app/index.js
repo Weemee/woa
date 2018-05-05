@@ -25,7 +25,7 @@ class App extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		if(nextProps.character && !this.props.character) {
-			console.log(this.props.character.name);
+
 		}
 
 		if(this.props.loggedIn && !this.props.isConnected && nextProps.isConnected) {

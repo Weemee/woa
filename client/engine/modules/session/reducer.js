@@ -3,6 +3,7 @@ import {
 	CHARACTER_OFFLINE,
 	CHARACTER_LOGIN,
 	CHARACTER_LOGOUT,
+	CHARACTER_REMOTE_LOGOUT,
 	ACCOUNT_AUTHENTICATE_SUCCESS,
 } from 'libs/constants';
 
@@ -39,6 +40,7 @@ export default function(state = defualtState, action) {
 			players,
 		};
 
+		case CHARACTER_REMOTE_LOGOUT:
 		case CHARACTER_LOGOUT:
 		return defualtState;
 	}

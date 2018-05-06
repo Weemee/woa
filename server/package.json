@@ -5,7 +5,7 @@
 	"scripts": {
 		"start": "cross-env NODE_ENV=development nodemon -L ./engine --inspect --exec babel-node --presets env,stage-2",
 		"serve": "cross-env NODE_ENV=production node distribution/index.js",
-		"postnstall": "babel-node scripts/preinstall.js --presets env,stage-2",
+		"postinstall": "babel-node scripts/postinstall.js --presets env,stage-2",
 		"build:engine": "cross-env NODE_ENV=production babel engine --out-dir distribution --source-maps cheap-module-source-map",
 		"build:libs": "babel libs --out-dir distribution/libs --copy-files",
 		"build": "npm run build:engine && npm run build:libs"

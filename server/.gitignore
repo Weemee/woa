@@ -9,9 +9,9 @@ distribution
 
 # personal vars
 #
-config.json
 libs/conf
 .env
+!libs/scripts/temp/conf
 
 # logs
 #

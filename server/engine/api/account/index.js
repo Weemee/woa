@@ -45,6 +45,7 @@ export async function getAccount(req, res) {
 				email: req.user.email || '',
 				createdAt: req.user.createdAt,
 				hasPassword: req.user.password,
+				keyToken: req.user.keyToken,
 				identities,
 			},
 		});

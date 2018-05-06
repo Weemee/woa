@@ -66,7 +66,7 @@ class Server {
 		}
 
 		if(typeof user === 'string') {
-			this.eventToUser(user, 'error', 'Something went wrong user. Please try again in a moment.');
+			this.eventToUser(user, 'error', 'Something went wrong user! Please try again in a moment.');
 		} else {
 			this.eventToSocket(user, 'error', 'Something went wrong socket. Please try again in a moment.');
 		}

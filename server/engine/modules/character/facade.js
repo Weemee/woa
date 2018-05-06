@@ -66,6 +66,22 @@ export default class CharacterFacade {
 		return this.characters.find((obj) => obj.userID === userID) || null;
 	}
 
+	dispatchUpdateCharacterList(userID) {
+		const character = this.get(userID);
+
+		if (!character) {
+			return;
+		}
+
+		this.Server.socketFacade.dispatchToRoom('server', {
+			type: CHARACTER_ONLINE,
+			payload: {
+				userID: character.userID,
+				name: character.name,
+			},
+		});
+	}
+
 	async getCharacterList(socket, action) {
 		try {
 			const characters = await db.characters.findAll({
@@ -95,7 +111,6 @@ export default class CharacterFacade {
 	}
 
 	async manage(character) {
-		console.log('We managed stuff!');
 		const wasLoggedIn = this.Server.socketFacade.clearTimer(character.userID);
 		const existingCharacter = this.characters.find((obj) => obj.userID === character.userID);
 
@@ -141,19 +156,27 @@ export default class CharacterFacade {
 	}
 
 	async load(userID, characterName) {
-		const character = 'temp';
+		const character = await this.databaseLoad(userID, characterName);
 
 		if(character === null) {
 			return null;
 		}
 
-		const newCharacter = new Character(this.Server, character.toObject());
+		const newCharacter = new Character(this.Server, character);
 
 		return newCharacter;
 	}
 
-	databaseLoad(userID, characterName) {
-		return 'Symmetra yuck';
+	async databaseLoad(userID, characterName) {
+		const newCharacter = await db.characters.findOne({
+			userID: userID,
+			name: characterName,
+		}).catch(err => {
+			if(err) {
+				return 'Error create character.';
+			}
+		});
+		return newCharacter;
 	}
 
 	async create(userID, characterName) {
@@ -165,11 +188,25 @@ export default class CharacterFacade {
 
 	async databaseCreate(userID, characterName) {
 		const newCharacter = await db.characters.create({
-			userID: userID,
-			name: characterName,
+			where:
+			{
+				[db.Op.and]: [
+				{
+					userID:
+					{
+						[db.Op.like]: [userID]
+					}
+				},
+				{
+					nameLowercase:
+					{
+						[db.Op.like]: [characterName]
+					}
+				}]
+			},
 		}).catch(err => {
 			if(err) {
-				return 'Error create character.';
+				return 'Error load character.';
 			}
 		});
 		return newCharacter;
@@ -212,7 +249,7 @@ export default class CharacterFacade {
 		return dbCharacter;
 	}
 
-	getGameData() {
+	getServerData() {
 		return {
 			players: this.getOnline(),
 		};

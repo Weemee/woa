@@ -1,14 +1,14 @@
 {
 	"name": "woa",
-	"version": "0.0.1",
+	"version": "0.0.64",
 	"description": "Server for World of Atoms",
 	"scripts": {
 		"start": "cross-env NODE_ENV=development nodemon -L ./engine --inspect --exec babel-node --presets env,stage-2",
 		"serve": "cross-env NODE_ENV=production node distribution/index.js",
+		"postnstall": "babel-node scripts/preinstall.js --presets env,stage-2",
 		"build:engine": "cross-env NODE_ENV=production babel engine --out-dir distribution --source-maps cheap-module-source-map",
 		"build:libs": "babel libs --out-dir distribution/libs --copy-files",
 		"build": "npm run build:engine && npm run build:libs"
-
 	},
 	"engines": {
 		"node": ">=8.9.4"
@@ -40,11 +40,14 @@
 		"express": "^4.16.2",
 		"helmet": "^3.12.0",
 		"jsonwebtoken": "^8.2.0",
+		"mkdirp": "^0.5.1",
 		"mysql2": "^1.5.3",
 		"passport": "^0.4.0",
 		"passport-local": "^1.0.0",
+		"passport-totp": "0.0.2",
 		"sequelize": "^4.37.3",
 		"socket.io": "^2.0.4",
+		"thirty-two": "^1.0.2",
 		"uuid": "^3.2.1"
 	},
 	"devDependencies": {

@@ -32,7 +32,6 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 
 async function inputSelectCharacter(socket, character, input, params, inputObject, Server) {
 	const characterToLoad = params[0];
-
 	await Server.socketFacade.logoutOutSession(socket, socket.user.userID);
 
 	try {
@@ -47,9 +46,9 @@ async function inputSelectCharacter(socket, character, input, params, inputObjec
 			},
 		});
 
-		socket.join('session');
+		socket.join('server');
 	} catch (err) {
-		Server.onerror(err, socket);
+		Server.onError(err, socket);
 	}
 }
 

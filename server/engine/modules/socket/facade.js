@@ -166,7 +166,7 @@ export default class SocketFacade extends EventEmitter
 		this.clients[userID].emit('dispatch', action);
 	}
 
-	dispatchToRoom(roomId, action) {
+	dispatchToRoom(roomID, action) {
 		if (!roomID) {
 			throw new Error('Missing roomID in SocketManager::dispatchToRoom');
 		}

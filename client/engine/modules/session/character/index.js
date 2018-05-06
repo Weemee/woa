@@ -6,7 +6,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {CardDeck, Card, CardTitle, CardBody, Button, FormGroup, Input} from 'reactstrap';
+import {Card, CardBody, CardDeck, CardTitle, Input, FormGroup, Container, Row, Col, Button} from 'reactstrap';
 
 import {newInput} from '../actions';
 import {socketSend} from '../../app/actions';
@@ -19,9 +19,12 @@ class Character extends React.Component {
 
 		this.state = {
 			name: '',
+			create: false,
 		};
 
 		this.selectCharacter = this.selectCharacter.bind(this);
+		this.toggle = this.toggle.bind(this);
+		this.renderContent = this.renderContent.bind(this);
 		this.createCharacter = this.createCharacter.bind(this);
 	}
 
@@ -45,20 +48,13 @@ class Character extends React.Component {
 	createCharacter() {
 		const {name} = this.state;
 		this.props.newInput(`createcharacter ${name}`);
+		this.toggle();
 	}
 
-	render() {
-		return (
-			<React.Fragment>
-				{
-					!this.props.characterList &&
-					<p>Loading character list...</p>
-				}
-				<CardDeck>
-					{
-						this.props.characterList &&
-						this.props.characterList.map((obj, index) => <CharacterCard key={index} onSelect={this.selectCharacter} character={obj} />)
-					}
+	renderContent() {
+		if (this.state.create) {
+			return (
+				<div>
 					<Card>
 						<CardBody>
 							<CardTitle>Create character</CardTitle>
@@ -77,7 +73,52 @@ class Character extends React.Component {
 							<Button color='blue' block={true} onClick={this.createCharacter}>Create character</Button>
 						</CardBody>
 					</Card>
-				</CardDeck>
+				</div>
+			);
+		} else {
+			return (
+				<div>
+					Show character
+				</div>
+			);
+		}
+	}
+
+	toggle() {
+		this.setState({
+			create: !this.state.create,
+		});
+	}
+
+	render() {
+		return (
+			<React.Fragment>
+				<Container>
+					<Row>
+						<Col xs="6" sm="9">
+							{this.renderContent()}
+						</Col>
+
+						<Col xs="6" sm="3">
+							{
+								!this.props.characterList &&
+								<p>Loading character list...</p>
+							}
+							{
+								this.props.characterList &&
+								this.props.characterList.map((obj, index) => <CharacterCard key={index} onSelect={this.selectCharacter} character={obj} />)
+							}
+							{
+								!this.state.create &&
+								<Button color='blue' block={true} onClick={this.toggle}>New character</Button>
+							}
+							{
+								this.state.create &&
+								<Button color='red' block={true} onClick={this.toggle}>Back</Button>
+							}
+						</Col>
+					</Row>
+				</Container>
 			</React.Fragment>
 		);
 	}

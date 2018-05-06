@@ -1,13 +1,11 @@
 {
-	"ecmaFeatures": {
-		"jsx": true,
-		"modules": true
-	},
 	"env": {
 		"browser": true,
 		"node": false
 	},
+
 	"parser": "babel-eslint",
+
 	"rules": {
 		"quotes": [2, "single"],
 		"react/jsx-uses-react": 2,
@@ -15,5 +13,6 @@
 		"react/react-in-jsx-scope": 2,
 		"require-jsdoc": "off"
 	},
+
 	"plugins": ["react"]
 }

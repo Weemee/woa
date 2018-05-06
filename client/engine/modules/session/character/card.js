@@ -10,7 +10,12 @@ class CharacterCard extends React.Component {
 	render() {
 		return (
 			<Card className="characterCard">
-				<div>{this.props.character.name}</div>
+				{
+					this.props.onSelect &&
+					<div onClick={() => this.props.onSelect(this.props.character.name)}>
+						{this.props.character.name}
+					</div>
+				}
 			</Card>
 		);
 	}

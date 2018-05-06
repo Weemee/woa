@@ -1,19 +1,19 @@
 {
-    "ecmaFeatures": {
-    	"modules": true
-    },
-    "env": {
-    	"browser": true,
-    	"node": false
-    },
-    "parser": "babel-eslint",
-    "rules": {
-    	"quotes": [2, "single"],
-    	"strict": [2, "never"],
-    	"max-len": "off",
-    	"spaced-comment": "off",
-    	"camelcase": "off",
-    	"valid-jsdoc": "off",
-    },
-    "plugins": []
+	"env": {
+		"browser": true,
+		"node": false
+	},
+
+	"parser": "babel-eslint",
+
+	"rules": {
+		"quotes": [2, "single"],
+		"strict": [2, "never"],
+		"max-len": "off",
+		"spaced-comment": "off",
+		"camelcase": "off",
+		"valid-jsdoc": "off",
+	},
+
+	"plugins": []
 }

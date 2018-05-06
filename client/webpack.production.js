@@ -23,6 +23,8 @@ module.exports = {
     },
     performance: { hints: false },
 
+    mode: 'production',
+
     devtool: 'cheap-module-source-map',
 
     module: {

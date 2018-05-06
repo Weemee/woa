@@ -1,6 +1,7 @@
 import passport from 'passport';
 import uuid from 'uuid/v4';
 import jwt from 'jsonwebtoken';
+import base32 from 'thirty-two';
 
 import * as localAuth from './strategies/local';
 import oauthSetup from './strategies/oauth';
@@ -147,6 +148,14 @@ export function onAuth(req, res, data, redirect) {
 		identity: data.identity.id || null,
 	}, req.app.get('config').protocol.signingSecret, {expiresIn: '1h'});
 
+	//Move this if statement to account action
+	if(!data.user.dataValues.keyToken) {
+		console.log('No keyToken seen');
+		const key = randomKey(10);
+		const encodedKey = base32.encode(key);
+		authenticateOpt(encodedKey);
+	}
+
 	if(redirect) {
 		return res.redirect(`${req.app.get('config').app.clientURL}/authentication?token=${token}`);
 	}
@@ -157,6 +166,24 @@ export function onAuth(req, res, data, redirect) {
 		authToken: token,
 	});
 }
+
+//Move this to opt facade
+function randomKey(len){
+  var buf = []
+    , chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
+    , charlen = chars.length;
+
+  for (var i = 0; i < len; ++i) {
+    buf.push(chars[getRandomInt(0, charlen - 1)]);
+  }
+
+  return buf.join('');
+};
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+//Until here
 
 export function getAuthList(req, res) {
 	const config = req.app.get('config');
@@ -173,4 +200,13 @@ export function getAuthList(req, res) {
 		status: 200,
 		authlist,
 	});
+}
+
+export function getAuthOpt(req, res, next) {
+
+}
+
+export function authenticateOpt(req, res) {
+	console.log(req);
+	return null;
 }

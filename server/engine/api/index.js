@@ -9,6 +9,8 @@ import {
 	authenticate,
 	getAuthList,
 	isAuthenticated,
+	getOtpAuth,
+	autehnticateOtp,
 } from './authentication';
 
 import {
@@ -65,6 +67,10 @@ export default function(app, webServerAPI, config) {
 	routes.route('/authentication')
 		.get(getAuthList)
 		.post(authenticate);
+
+	/*routes.route('/autehnticate/veritfyOtp')
+		.get(getOtpAuth)
+		.post(autehnticateOtp);*/
 
 	// OAuth
 	routes.route('/authentication/provider/:provider')

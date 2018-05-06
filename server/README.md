@@ -2,6 +2,8 @@
 
 # Requirements
 * This application is using MySQL, so access to a MySQL database is needed
+* Have [Node.js](https://nodejs.org/en/download/package-manager/) installed
+* A LAMP environment
 
 # How to install
 ## General

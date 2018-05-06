@@ -60,25 +60,25 @@ export default class UserFacade {
 			}
 
 			try {
-					 // logout any other session(s) if found
-					 await this.Server.socketFacade.logoutOutSession(socket, userID);
-					} catch (err) {
-						this.Server.onError(err, socket);
-					}
+				// logout any other session(s) if found
+				await this.Server.socketFacade.logoutOutSession(socket, userID);
+			} catch (err) {
+				this.Server.onError(err, socket);
+			}
 
-				// add the authenticated use to the socket object
-				socket.user = {
-					userID,
-				};
+			// add the authenticated use to the socket object
+			socket.user = {
+				userID,
+			};
 
-				// add the socket to the list of active clients
-				this.Server.socketFacade.add(socket);
+			// add the socket to the list of active clients
+			this.Server.socketFacade.add(socket);
 
-				return this.Server.socketFacade.dispatchToSocket(socket, {
-					type: ACCOUNT_AUTHENTICATE_SUCCESS,
-					payload: {
-					},
-				});
+			return this.Server.socketFacade.dispatchToSocket(socket, {
+				type: ACCOUNT_AUTHENTICATE_SUCCESS,
+				payload: {
+				},
 			});
+		});
 	}
 }

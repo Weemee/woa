@@ -1,6 +1,6 @@
 import {
 	CHARACTER_LOGIN,
-	CHARACTER_CREATE_ERROR,
+	SET_NOTES,
 	CHARACTER_CREATE_SUCCESS,
 } from 'libs/constants';
 
@@ -20,7 +20,7 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 	} catch (err) {
 		if(err.code === 11000) {
 			return Server.socketFacade.dispatchToSocket(socket, {
-				type: CHARACTER_CREATE_ERROR,
+				type: SET_NOTES,
 				payload: {
 					message: 'That character name is already taken.',
 				},

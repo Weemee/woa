@@ -14,8 +14,9 @@ import {
 	ACCOUNT_AUTHENTICATE_SUCCESS,
 	ACCOUNT_LOGOUT,
 	CHARACTER_LOGOUT,
+	SET_NOTES,
 } from 'libs/constants';
-const derp = '€';
+
 import {
 	AUTH_STRATEGIES_GET,
 	AUTH_LINK,
@@ -36,7 +37,6 @@ import {cacheGet, cacheSet} from './mods';
 
 import {
 	SOCKET_SEND,
-	NOTIFICATION_SET,
 	NOTIFICATION_CLEAR,
 } from './modules/app/types';
 
@@ -62,7 +62,7 @@ function* doAPICall(endpoint, data, method = 'get', additionalHeaders = null) {
 		}
 
 		yield put({
-			type: NOTIFICATION_SET,
+			type: SET_NOTES,
 			payload: {
 				message: errorMsg,
 				type: 'error',
@@ -146,7 +146,7 @@ function* saveAuthDetails(action) {
 
 	if (result[0]) {
 		yield put({
-			type: NOTIFICATION_SET,
+			type: SET_NOTES,
 			payload: {
 				message: result[0].payload,
 				type: 'error',
@@ -222,7 +222,7 @@ function* authSignUp(action) {
 	}
 
 	yield put({
-		type: NOTIFICATION_SET,
+		type: SET_NOTES,
 		payload: {
 			message: response.data.message,
 			type: 'success',

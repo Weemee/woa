@@ -39,17 +39,14 @@ class Server {
 
 		await this.characterFacade.init();
 		await this.inputFacade.init();
-		try {
-			this.setupServerTimers();
-		} catch (err) {
 
-		}
+		this.setupServerTimers();
 
 		this.socketFacade.listen();
 	}
 
 	async onTimer(timerName) {
-		this.log.debug(`Running timer ${timerName}`);
+		this.log.info(`Running timer ${timerName}`);
 
 		switch (timerName) {
 		case 'autosave':

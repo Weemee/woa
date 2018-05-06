@@ -72,12 +72,17 @@ class Session extends React.Component {
 			<div className="UI">
 				<Container>
 					<Row>
-						<Col>
+						<Col className="left">
 							<CharacterCard character={this.props.character} />
 							<div style={{textAlign: 'center'}}>
 								{this.props.connection.lastEvent}<br/>
 								{!this.props.connection.isConnected}
+								<div mode="indeterminate" />
 							</div>
+						</Col>
+
+						<Col sm="9" className="middle">
+
 						</Col>
 					</Row>
 				</Container>

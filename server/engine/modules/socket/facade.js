@@ -96,17 +96,18 @@ export default class SocketFacade extends EventEmitter
 		const user = socket.user ? {...socket.user} : null;
 
 		//If the user is logged in, set a timer for when we remove them from the server.
-		if(user) {
+		if (user) {
 			this.Server.log.info('Socket disconnected', user);
+			console.log(this.Server.characterFacade.get(user.userID));
 
 			// leave the server channel for server-wide events
 			socket.leave('server');
 
-			if(accountLogout) {
+			if (accountLogout) {
 				socket.user = null;
 			}
 
-			if(forced) {
+			if (forced) {
 				return this.emit('disconnect', user);
 			}
 
@@ -129,25 +130,26 @@ export default class SocketFacade extends EventEmitter
 
 	onClientDispatch(socket, action) {
 		//Make sure the actions has an action type and payload.
-		if(!action || !action.type) {
+		if (!action || !action.type) {
 			action.type = null;
 		}
-		if(!action.payload) {
+
+		if (!action.payload) {
 			action.payload = {};
 		}
 
 		this.Server.log.info('New action', {type: action.type});
 		//Make sure actions have the right composition
-		if(!action.type) {
+		if (!action.type) {
 			return;
 		}
 
 		//None authenticated dispatches
-		if(!socket.user && action.type !== ACCOUNT_AUTHENTICATE) {
+		if (!socket.user && action.type !== ACCOUNT_AUTHENTICATE) {
 			return;
 		}
 
-		if([ACCOUNT_LOGOUT, CHARACTER_LOGOUT].includes(action.type)) {
+		if ([ACCOUNT_LOGOUT, CHARACTER_LOGOUT].includes(action.type)) {
 			this.onDisconnect(socket, false, action.type === ACCOUNT_LOGOUT);
 		}
 		//Send the dispatch with listeners

@@ -10,12 +10,20 @@ class CharacterCard extends React.Component {
 	render() {
 		return (
 			<Card className="characterCard">
-				{
-					this.props.onSelect &&
-					<div onClick={() => this.props.onSelect(this.props.character.name)}>
-						{this.props.character.name}
-					</div>
-				}
+				<div>
+					{this.props.character.name}
+				</div>
+				<CardBody>
+					<Progress color="success" value="12" max="40">
+						Health: 12
+					</Progress>
+					{
+						this.props.onSelect &&
+						<Button onClick={() => this.props.onSelect(this.props.character.name)}>
+							Play
+						</Button>
+					}
+				</CardBody>
 			</Card>
 		);
 	}

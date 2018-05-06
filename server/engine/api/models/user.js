@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) =>
 		keyToken:
 		{
 			type: DataTypes.STRING,
+			defaultValue: 'DE'
 		},
 		accountLevel:
 		{

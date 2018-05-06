@@ -1,12 +1,12 @@
 import {
 	CONNECTION_STATUS,
 	CONNECTION_SOCKET,
-	NOTIFICATION_SET,
 	NOTIFICATION_CLEAR,
 } from './types';
 
 import {
 	ACCOUNT_LOGOUT,
+	SET_NOTES,
 } from 'libs/constants';
 
 const defaultState = {
@@ -30,7 +30,7 @@ export default function(state = defaultState, action) {
 			socket: action.payload,
 		};
 
-		case NOTIFICATION_SET:
+		case SET_NOTES:
 		return {
 			...state,
 			notes: action.payload,

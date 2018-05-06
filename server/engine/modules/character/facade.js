@@ -6,6 +6,7 @@ import {
 	CHARACTER_OFFLINE,
 	CHARACTER_GET_LIST,
 	CHARACTER_LIST,
+	CHARACTER_LEFT_SERVER,
 } from 'libs/constants';
 
 import Character from './object';
@@ -82,6 +83,15 @@ export default class CharacterFacade {
 		});
 	}
 
+	dispatchRemoveFromCharacterList(userID) {
+		this.Server.socketFacade.dispatchToRoom('server', {
+			type: CHARACTER_OFFLINE,
+			payload: {
+				userID,
+			}
+		});
+	}
+
 	async getCharacterList(socket, action) {
 		try {
 			const characters = await db.characters.findAll({
@@ -114,7 +124,15 @@ export default class CharacterFacade {
 		const wasLoggedIn = this.Server.socketFacade.clearTimer(character.userID);
 		const existingCharacter = this.characters.find((obj) => obj.userID === character.userID);
 
-		if(wasLoggedIn && existingCharacter) {
+		if (wasLoggedIn && existingCharacter) {
+			await this.remove(character.userID);
+		}
+
+		if (wasLoggedIn) {
+			await this.remove(character.userID);
+		}
+
+		if (existingCharacter) {
 			await this.remove(character.userID);
 		}
 
@@ -169,11 +187,25 @@ export default class CharacterFacade {
 
 	async databaseLoad(userID, characterName) {
 		const newCharacter = await db.characters.findOne({
-			userID: userID,
-			name: characterName,
+			where:
+			{
+				[db.Op.and]: [
+				{
+					userID:
+					{
+						[db.Op.like]: [userID]
+					}
+				},
+				{
+					nameLowercase:
+					{
+						[db.Op.like]: [characterName.toLowerCase()]
+					}
+				}]
+			},
 		}).catch(err => {
 			if(err) {
-				return 'Error create character.';
+				return 'Error load character.';
 			}
 		});
 		return newCharacter;
@@ -188,25 +220,11 @@ export default class CharacterFacade {
 
 	async databaseCreate(userID, characterName) {
 		const newCharacter = await db.characters.create({
-			where:
-			{
-				[db.Op.and]: [
-				{
-					userID:
-					{
-						[db.Op.like]: [userID]
-					}
-				},
-				{
-					nameLowercase:
-					{
-						[db.Op.like]: [characterName]
-					}
-				}]
-			},
+			userID: userID,
+			name: characterName,
 		}).catch(err => {
 			if(err) {
-				return 'Error load character.';
+				return err;
 			}
 		});
 		return newCharacter;
@@ -217,7 +235,7 @@ export default class CharacterFacade {
 			try {
 				return await this.save(character.userID);
 			} catch(err) {
-
+				this.Server.onError(err);
 			}
 		}));
 	}
@@ -242,11 +260,32 @@ export default class CharacterFacade {
 
 	async databaseSave(character) {
 		const dbCharacter = {
-			userID: userID,
-			name: characterName,
+			userID: character.userID,
+			name: character.name,
 		};
 
-		return dbCharacter;
+		return;
+	}
+
+	joinedServer(character, action = true) {
+		const details = {
+			userID: character.userID,
+			name: character.name,
+		};
+
+		if (!action) {
+			return details;
+		}
+		// joinedServer(details)
+		return;
+	}
+
+	removeFromServer(position, character) {
+
+	}
+
+	addToServer(position, character) {
+
 	}
 
 	getServerData() {

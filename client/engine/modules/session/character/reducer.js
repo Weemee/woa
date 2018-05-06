@@ -1,6 +1,7 @@
 import {
 	CHARACTER_LOGIN,
 	CHARACTER_LOGOUT,
+	CHARACTER_REMOTE_LOGOUT,
 	CHARACTER_LIST,
 	CHARACTER_UPDATE,
 	CHARACTER_CREATE_SUCCESS,
@@ -13,6 +14,8 @@ const defaultState = {
 
 export default function(state = defaultState, action) {
 	switch (action.type) {
+		case CHARACTER_REMOTE_LOGOUT:
+
 		case CHARACTER_LOGOUT:
 		return defaultState;
 

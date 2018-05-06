@@ -34,25 +34,25 @@
 		"bcrypt": "^1.0.3",
 		"bluebird": "^3.5.1",
 		"body-parser": "^1.18.2",
-		"chalk": "^2.3.2",
+		"chalk": "^2.4.1",
 		"content-filter": "^1.1.2",
 		"dotenv": "^5.0.1",
 		"express": "^4.16.2",
 		"helmet": "^3.12.0",
-		"jsonwebtoken": "^8.2.0",
+		"jsonwebtoken": "^8.2.1",
 		"mkdirp": "^0.5.1",
 		"mysql2": "^1.5.3",
 		"passport": "^0.4.0",
 		"passport-local": "^1.0.0",
 		"passport-totp": "0.0.2",
-		"sequelize": "^4.37.3",
+		"sequelize": "^4.37.6",
 		"socket.io": "^2.0.4",
 		"thirty-two": "^1.0.2",
 		"uuid": "^3.2.1"
 	},
 	"devDependencies": {
 		"babel-cli": "^6.26.0",
-		"babel-eslint": "^8.2.2",
+		"babel-eslint": "^8.2.3",
 		"babel-plugin-module-resolver": "^3.1.0",
 		"babel-plugin-transform-runtime": "^6.23.0",
 		"babel-polyfill": "^6.26.0",
@@ -60,7 +60,7 @@
 		"babel-register": "^6.26.0",
 		"cross-env": "^5.1.4",
 		"eslint": "^4.19.1",
-		"nodemon": "^1.17.1"
+		"nodemon": "^1.17.4"
 	},
 	"homepage": "https://github.com/Weemee/woa#readme"
 }

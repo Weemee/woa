@@ -5,7 +5,7 @@ import path from 'path';
 import {execSync} from 'child_process';
 import fs from 'fs';
 import crypto from 'crypto';
-import Logger from '../engine/modules/log';
+import Logger from '../../engine/modules/log';
 
 const pathToRoot = path.join(__dirname, '../..');
 const log = new Logger({
@@ -31,7 +31,7 @@ if (!fs.existsSync(`${pathToRoot}/libs/conf`)) {
 }
 
 try {
-	execSync(`cp -Rn ${pathToRoot}/libs/scripts/temp/conf/* ${pathToRoot}/lib/conf`);
+	execSync(`cp -Rn ${pathToRoot}/libs/scripts/temp/conf/* ${pathToRoot}/libs/conf`);
 } catch (err) {
 	log.error(err);
 }
@@ -45,7 +45,7 @@ try {
 	const key = crypto.randomBytes(32).toString('hex');
 	confData = confData.replace('\'PROTOCOL_SIGNING_SECRET\', \'\'', `\'PROTOCOL_SIGNING_SECRET\', \'${key}\'`);
 
-	fs.writeFileSync(confPath, confDa);
+	fs.writeFileSync(confPath, confData);
 } catch (err) {
 	log.error(err);
 }

@@ -47,7 +47,7 @@ export default function(app, webServerAPI, config) {
 		next();
 	});
 
-	loadStrategies(passport, app.get('customLogger'), config);
+	loadStrategies(passport, app.get('log'), config);
 
 	//API routes
 	const routes = express.Router({

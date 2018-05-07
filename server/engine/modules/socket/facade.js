@@ -41,6 +41,7 @@ export default class SocketFacade extends EventEmitter
 	listen()
 	{
 		this.io.on('connection', this.onConnection.bind(this));
+
 		this.server.listen(this.Server.config.app.serverPort);
 
 		console.log(`Socket is listening on port ${this.Server.config.app.serverPort}`);
@@ -98,7 +99,6 @@ export default class SocketFacade extends EventEmitter
 		//If the user is logged in, set a timer for when we remove them from the server.
 		if (user) {
 			this.Server.log.info('Socket disconnected', user);
-			console.log(this.Server.characterFacade.get(user.userID));
 
 			// leave the server channel for server-wide events
 			socket.leave('server');

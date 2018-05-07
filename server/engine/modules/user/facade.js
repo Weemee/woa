@@ -60,23 +60,26 @@ export default class UserFacade {
 			}
 
 			try {
-				// logout any other session(s) if found
+				// Logout any other session(s) if found
 				await this.Server.socketFacade.logoutOutSession(socket, userID);
 			} catch (err) {
 				this.Server.onError(err, socket);
 			}
 
-			// add the authenticated use to the socket object
+			// Add the authenticated user to the socket object
 			socket.user = {
 				userID,
 			};
 
-			// add the socket to the list of active clients
+			// Add the socket to the list of active clients
 			this.Server.socketFacade.add(socket);
 
 			return this.Server.socketFacade.dispatchToSocket(socket, {
 				type: ACCOUNT_AUTHENTICATE_SUCCESS,
 				payload: {
+					gameData: {
+						maps: null,
+					},
 				},
 			});
 		});

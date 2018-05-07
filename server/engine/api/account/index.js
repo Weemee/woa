@@ -3,14 +3,14 @@ import crypto from 'crypto';
 
 import db from '../models';
 
-async function checkEmailExist(email, customLogger) {
+async function checkEmailExist(email, log) {
 	try {
 		//Find one email
 		const account = 'default';
 		return account ? true : false;
 	}
 	catch (err) {
-		customLogger.error(err);
+		log.error(err);
 		return 500;
 	}
 }
@@ -26,7 +26,7 @@ export async function deleteAccount(req, res) {
 		});
 	}
 	catch(err) {
-		req.app.get('customLogger').error(err);
+		req.app.get('log').error(err);
 
 		return res.status(500).json({
 			status: 500,
@@ -50,7 +50,7 @@ export async function getAccount(req, res) {
 			},
 		});
 	} catch (err) {
-		req.app.get('customLogger').error(err);
+		req.app.get('log').error(err);
 
 		return res.status(500).json({
 			status: 500,
@@ -153,7 +153,7 @@ export function createAccount(req, res) {
 				validationToken: requireActivation ? token.digest('hex') : '',
 			}).catch(err => {
 				if(err) {
-					req.app.get('customLogger').error(err);
+					req.app.get('log').error(err);
 					return res.status(500).json({
 						status: 500,
 						error: 'Windows 10 released an update and thus it crashed, sorry.',
@@ -170,7 +170,7 @@ export function createAccount(req, res) {
 			}
 		}).catch(err => {
 			if(err) {
-				req.app.get('customLogger').error(err);
+				req.app.get('log').error(err);
 				return res.status(500).json({
 					status: 500,
 					error: 'Oops! Email! Maybe Windows 10 is still alive...',
@@ -183,7 +183,7 @@ export function createAccount(req, res) {
 
 	}).catch(err => {
 		if(err) {
-			req.app.get('customLogger').error(err);
+			req.app.get('log').error(err);
 			return res.status(500).json({
 				status: 500,
 				error: 'Oops! Username! Maybe Windows 10 is still alive...',

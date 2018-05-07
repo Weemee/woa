@@ -28,7 +28,7 @@ class AuthRegister extends React.Component {
 	}
 
 	componentDidMount() {
-		if(!this.props.strategies) {
+		if(this.props.strategies === 0) {
 			this.props.getStrategies();
 		}
 	}
@@ -42,76 +42,79 @@ class AuthRegister extends React.Component {
 		return (
 			<Card className="card-small">
 				<CardHeader>Join us!</CardHeader>
-				<CardBody className="text-center">
-					<Notes />
-					<Form>
-						<FormGroup>
-							<Input
-							type="username"
-							name="username"
-							placeholder="Username"
-							autoComplete="username"
-							disabled={this.state.sending}
-							onChange={(e) => {
-								this.setState({
-									username: e.target.value,
-								});
-							}}
-							value={this.state.username}
-							/>
-						</FormGroup>
+				{
+					this.props.strategies.length > 0 &&
+					<CardBody className="text-center">
+						<Notes />
+						<Form>
+							<FormGroup>
+								<Input
+								type="username"
+								name="username"
+								placeholder="Username"
+								autoComplete="username"
+								disabled={this.state.sending}
+								onChange={(e) => {
+									this.setState({
+										username: e.target.value,
+									});
+								}}
+								value={this.state.username}
+								/>
+							</FormGroup>
 
-						<FormGroup>
-							<Input
-							type="email"
-							name="email"
-							placeholder="Email"
-							autoComplete="email"
-							disabled={this.state.sending}
-							onChange={(e) => {
-								this.setState({
-									email: e.target.value,
-								});
-							}}
-							value={this.state.email}
-							/>
-						</FormGroup>
+							<FormGroup>
+								<Input
+								type="email"
+								name="email"
+								placeholder="Email"
+								autoComplete="email"
+								disabled={this.state.sending}
+								onChange={(e) => {
+									this.setState({
+										email: e.target.value,
+									});
+								}}
+								value={this.state.email}
+								/>
+							</FormGroup>
 
-						<FormGroup>
-							<Input
-							type="password"
-							name="password"
-							placeholder="Password"
-							autoComplete="new-password"
-							disabled={this.state.sending}
-							onChange={(e) => {
-								this.setState({
-									password: e.target.value,
-								});
-							}}
-							value={this.state.password}
-							/>
-						</FormGroup>
+							<FormGroup>
+								<Input
+								type="password"
+								name="password"
+								placeholder="Password"
+								autoComplete="new-password"
+								disabled={this.state.sending}
+								onChange={(e) => {
+									this.setState({
+										password: e.target.value,
+									});
+								}}
+								value={this.state.password}
+								/>
+							</FormGroup>
 
-						<FormGroup>
-							<Input
-							type="password"
-							name="repeatPassword"
-							placeholder="Repeat password"
-							autoComplete="new-password"
-							disabled={this.state.sending}
-							onChange={(e) => {
-								this.setState({
-									passwordConfirm: e.target.value,
-								});
-							}}
-							value={this.state.passwordConfirm}
-							/>
-						</FormGroup>
-						<Button onClick={this.register} disabled={this.state.sending} color="blue">Create account</Button>
-						<hr/>
-					</Form>
-				</CardBody>
+							<FormGroup>
+								<Input
+								type="password"
+								name="repeatPassword"
+								placeholder="Repeat password"
+								autoComplete="new-password"
+								disabled={this.state.sending}
+								onChange={(e) => {
+									this.setState({
+										passwordConfirm: e.target.value,
+									});
+								}}
+								value={this.state.passwordConfirm}
+								/>
+							</FormGroup>
+							<Button onClick={this.register} disabled={this.state.sending} color="blue">Create account</Button>
+							<hr/>
+						</Form>
+					</CardBody>
+				}
 			</Card>
 			);
 	}

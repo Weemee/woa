@@ -13,10 +13,15 @@ import SessionContainer from '../session';
 import Header from './header';
 
 import {Container} from 'reactstrap';
+import {MdBugReport} from 'react-icons/lib/md';
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+	}
+
+	componentWillMount() {
+		this.getIssueURL();
 	}
 
 	componentDidMount() {
@@ -25,7 +30,7 @@ class App extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		if(nextProps.character && !this.props.character) {
-
+			this.getIssueURL();
 		}
 
 		if(this.props.loggedIn && !this.props.isConnected && nextProps.isConnected) {
@@ -39,6 +44,12 @@ class App extends React.Component {
 		}
 
 		return component;
+	}
+
+	getIssueURL() {
+		this.setState({
+			issueURL: 'https://github.com/Weemee/woa',
+		});
 	}
 
 	render() {
@@ -55,6 +66,7 @@ class App extends React.Component {
 							<Route component={PageNotFound} />
 						</Switch>
 					</Container>
+					<a href={this.state.issueURL} target="_blank" className="btn btn-primary" id="bug"><MdBugReport />Report bug</a>
 				</main>
 			</React.Fragment>
 		);

@@ -8,7 +8,6 @@ import {Container, Row, Col} from 'reactstrap';
 
 import {setMousePos} from '../utils/actions';
 import {setTheme} from '../theme/actions';
-import TOTP from '../totp';
 
 class Page extends React.Component {
 	constructor(props) {
@@ -31,10 +30,6 @@ class Page extends React.Component {
 						<div style={{width:'250px', height:'250px'}} onMouseMove={(e) => this.mouseMove(e)}>
 							Move here and your MouseX: {this.props.pos.x} and MouseY: {this.props.pos.y} will show!
 						</div>
-					</Col>
-
-					<Col className=".col-6">
-						<TOTP />
 					</Col>
 				</Row>
 				<Row>

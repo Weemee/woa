@@ -12,6 +12,13 @@ class Players extends React.Component {
 	render() {
 		return (
 			<Table striped size="sm">
+				<thead>
+					<tr>
+						<th>Player</th>
+						<th></th>
+						<th className="text-right">Actions</th>
+					</tr>
+				</thead>
 				<tbody>
 					{
 						this.props.players.map((player, index) => {

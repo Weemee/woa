@@ -11,6 +11,8 @@ import {Card, CardBody, CardDeck, CardTitle, Input, FormGroup, Container, Row, C
 import {newInput} from '../actions';
 import {socketSend} from '../../app/actions';
 
+import Notes from '../../ui/notes';
+
 import CharacterCard from './card';
 
 class Character extends React.Component {
@@ -58,6 +60,7 @@ class Character extends React.Component {
 					<Card>
 						<CardBody>
 							<CardTitle>Create character</CardTitle>
+							<Notes />
 							<FormGroup>
 								<Input
 									type="text"
@@ -99,24 +102,28 @@ class Character extends React.Component {
 							{this.renderContent()}
 						</Col>
 
-						<Col xs="6" sm="3">
+						<Row>
+							<Col xs="6" sm="3">
 							{
 								!this.props.characterList &&
 								<p>Loading character list...</p>
 							}
-							{
-								this.props.characterList &&
-								this.props.characterList.map((obj, index) => <CharacterCard key={index} onSelect={this.selectCharacter} character={obj} />)
-							}
-							{
-								!this.state.create &&
-								<Button color='blue' block={true} onClick={this.toggle}>New character</Button>
-							}
-							{
-								this.state.create &&
-								<Button color='red' block={true} onClick={this.toggle}>Back</Button>
-							}
-						</Col>
+							<CardDeck>
+								{
+									this.props.characterList &&
+									this.props.characterList.map((obj, index) => <CharacterCard key={index} onSelect={this.selectCharacter} character={obj} />)
+								}
+								{
+									!this.state.create &&
+									<Button color='blue' block={true} onClick={this.toggle}>New character</Button>
+								}
+								{
+									this.state.create &&
+									<Button color='red' block={true} onClick={this.toggle}>Back</Button>
+								}
+							</CardDeck>
+							</Col>
+						</Row>
 					</Row>
 				</Container>
 			</React.Fragment>

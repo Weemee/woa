@@ -4,16 +4,15 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	entry: [
-	'babel-polyfill',
-	'webpack-dev-server/client',
-	'./engine/index.js',
+		'babel-polyfill',
+		'webpack-dev-server/client',
+		'./engine/index.js',
 	],
 
 	devServer: {
 		port: 8193,
 		historyApiFallback: true,
 		contentBase: './',
-		hot: true,
 	},
 
 	output: {
@@ -21,6 +20,9 @@ module.exports = {
 		publicPath: '/',
 		filename: '[name].js',
 	},
+
+	mode: 'development',
+	devtool: '#inline-source-map',
 
 	optimization: {
 		splitChunks: {
@@ -35,10 +37,6 @@ module.exports = {
 		},
 	},
 
-	mode: 'development',
-
-	devtool: 'inline-source-map',
-
 	resolve: {
 		alias: {
 			react: path.resolve(__dirname, './node_modules/react'),
@@ -49,41 +47,41 @@ module.exports = {
 
 	module: {
 		rules: [
-		{
-			test: /\.jsx?$/,
-			loader: 'babel-loader',
-			exclude: /(node_modules|bower_components)/,
-		},
-		{
-			test: /\.(scss|css)$/,
-			loader: 'style-loader!css-loader?sourceMap!sass-loader?sourceMap',
-		},
-		{
-			test: /\.svg$/,
-			use: [
 			{
-				loader: 'file-loader',
+				test: /\.jsx?$/,
+				loader: 'babel-loader',
+				exclude: /(node_modules|bower_components)/,
 			},
 			{
-				loader: 'svgo-loader',
-				options: {
-					plugins: [
-					{
-						removeTitle: true
-					},
-					{
-						convertColors: {
-							shortHex: false,
-						},
-					},
-					{
-						convertPathData: false,
-					},
-					],
-				}
+				test: /\.(scss|css)$/,
+				loader: 'style-loader!css-loader?sourceMap!sass-loader?sourceMap',
 			},
-			],
-		},
+			{
+				test: /\.svg$/,
+				use: [
+					{
+						loader: 'file-loader',
+					},
+					{
+						loader: 'svgo-loader',
+						options: {
+							plugins: [
+								{
+									removeTitle: true
+								},
+								{
+									convertColors: {
+										shortHex: false,
+									},
+								},
+								{
+									convertPathData: false,
+								},
+							],
+						}
+					},
+				],
+			},
 		],
 	},
 

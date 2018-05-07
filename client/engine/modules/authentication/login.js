@@ -22,7 +22,8 @@ class AuthenticationLogin extends React.Component {
 		this.state = {
 			username: '',
 			password: '',
-			error: '',
+			error: null,
+			success: null,
 		};
 
 		this.authenticate = this.authenticate.bind(this);
@@ -31,6 +32,7 @@ class AuthenticationLogin extends React.Component {
 	componentDidMount() {
 		const url = new URL(document.location);
 		const error = url.searchParams.get('error');
+		const success  = url.searchParams.get('success');
 
 		this.setState({
 			error: error || null,
@@ -70,19 +72,31 @@ class AuthenticationLogin extends React.Component {
 	}
 
 	showStatus() {
+		const state = {...this.state};
+
+		return <p className={'alert alert-danger'}>
+			{state.error}
+		</p>;
+
+		return <p className={'alert alert-success'}>
+			{state.success}
+		</p>;
+
 		if(!this.state.status) {
 			return null;
 		}
 
-		return <p className={'alert alert-`${this.state.status.isError ? danger : success}`'}>
-			{this.state.status.message}
-		</p>;
+		return <p className={`alert alert-${state.status.isError ? 'danger' : 'success'}`}>
+			{state.status.message}
+		</p>
 	}
 
 	render() {
 		return (
 			<Card className="card-small">
 				<CardHeader>Login</CardHeader>
+				{
+					this.props.strategies.length > 0 &&
 				<CardBody>
 					<Form>
 						<Notes />
@@ -118,6 +132,11 @@ class AuthenticationLogin extends React.Component {
 						<hr />
 					</Form>
 				</CardBody>
+			}
+			{
+				!this.props.strategies &&
+				<p>Loading...</p>
+			}
 			</Card>
 		);
 	}

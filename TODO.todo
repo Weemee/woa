@@ -1,0 +1,183 @@
+Bugs: @Bugs
+	☐	Fix logout on live
+	√	Fix character login (not logging out/changing) @done (18-05-07 01:25)
+	☐	Fix complete logout after browser closing, character stuck in limbo. Hint: Logout button works, trigger same function and it should resolve it all. Also disconnect timer not working (I think).
+
+Main functions:
+	☐	Login @high @Login
+	☐	Logout @high @Logout
+	☐	Register @high @Register
+	☐	Account @Account
+	☐	Play @Play
+	☐	Character @Character
+	☐	Save @high @Save
+	☐	Load @high @Load
+	☐	Update @high @Update
+	☐	Theme system @Themes
+	☐	UI @UI
+
+Login: @Login
+	☐	@low Methods
+		☐	Twitch
+		☐	Google
+		☐	Facebook
+	☐	@low Trial account
+		☐	Captcha
+			☐	Can create account / authenticate with saved trial account
+		☐	Local game
+			☐	Can not use trial progress, flush everything
+	☐	@low Otp
+
+Logout: @Logout
+	☐	Save progress
+
+Register: @Register
+	☐	Verify email
+		☐	Email sent with link
+
+Account: @Account
+	☐	Define methods
+	☐	Link methods
+	☐	Unlink methods
+	☐	Change password
+	☐	Add otp
+
+Play: @Play
+	☐	Load character
+		☐	Load character stats
+		☐	Create character stats
+	☐	Loading screen after character select and "Enter" button
+	☐	Specialization scheme
+
+Character: @Character
+	☐	View character
+		☐	Show after list selection
+		☐	Show
+			☐	Name
+			☐	Specialization
+			☐	Location
+				☐	Server
+					☐	Super Cluster
+						☐	Galaxy
+							☐	Cluster
+								☐	Solar system
+									☐	X
+									☐	Y
+			☐	Options
+				☐	Delete
+				☐	Edit name
+				☐	Play
+			☐	Time played
+	☐	Save character
+	☐	Delete character
+	☐	Maximum characters (5)
+
+Save: @Save
+	☐	Save account
+	☐	Save character
+	☐	Check for injections
+
+Load: @Load
+		☐	Load resources
+		☐	Load unlocks
+		☐	Load research
+		☐	Load talents
+		☐	Load specialization
+
+Update: @Update
+	☐	Update account
+	☐	Update character
+
+Database: @DB
+
+Theme system: @Themes
+	☐	Theme elements
+		☐	Main
+		☐	UI
+		☐	Buttons
+		☐	Labels
+		☐	Text
+			☐	Hover
+			☐	Click
+
+UI: @UI
+	Re-design character create: @UI
+		☐	Droplist for character select
+			☐	Put it into a theme
+		☐	Show needed information @Character
+			☐	Make it show in the middle
+		☐	Structure character
+		☐	Make "Play" appear on the top
+		☐	Make "Delete" in the corner
+	Re-design header: @UI
+		☐	Make it look like the mock-up
+		☐	Create the dropdown fields for login/register
+Other: @Other
+	☐	Improve error handling
+
+
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+	√	Database @DB @done (18-05-06 18:15) @project(Main functions)
+	√	Create character @done (18-05-06 18:14) @project(Play)
+	√	Choose character (drop list) @done (18-05-06 18:14) @project(Play)
+	√	Patch Notes .md file @done (18-05-06 18:13) @project(Other)
+	√	timePlayed @done (18-05-06 12:43) @project(Database)
+	√	stats @done (18-05-06 12:43) @project(Database)
+	√	characterID P I @done (18-05-06 12:43) @project(Database)
+	√	talents @done (18-05-06 12:42) @project(Database)
+	√	production @done (18-05-06 12:42) @project(Database)
+	√	characterID P I @done (18-05-06 12:42) @project(Database)
+	√	position @done (18-05-06 12:41) @project(Database)
+	√	exploration @done (18-05-06 12:41) @project(Database)
+	√	characterID P I @done (18-05-06 12:41) @project(Database)
+	√	resources @done (18-05-06 12:40) @project(Database)
+	√	characterID P I @done (18-05-06 12:40) @project(Database)
+	√	atoms @done (18-05-06 12:40) @project(Database)
+	√	research @done (18-05-06 12:38) @project(Database)
+	√	fusion @done (18-05-06 12:38) @project(Database)
+	√	characterID P I @done (18-05-06 12:38) @project(Database)
+	√	unlocks @done (18-05-06 12:36) @project(Database)
+	√	research @done (18-05-06 12:36) @project(Database)
+	√	characterID P I @done (18-05-06 12:36) @project(Database)
+	√	Or make it like WoW @done (18-05-05 17:04) @project(UI / Re-design character create)
+	√	Move create character to a seperate instance @done (18-05-05 17:04) @project(UI / Re-design character create)
+	√	Show account information @done (18-05-05 15:14) @project(Account)
+	√	Create character @done (18-04-24 14:59) @project(Character)
+	√	user @done (18-04-24 13:41) @project(Database)
+	√	password hash @done (18-04-23 19:21) @project(Database)
+	√	accountLevel @done (18-04-23 19:21) @project(Database)
+	√	Hash @done (18-04-23 19:21) @project(Register)
+	√	Hash @done (18-04-23 19:21) @project(Login)
+	√	Login with wrong credentials "Unhandled rejection TypeError". Send error message on false login. @done (18-04-23 12:08) @project(Bugs)
+	√	spec @done (18-04-23 12:01) @project(Database)
+	√	loggedIn @done (18-04-23 12:01) @project(Database)
+	√	Refactor then entire config @done (18-04-13 13:36) @project(Other)
+	√	Load character @done (18-04-13 13:36) @project(Character)
+	√	@critical Bug fix character name failure @done (18-04-13 13:34) @project(Main functions)
+	√	Load character @done (18-04-09 17:28) @project(Load)
+	√	userID I @done (18-04-09 09:06) @project(Database)
+	√	updatedAt @done (18-04-09 09:06) @project(Database)
+	√	name @done (18-04-09 09:06) @project(Database)
+	√	id P AI @done (18-04-09 09:06) @project(Database)
+	√	createdAt @done (18-04-09 09:06) @project(Database)
+	√	character @done (18-04-09 09:06) @project(Database)
+	√	Load account @done (18-04-09 09:06) @project(Load)
+	√	Username @done (18-04-08 19:51) @project(Register)
+	√	SessionToken @done (18-04-08 19:51) @project(Register)
+	√	Password @done (18-04-08 19:51) @project(Register)
+	√	Email @done (18-04-08 19:51) @project(Register)
+	√	Link @done (18-04-07 23:25) @project(Theme system)
+	√	Header @done (18-04-07 23:25) @project(Theme system)
+	√	Theme manager @done (18-04-07 23:24) @project(Theme system)
+	√	usr I U @done (18-04-02 18:23) @project(Database)
+	√	updatedAt @done (18-04-02 18:23) @project(Database)
+	√	sessiontoken @done (18-04-02 18:23) @project(Database)
+	√	id P AI @done (18-04-02 18:23) @project(Database)
+	√	email I U @done (18-04-02 18:23) @project(Database)
+	√	createdAt @done (18-04-02 18:23) @project(Database)
+	√	Username @done (18-04-02 18:23) @project(Login)
+	√	Password @done (18-04-02 18:23) @project(Login)
+	√	Gently call disconnect on server @done (18-04-02 18:23) @project(Logout)
+	√	Authenticate @done (18-04-02 18:23) @project(Login)
+	√	Local @done (18-04-02 18:22) @project(Login)

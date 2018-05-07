@@ -12,6 +12,7 @@ class Header extends React.Component {
 		super(props);
 
 		this.state = {
+			issueURL: 'https://github.com/Weemee/woa/issues/new',
 			isOpen: false,
 		};
 	}

@@ -14,10 +14,15 @@ import Header from './header';
 
 import {Container} from 'reactstrap';
 import {MdBugReport} from 'react-icons/lib/md';
+import Loader from '../ui/loader';
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			pages: [],
+		};
 	}
 
 	componentWillMount() {
@@ -50,28 +55,29 @@ class App extends React.Component {
 	// Networking docs: https://facebook.github.io/react-native/docs/network.html
 	// Request docs: https://developer.mozilla.org/en-US/docs/Web/API/Request
 	getIssueURL() {
-		fetch('')
-		.then((resonse) => response.text())
+		fetch('https://raw.githubusercontent.com/Weemee/woa/dev/docs/issues.md')
+		.then((response) => response.text())
 		.then((responseText) => {
-			responseText = responseText.replace();
+			responseText = responseText.replace('__OS__:', `__OS__: ${window.navigator.platform}`);
+			responseText = responseText.replace('__Browser & Version__:', `__Browser & Version__: ${window.navigator.userAgent}`);
+
+			if (this.props.character) {
+				responseText = responseText.replace('__Character name__:', `__Character name__: ${this.props.character.name}`);
+			}
 
 			this.setState({
-				issueURL: 'https://github.com/Weemee/woa',
+				issueURL: `https://github.com/Weemee/woa/issues/new?body=${encodeURIComponent(responseText)}`,
 			});
 		})
 		.catch((error) => {
 
 		});
-
-		this.setState({
-				issueURL: 'https://github.com/Weemee/woa',
-			});
 	}
 
 	render() {
 		return (
 			<React.Fragment>
-				<Header/>
+				<Header pages={this.state.pages} />
 				<main className={`theme-${this.props.selectedTheme}`} id="main">
 					<Container>
 						<Switch>
@@ -84,6 +90,7 @@ class App extends React.Component {
 					</Container>
 					<a href={this.state.issueURL} target="_blank" className="btn btn-primary" id="bug"><MdBugReport />Report bug</a>
 				</main>
+				<Loader />
 			</React.Fragment>
 		);
 	}

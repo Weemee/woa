@@ -2,6 +2,8 @@ import {
 	CONNECTION_STATUS,
 	CONNECTION_SOCKET,
 	NOTIFICATION_CLEAR,
+	SET_LOADING,
+	CLEAR_LOADING,
 } from './types';
 
 import {
@@ -14,6 +16,7 @@ const defaultState = {
 	connectedEvent: false,
 	socket: null,
 	notes: null,
+	loading: null,
 };
 
 export default function(state = defaultState, action) {

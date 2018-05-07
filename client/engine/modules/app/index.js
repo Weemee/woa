@@ -46,10 +46,26 @@ class App extends React.Component {
 		return component;
 	}
 
+	// Fetch issue URL from github
+	// Networking docs: https://facebook.github.io/react-native/docs/network.html
+	// Request docs: https://developer.mozilla.org/en-US/docs/Web/API/Request
 	getIssueURL() {
-		this.setState({
-			issueURL: 'https://github.com/Weemee/woa',
+		fetch('')
+		.then((resonse) => response.text())
+		.then((responseText) => {
+			responseText = responseText.replace();
+
+			this.setState({
+				issueURL: 'https://github.com/Weemee/woa',
+			});
+		})
+		.catch((error) => {
+
 		});
+
+		this.setState({
+				issueURL: 'https://github.com/Weemee/woa',
+			});
 	}
 
 	render() {

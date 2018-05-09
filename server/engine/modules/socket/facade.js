@@ -10,17 +10,17 @@ import {
 
 export default class SocketFacade extends EventEmitter
 {
-	constructor(Server, server)
+	constructor(Server, session)
 	{
-		super(Server, server);
+		super(Server, session);
 
 		this.Server = Server;
 
 		this.clients = {};
 
-		this.server = server;
+		this.session = session;
 
-		this.io = io(server);
+		this.io = io(session);
 
 		this.timers = {};
 
@@ -42,7 +42,7 @@ export default class SocketFacade extends EventEmitter
 	{
 		this.io.on('connection', this.onConnection.bind(this));
 
-		this.server.listen(this.Server.config.app.serverPort);
+		this.session.listen(this.Server.config.app.serverPort);
 
 		console.log(`Socket is listening on port ${this.Server.config.app.serverPort}`);
 	}
@@ -67,6 +67,7 @@ export default class SocketFacade extends EventEmitter
 			return;
 		}
 
+		console.log('Disconnect logout session');
 		await this.onDisconnect(socket, true);
 
 		this.dispatchToSocket(socket, {
@@ -76,14 +77,17 @@ export default class SocketFacade extends EventEmitter
 	}
 
 	add(socket) {
+		console.log('Socket add');
 		this.clients[socket.user.userID] = socket;
 	}
 
 	remove(userID) {
+		console.log('Socket remove');
 		delete this.clients[userID];
 	}
 
 	clearTimer(userID) {
+		console.log('Clearing timer');
 		if (this.timers[userID]) {
 			clearTimeout(this.timers[userID]);
 			delete this.timers[userID];
@@ -95,6 +99,7 @@ export default class SocketFacade extends EventEmitter
 
 	async onDisconnect(socket, forced = false, accountLogout = false) {
 		const user = socket.user ? {...socket.user} : null;
+		console.log('Disconnecting');
 
 		//If the user is logged in, set a timer for when we remove them from the server.
 		if (user) {
@@ -104,17 +109,21 @@ export default class SocketFacade extends EventEmitter
 			socket.leave('server');
 
 			if (accountLogout) {
+				console.log('Disconnect account logout');
 				socket.user = null;
 			}
 
 			if (forced) {
+				console.log('Disconnect forced');
 				return this.emit('disconnect', user);
 			}
+
 
 			//Temp save, then save as timed out
 			try {
 				if (!this.Server.characterFacade.get(user.userID)) {
 					return;
+					console.log('No character with: ' + user.userID);
 				}
 
 				await this.Server.characterFacade.save(user.userID);
@@ -122,9 +131,11 @@ export default class SocketFacade extends EventEmitter
 				this.Server.onError(err);
 			}
 
+			console.log('Disconnect start timer');
 			this.timers[user.userID] = setTimeout(() =>{
 				this.emit('disconnect', user);
 			}, this.Server.config.server.logoutTimer);
+			console.log(this.timers[user.userID]);
 		}
 	}
 
@@ -146,10 +157,12 @@ export default class SocketFacade extends EventEmitter
 
 		//None authenticated dispatches
 		if (!socket.user && action.type !== ACCOUNT_AUTHENTICATE) {
+			console.log('Client dispatch none auth');
 			return;
 		}
 
 		if ([ACCOUNT_LOGOUT, CHARACTER_LOGOUT].includes(action.type)) {
+			console.log('ACCOUNT/CHARACTER LOGOUT');
 			this.onDisconnect(socket, false, action.type === ACCOUNT_LOGOUT);
 		}
 		//Send the dispatch with listeners
@@ -157,6 +170,7 @@ export default class SocketFacade extends EventEmitter
 	}
 
 	dispatchToSocket(socket, action) {
+		console.log('Dispatch to socket');
 		socket.emit('dispatch', action);
 	}
 
@@ -165,6 +179,7 @@ export default class SocketFacade extends EventEmitter
 			return;
 		}
 
+		console.log('Dispatch to user');
 		this.clients[userID].emit('dispatch', action);
 	}
 

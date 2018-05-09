@@ -1,4 +1,4 @@
-import {parsedJsonData} from 'libs/utils';
+import {parsedJsonData} from 'libs/utils/functions';
 import {ACCOUNT_INPUT} from 'libs/constants';
 
 export default class InputFacade {

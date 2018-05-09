@@ -29,7 +29,6 @@ import {
 	ACCOUNT_DETAILS_GET,
 	ACCOUNT_DETAILS_UPDATE,
 	ACCOUNT_DETAILS_DELETE,
-	ACCOUNT_DETAILS,
 } from './modules/account/types';
 
 import config from './config';
@@ -142,7 +141,7 @@ function* saveAuthDetails(action) {
 	const result = yield race([
 		take(ACCOUNT_AUTHENTICATE_ERROR),
 		take(ACCOUNT_AUTHENTICATE_SUCCESS),
-		]);
+	]);
 
 	if (result[0]) {
 		yield put({
@@ -313,7 +312,7 @@ function* Sagas() {
 		onRouteChange(),
 		onFetchStrategies(),
 		onFetchAccountDetials(),
-		]);
+	]);
 }
 
 export default Sagas;

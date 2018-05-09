@@ -99,7 +99,7 @@ export function isAuthenticated(req, res, next) {
 	if(!token) {
 		return output(req, res, {
 			status: 401,
-			message: 'Invalid authorisation token.',
+			message: 'Invalid authorisation token first.',
 		});
 	}
 
@@ -107,15 +107,14 @@ export function isAuthenticated(req, res, next) {
 		if (err) {
 			return output(req, res, {
 				status: 401,
-				message: 'Invalid authorisation token.',
+				message: 'Invalid authorisation token second.',
 			});
 		}
-
 		if (req.params.userID) {
 			if (req.params.userID !== decoded.id) {
 				return output(req, res, {
 					status: 401,
-					message: 'Invalid authorisation token.',
+					message: 'Invalid authorisation token third.',
 				});
 			}
 		}

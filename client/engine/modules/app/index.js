@@ -83,8 +83,8 @@ class App extends React.Component {
 						<Switch>
 							<Route exact path="/" render={() => this.renderSessionRoute(<Page/>)} />
 							<Route path="/authentication" render={() => this.renderSessionRoute(<AuthenticationContainer/>)} />
-							<Route path="/account" render={() => this.renderSessionRoute(<AccountContainer/>)} />
 							<Route path="/session" render={() => this.renderSessionRoute(<SessionContainer/>)} />
+							<Route path="/account" render={() => this.renderSessionRoute(<AccountContainer/>)} />
 							<Route component={PageNotFound} />
 						</Switch>
 					</Container>

@@ -41,7 +41,7 @@ export async function getAccount(req, res) {
 		res.json({
 			status: 200,
 			user: {
-				id: req.user.dataValues.id.toString(),
+				id: req.user.id.toString(),
 				email: req.user.email || '',
 				createdAt: req.user.createdAt,
 				hasPassword: req.user.password,

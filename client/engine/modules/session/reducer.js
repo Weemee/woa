@@ -18,31 +18,31 @@ export default function(state = defualtState, action) {
 		case CHARACTER_LOGIN:
 
 		case ACCOUNT_AUTHENTICATE_SUCCESS:
-		return {
-			...state,
-			...action.payload.gameData,
-		};
+			return {
+				...state,
+				...action.payload.gameData,
+			};
 
 		case CHARACTER_ONLINE:
-		players = state.players.filter((user) => user.userID !== action.payload.userID);
-		players.push(action.payload);
+			players = state.players.filter((user) => user.userID !== action.payload.userID);
+			players.push(action.payload);
 
-		return {
-			...state,
-			players,
-		};
+			return {
+				...state,
+				players,
+			};
 
 		case CHARACTER_OFFLINE:
-		players = state.players.filter((user) => user.userID !== action.payload.userID);
+			players = state.players.filter((user) => user.userID !== action.payload.userID);
 
-		return {
-			...state,
-			players,
-		};
+			return {
+				...state,
+				players,
+			};
 
 		case CHARACTER_REMOTE_LOGOUT:
 		case CHARACTER_LOGOUT:
-		return defualtState;
+			return defualtState;
 	}
 
 	return state;

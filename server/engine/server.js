@@ -37,8 +37,8 @@ class Server {
 		this.version = this.config.server.serverVersion;
 		console.log(this.version);
 
-		await this.characterFacade.init();
 		await this.inputFacade.init();
+		await this.characterFacade.init();
 
 		this.setupServerTimers();
 

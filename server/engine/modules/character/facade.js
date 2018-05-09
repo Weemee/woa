@@ -59,11 +59,24 @@ export default class CharacterFacade {
 		});
 	}
 
+	updateAllClients(property = null) {
+		this.characters.forEach((character) => {
+			const characterData = character.exportToClient();
+
+			this.Server.socketFacade.dispatchToUser(character.userID, {
+				type: CHARACTER_UPDATE,
+				payload: property ? {[property]: characterData[property]} : characterData,
+			});
+		});
+	}
+
 	get(userID) {
 		if(!userID) {
 			return null;
 		}
-
+		console.log('Getting character: ' + userID);
+		// this.characters.find((obj) => obj.userID === userID)
+		// this.characters.find((obj) => obj.userID === character.userID)
 		return this.characters.find((obj) => obj.userID === userID) || null;
 	}
 
@@ -74,6 +87,7 @@ export default class CharacterFacade {
 			return;
 		}
 
+		console.log('Dispatch character online');
 		this.Server.socketFacade.dispatchToRoom('server', {
 			type: CHARACTER_ONLINE,
 			payload: {
@@ -84,11 +98,12 @@ export default class CharacterFacade {
 	}
 
 	dispatchRemoveFromCharacterList(userID) {
+		console.log('Dispatch character offline');
 		this.Server.socketFacade.dispatchToRoom('server', {
 			type: CHARACTER_OFFLINE,
 			payload: {
 				userID,
-			}
+			},
 		});
 	}
 
@@ -107,6 +122,7 @@ export default class CharacterFacade {
 				return result;
 			});
 
+			console.log('Dispatch character list');
 			this.Server.socketFacade.dispatchToSocket(socket, {
 				type: CHARACTER_LIST,
 				payload: characters.map((obj) => {
@@ -121,18 +137,14 @@ export default class CharacterFacade {
 	}
 
 	async manage(character) {
+		console.log('Manage::Character ID: ' + character.userID);
 		const wasLoggedIn = this.Server.socketFacade.clearTimer(character.userID);
+		console.log('Manage::Logged in: ' + wasLoggedIn);
 		const existingCharacter = this.characters.find((obj) => obj.userID === character.userID);
+		console.log('Manage::Existing character: ' + existingCharacter);
 
 		if (wasLoggedIn && existingCharacter) {
-			await this.remove(character.userID);
-		}
-
-		if (wasLoggedIn) {
-			await this.remove(character.userID);
-		}
-
-		if (existingCharacter) {
+			console.log('WasLogged & Existing');
 			await this.remove(character.userID);
 		}
 
@@ -140,6 +152,10 @@ export default class CharacterFacade {
 		this.dispatchUpdateCharacterList(character.userID);
 
 		const socket = this.Server.socketFacade.get(character.userID);
+		this.Server.socketFacade.dispatchToRoom(
+			'0',
+			this.joinedServer(character)
+		);
 
 		try {
 			socket.join(character);
@@ -161,11 +177,18 @@ export default class CharacterFacade {
 			this.Server.onError(err);
 		}
 
+		this.Server.socketFacade.dispatchToRoom('0', {
+			type: CHARACTER_LEFT_SERVER,
+			payload: character.userID,
+		});
+
 		this.characters = this.characters.filter((obj) => obj.userID !== userID);
+		console.log('Remove character: ' + userID);
 		this.dispatchRemoveFromCharacterList(userID);
 	}
 
 	getOnline() {
+		console.log('Get online');
 		return this.characters.map((character) => ({
 				name: character.name,
 				userID: character.userID,
@@ -180,6 +203,7 @@ export default class CharacterFacade {
 			return null;
 		}
 
+		console.log('Dispatch character load');
 		const newCharacter = new Character(this.Server, character);
 
 		return newCharacter;
@@ -248,7 +272,7 @@ export default class CharacterFacade {
 		const character = this.get(userID);
 
 		if(!character) {
-			throw new Error('No character found online, matching userID ${userID}');
+			throw new Error(`No character found online, matching userID ${userID}`);
 		}
 
 		this.Server.log.info(`Saving characters ${userID}`);
@@ -259,12 +283,26 @@ export default class CharacterFacade {
 	}
 
 	async databaseSave(character) {
-		const dbCharacter = {
+		const dbSaveChar = {
 			userID: character.userID,
 			name: character.name,
 		};
 
-		return;
+		return dbSaveChar;
+	}
+
+	getServerPlayerList(map, x = null, y = null, z = null, dispatch = false) {
+		let players;
+
+		if(!dispatch) {
+			return players;
+		}
+
+		return players
+			.filter((obj) => obj.userID !== ignore)
+			.map((character) => {
+				return this.joinedServer(character, false);
+			});
 	}
 
 	joinedServer(character, action = true) {
@@ -276,16 +314,34 @@ export default class CharacterFacade {
 		if (!action) {
 			return details;
 		}
-		// joinedServer(details)
-		return;
+
+		return joinedServer(details);
 	}
 
 	removeFromServer(position, character) {
+		const playersOnServer = this.locations[`${position.map}_${position.x}_${position.y}_${position.z}`];
 
+		if (playersOnServer) {
+			const i = playersOnServer.findIndex((char) => char.userID === character.userID);
+
+			if (i !== -1) {
+				playersOnServer.splice(i, 1);
+			}
+		}
 	}
 
 	addToServer(position, character) {
+		const location = `${position.map}_${position.x}_${position.y}_${position.z}`;
 
+		if (!this.locations[location]) {
+			this.locations[location] = [];
+		}
+
+		if (this.locations[location].findIndex((char) => char.userID === character.userID) !== -1) {
+			return;
+		}
+
+		this.locations[location].push(character);
 	}
 
 	getServerData() {

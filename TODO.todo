@@ -1,7 +1,6 @@
 Bugs: @Bugs
 	☐	Fix logout on live
-	√	Fix character login (not logging out/changing) @done (18-05-07 01:25)
-	☐	Fix complete logout after browser closing, character stuck in limbo. Hint: Logout button works, trigger same function and it should resolve it all. Also disconnect timer not working (I think).
+	☐	Fix complete logout after browser closing, character stuck in limbo. Hint: Logout button works, trigger same function and it should resolve it all. Also disconnect timer not working (I think). Solution? character.dataValues.userID
 
 Main functions:
 	☐	Login @high @Login
@@ -15,6 +14,7 @@ Main functions:
 	☐	Update @high @Update
 	☐	Theme system @Themes
 	☐	UI @UI
+	☐	Securtiy @Security
 
 Login: @Login
 	☐	@low Methods
@@ -90,6 +90,19 @@ Update: @Update
 
 Database: @DB
 
+Security: @Security
+	https://expressjs.com/en/advanced/developing-template-engines.html
+	☐	Express security
+		☐	TLS
+		☐	Cookies
+		☐	Session
+		☐	NPM security
+		☐	Node checklist
+			☐
+		☐	Other
+			☐	Rate-limiting, loopback.io, express-limiter, Strongloop
+			☐	CSRF, csurf
+
 Theme system: @Themes
 	☐	Theme elements
 		☐	Main
@@ -113,11 +126,15 @@ UI: @UI
 		☐	Make it look like the mock-up
 		☐	Create the dropdown fields for login/register
 Other: @Other
-	☐	Improve error handling
+	☐	Improve logging
+	☐	Move db to global import, not "from '../../../api/models' " but "from 'libs/db' "
 
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+	√	Move utils to global import, not "from '../../../libs/utils' " but "from 'libs/utils' " @done (18-05-09 12:18) @project(Other)
+	√	Improve error handling @done (18-05-09 11:50) @project(Other)
+	√	Fix character login (not logging out/changing) @done (18-05-07 01:25) @project(Bugs)
 	√	Database @DB @done (18-05-06 18:15) @project(Main functions)
 	√	Create character @done (18-05-06 18:14) @project(Play)
 	√	Choose character (drop list) @done (18-05-06 18:14) @project(Play)

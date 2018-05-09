@@ -102,13 +102,11 @@ class Character extends React.Component {
 							{this.renderContent()}
 						</Col>
 
-						<Row>
 							<Col xs="6" sm="3">
-							{
-								!this.props.characterList &&
-								<p>Loading character list...</p>
-							}
-							<CardDeck>
+								{
+									!this.props.characterList &&
+									<p>Loading character list...</p>
+								}
 								{
 									this.props.characterList &&
 									this.props.characterList.map((obj, index) => <CharacterCard key={index} onSelect={this.selectCharacter} character={obj} />)
@@ -121,9 +119,8 @@ class Character extends React.Component {
 									this.state.create &&
 									<Button color='red' block={true} onClick={this.toggle}>Back</Button>
 								}
-							</CardDeck>
+
 							</Col>
-						</Row>
 					</Row>
 				</Container>
 			</React.Fragment>

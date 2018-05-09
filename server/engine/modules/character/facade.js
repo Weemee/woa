@@ -136,15 +136,28 @@ export default class CharacterFacade {
 		}
 	}
 
-	async manage(character) {
-		console.log('Manage::Character ID: ' + character.userID);
-		const wasLoggedIn = this.Server.socketFacade.clearTimer(character.userID);
-		console.log('Manage::Logged in: ' + wasLoggedIn);
-		const existingCharacter = this.characters.find((obj) => obj.userID === character.userID);
-		console.log('Manage::Existing character: ' + existingCharacter);
+	replace(key, value) {
+		if (typeof value === 'string') {
+			return undefined;
+		}
 
-		if (wasLoggedIn && existingCharacter) {
-			console.log('WasLogged & Existing');
+		return value;
+	}
+	/*
+		const derpa = Object.keys(character).length;
+
+		for (let i = 0; i < derpa; i++) {
+			console.log('Manage::Character ID: ' + Object.entries(character)[i]);
+		}
+	 */
+
+	async manage(character) {
+		//const wasLoggedIn = this.Server.socketFacade.clearTimer(character.userID);
+		//console.log('Manage::Logged in: ' + wasLoggedIn);
+		const existingCharacter = this.characters.find((obj) => obj.userID === character.userID);
+
+		if (existingCharacter) {
+			console.log('Manage::Existing character: ' + character.loggedIn);
 			await this.remove(character.userID);
 		}
 
@@ -153,12 +166,12 @@ export default class CharacterFacade {
 
 		const socket = this.Server.socketFacade.get(character.userID);
 		this.Server.socketFacade.dispatchToRoom(
-			'0',
+			character.getSessionID(),
 			this.joinedServer(character)
 		);
 
 		try {
-			socket.join(character);
+			socket.join(character.getSessionID());
 		} catch (err) {
 			this.Server.onError(err, socket);
 		}
@@ -177,13 +190,19 @@ export default class CharacterFacade {
 			this.Server.onError(err);
 		}
 
-		this.Server.socketFacade.dispatchToRoom('0', {
+		this.Server.socketFacade.dispatchToRoom(character.getSessionID(), {
 			type: CHARACTER_LEFT_SERVER,
 			payload: character.userID,
 		});
 
 		this.characters = this.characters.filter((obj) => obj.userID !== userID);
 		console.log('Remove character: ' + userID);
+
+		const derpa = Object.keys(this.characters).length;
+
+		for (let i = 0; i < derpa; i++) {
+			console.log('Manage::Characters:   ' + Object.entries(this.characters)[i]);
+		}
 		this.dispatchRemoveFromCharacterList(userID);
 	}
 
@@ -206,6 +225,8 @@ export default class CharacterFacade {
 		console.log('Dispatch character load');
 		const newCharacter = new Character(this.Server, character);
 
+		console.log(newCharacter);
+
 		return newCharacter;
 	}
 
@@ -227,11 +248,13 @@ export default class CharacterFacade {
 					}
 				}]
 			},
+			//raw: true
 		}).catch(err => {
 			if(err) {
 				return 'Error load character.';
 			}
 		});
+		console.log(newCharacter);
 		return newCharacter;
 	}
 

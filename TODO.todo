@@ -2,6 +2,23 @@ Bugs: @Bugs
 	☐	Fix logout on live
 	☐	Fix complete logout after browser closing, character stuck in limbo. Hint: Logout button works, trigger same function and it should resolve it all. Also disconnect timer not working (I think). Solution? character.dataValues.userID
 
+	LOG: …ket/facade.js:152:19
+  New action
+  { type: 'ACCOUNT_LOGOUT' }
+ACCOUNT/CHARACTER LOGOUT
+Disconnecting
+LOG: …ket/facade.js:106:20
+  Socket disconnected
+  { userID: '66' }
+Disconnect account logout
+Getting character: 66
+LOG: …ket/facade.js:152:19
+  New action
+  { type: 'CHARACTER_LOGOUT' }
+Client dispatch none auth
+
+195 character facade
+
 Main functions:
 	☐	Login @high @Login
 	☐	Logout @high @Logout

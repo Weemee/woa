@@ -60,6 +60,8 @@ export default class SocketFacade extends EventEmitter
 
 	async logoutOutSession(newSocket, userID) {
 		let socket;
+		console.log('Socket::logOutSession');
+
 
 		try {
 			socket = this.get(userID);
@@ -67,7 +69,7 @@ export default class SocketFacade extends EventEmitter
 			return;
 		}
 
-		console.log('Disconnect logout session');
+		console.log('Socket::logOutSession, disconnecting...');
 		await this.onDisconnect(socket, true);
 
 		this.dispatchToSocket(socket, {
@@ -77,53 +79,55 @@ export default class SocketFacade extends EventEmitter
 	}
 
 	add(socket) {
-		console.log('Socket add');
+		console.log('Socket::add');
 		this.clients[socket.user.userID] = socket;
 	}
 
 	remove(userID) {
-		console.log('Socket remove');
+		console.log('Socket::remove');
 		delete this.clients[userID];
 	}
 
 	clearTimer(userID) {
-		console.log('Clearing timer');
+		console.log('Socket::clearTimer, clearing timer...' + userID);
 		if (this.timers[userID]) {
 			clearTimeout(this.timers[userID]);
 			delete this.timers[userID];
+			console.log('Socket::clearTimer, timer cleared!');
 			return true;
 		}
-
+		console.log('Socket::clearTimer, no timer to clear.');
 		return false;
 	}
 
 	async onDisconnect(socket, forced = false, accountLogout = false) {
 		const user = socket.user ? {...socket.user} : null;
-		console.log('Disconnecting');
+		console.log('Socket::onDisconnect\n');
+
+		console.log(socket.user);
 
 		//If the user is logged in, set a timer for when we remove them from the server.
 		if (user) {
-			this.Server.log.info('Socket disconnected', user);
-
 			// leave the server channel for server-wide events
 			socket.leave('server');
 
 			if (accountLogout) {
-				console.log('Disconnect account logout');
+				console.log('Socket::onDisconnect, accountLogout!');
 				socket.user = null;
 			}
 
 			if (forced) {
-				console.log('Disconnect forced');
+				console.log('Socket::onDisconnect, forced!');
 				return this.emit('disconnect', user);
 			}
 
 
+			console.log('Socket::onDisconnect, no forced!\n');
 			//Temp save, then save as timed out
 			try {
 				if (!this.Server.characterFacade.get(user.userID)) {
+					console.log('Socket::onDisconnect, no character with: ' + user.userID);
 					return;
-					console.log('No character with: ' + user.userID);
 				}
 
 				await this.Server.characterFacade.save(user.userID);
@@ -131,38 +135,42 @@ export default class SocketFacade extends EventEmitter
 				this.Server.onError(err);
 			}
 
-			console.log('Disconnect start timer');
+			console.log('Socket::onDisconnect, start timer! ' + user.userID);
 			this.timers[user.userID] = setTimeout(() =>{
 				this.emit('disconnect', user);
 			}, this.Server.config.server.logoutTimer);
-			console.log(this.timers[user.userID]);
+			console.log('Socket::onDisconnect, timer: ' + this.timers[user.userID]);
 		}
 	}
 
 	onClientDispatch(socket, action) {
 		//Make sure the actions has an action type and payload.
+		console.log('Socket::onClientDispatch');
 		if (!action || !action.type) {
+			console.log('Socket::onClientDispatch, no action or action.type!');
 			action.type = null;
 		}
 
 		if (!action.payload) {
+			console.log('Socket::onClientDispatch, no payload!');
 			action.payload = {};
 		}
 
 		this.Server.log.info('New action', {type: action.type});
 		//Make sure actions have the right composition
 		if (!action.type) {
+			console.log('Socket::onClientDispatch, wrong action.type!');
 			return;
 		}
 
 		//None authenticated dispatches
 		if (!socket.user && action.type !== ACCOUNT_AUTHENTICATE) {
-			console.log('Client dispatch none auth');
+			console.log('Socket::onClientDispatch, no auth, dispatching???');
 			return;
 		}
 
 		if ([ACCOUNT_LOGOUT, CHARACTER_LOGOUT].includes(action.type)) {
-			console.log('ACCOUNT/CHARACTER LOGOUT');
+			console.log('Socket::onClientDispatch, ACCOUNT_LOGOUT, CHARACTER_LOGOUT: ' + action.type);
 			this.onDisconnect(socket, false, action.type === ACCOUNT_LOGOUT);
 		}
 		//Send the dispatch with listeners
@@ -170,20 +178,22 @@ export default class SocketFacade extends EventEmitter
 	}
 
 	dispatchToSocket(socket, action) {
-		console.log('Dispatch to socket');
+		console.log('Socket::dispatchToSocket, socket: ' + socket + ' & action: ' + action);
 		socket.emit('dispatch', action);
 	}
 
 	dispatchToUser(userID, action) {
+		console.log('Socket::dispatchToUser, userID: ' + userID + ' & action: ' + action);
 		if (!this.clients[userID]) {
+			console.log('Socket::dispatchToUser, no user...');
 			return;
 		}
 
-		console.log('Dispatch to user');
 		this.clients[userID].emit('dispatch', action);
 	}
 
 	dispatchToRoom(roomID, action) {
+		console.log('Socket::dispatchToRoom, roomID: ' + roomID + ' & action: ' + action);
 		if (!roomID) {
 			throw new Error('Missing roomID in SocketManager::dispatchToRoom');
 		}
@@ -192,15 +202,18 @@ export default class SocketFacade extends EventEmitter
 	}
 
 	dispatchToServer(action) {
+		console.log('Socket::dispatchToServer, action: ' + action);
 		this.io.emit('dispatch', action);
 	}
 
 	userJoinRoom(userID, roomID) {
+		console.log('Socket::userJoinRoom, userID: ' + userID + ' & roomID: ' + roomID);
 		const socket = this.get(userID);
 		socket.join(roomID);
 	}
 
 	userLeaveRoom(userID, roomID) {
+		console.log('Socket::userLeaveRoom, userID: ' + userID + ' & roomID: ' + roomID);
 		const socket = this.get(userID);
 		socket.leave(roomID);
 	}

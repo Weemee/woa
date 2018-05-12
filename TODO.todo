@@ -1,23 +1,5 @@
 Bugs: @Bugs
-	☐	Fix logout on live
-	☐	Fix complete logout after browser closing, character stuck in limbo. Hint: Logout button works, trigger same function and it should resolve it all. Also disconnect timer not working (I think). Solution? character.dataValues.userID
-
-	LOG: …ket/facade.js:152:19
-  New action
-  { type: 'ACCOUNT_LOGOUT' }
-ACCOUNT/CHARACTER LOGOUT
-Disconnecting
-LOG: …ket/facade.js:106:20
-  Socket disconnected
-  { userID: '66' }
-Disconnect account logout
-Getting character: 66
-LOG: …ket/facade.js:152:19
-  New action
-  { type: 'CHARACTER_LOGOUT' }
-Client dispatch none auth
-
-195 character facade
+	☐	Fix temp fix: CharacterFacade::save::remove::manage sometimes gets typeof 'string'. Make sure it's a number being sent.
 
 Main functions:
 	☐	Login @high @Login
@@ -145,10 +127,13 @@ UI: @UI
 Other: @Other
 	☐	Improve logging
 	☐	Move db to global import, not "from '../../../api/models' " but "from 'libs/db' "
+	☐	Remove all debugging, aka, 'console.log'.......
 
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+	√	Fix logout on live @done (18-05-12 17:27) @project(Bugs)
+	√	Fix complete logout after browser closing, character stuck in limbo. TEMP FIX @done (18-05-12 17:26) @project(Bugs)
 	√	Move utils to global import, not "from '../../../libs/utils' " but "from 'libs/utils' " @done (18-05-09 12:18) @project(Other)
 	√	Improve error handling @done (18-05-09 11:50) @project(Other)
 	√	Fix character login (not logging out/changing) @done (18-05-07 01:25) @project(Bugs)

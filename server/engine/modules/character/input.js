@@ -36,6 +36,7 @@ async function inputSelectCharacter(socket, character, input, params, inputObjec
 
 	try {
 
+		console.log('Character::Input::inputSelectCharacter, character to load: ' + characterToLoad);
 		await Server.characterFacade.manage(characterToLoad);
 
 		Server.socketFacade.dispatchToSocket(socket, {

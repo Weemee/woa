@@ -3,7 +3,7 @@
 	"version": "0.0.81",
 	"description": "Server for World of Atoms",
 	"scripts": {
-		"start": "cross-env NODE_ENV=development nodemon -L ./engine --inspect --exec babel-node --presets env,stage-2",
+		"start": "cross-env NODE_ENV=development nodemon -L ./engine --exec babel-node --presets env,stage-2",
 		"serve": "cross-env NODE_ENV=production node distribution/index.js",
 		"postinstall": "babel-node libs/scripts/postinstall.js --presets env,stage-2",
 		"build:engine": "cross-env NODE_ENV=production babel engine --out-dir distribution --source-maps cheap-module-source-map",

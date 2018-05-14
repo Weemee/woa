@@ -1,0 +1,10 @@
+{
+	"id": "alpha",
+	"name": "Alpha",
+	"gridSize": {
+		"x": 10,
+		"y": 10,
+		"z": 10
+	},
+	"universes": []
+}

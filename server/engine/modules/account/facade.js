@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-// user specific imports
+// account specific imports
 import {
 	ACCOUNT_AUTHENTICATE,
 	ACCOUNT_AUTHENTICATE_ERROR,
@@ -41,21 +41,21 @@ export default class UserFacade {
 				});
 			}
 
-			let user;
+			let account;
 			let userID;
 
 			try {
-				user = await db.user.findOne({where: {id: decoded.id, sessionToken: decoded.sessionToken}});
+				account = await db.account.findOne({where: {id: decoded.id, sessionToken: decoded.sessionToken}});
 
-				if (!user) {
+				if (!account) {
 					return this.Server.socketFacade.dispatchToSocket(socket, {
 						type: ACCOUNT_AUTHENTICATE_ERROR,
 						payload: 'Invalid authentication token. Please try again.',
 					});
 				}
 
-				console.log('Logs: ' + user.dataValues.password.toString() + ' & ' + user.password.toString() + ' & ' + user.toString() + ' & ' + user.dataValues.toString());
-				userID = user.dataValues.id.toString();
+				console.log('Logs: ' + account.dataValues.password.toString() + ' & ' + account.password.toString() + ' & ' + account.toString() + ' & ' + account.dataValues.toString());
+				userID = account.dataValues.id.toString();
 			} catch (err) {
 				this.Server.onError(err, socket);
 			}
@@ -67,8 +67,8 @@ export default class UserFacade {
 				this.Server.onError(err, socket);
 			}
 
-			// Add the authenticated user to the socket object
-			socket.user = {
+			// Add the authenticated account to the socket object
+			socket.account = {
 				userID,
 			};
 

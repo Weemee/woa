@@ -1,0 +1,9 @@
+{
+	"id": "beta",
+	"name": "Beta",
+	"gridSize": {
+		"x": 10,
+		"y": 10,
+		"z": 10
+	}
+}

@@ -65,7 +65,7 @@ export default class InputFacade {
 			return this.Server.eventToSocket(socket, 'error', `Input ${input} is invalid.`);
 		}
 
-		const character = this.Server.characterFacade.get(socket.user.userID);
+		const character = this.Server.characterFacade.get(socket.account.userID);
 
 		const onServerInput = typeof this.inputs[input].onServerInput === 'undefined' ? true : this.inputs[input].onServerInput;
 
@@ -196,7 +196,7 @@ export default class InputFacade {
 						break;
 
 						case 'character':
-							temp = await this.Server.characterFacade.load(socket.user.userID, msgPar.toLowerCase());
+							temp = await this.Server.characterFacade.load(socket.account.userID, msgPar.toLowerCase());
 							//404
 							if(!temp) {
 								return `No character named ${param.name} found.`;

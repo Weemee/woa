@@ -24,7 +24,7 @@ export default function(state = defualtState, action) {
 			};
 
 		case CHARACTER_ONLINE:
-			players = state.players.filter((user) => user.userID !== action.payload.userID);
+			players = state.players.filter((account) => account.userID !== action.payload.userID);
 			players.push(action.payload);
 
 			return {
@@ -33,7 +33,7 @@ export default function(state = defualtState, action) {
 			};
 
 		case CHARACTER_OFFLINE:
-			players = state.players.filter((user) => user.userID !== action.payload.userID);
+			players = state.players.filter((account) => account.userID !== action.payload.userID);
 
 			return {
 				...state,

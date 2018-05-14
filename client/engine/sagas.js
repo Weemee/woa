@@ -255,7 +255,7 @@ function* getAccountDetials(action) {
 		return;
 	}
 
-	yield put(saveAccountDetails(response.data.user));
+	yield put(saveAccountDetails(response.data.account));
 }
 
 function* onAuthAttempt() {

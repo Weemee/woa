@@ -63,7 +63,7 @@ export default function(app, webServerAPI, config) {
 		.patch(isAuthenticated, updateAccount);
 
 	// Authentication routes
-	// user/password authentication
+	// account/password authentication
 	routes.route('/authentication')
 		.get(getAuthList)
 		.post(authenticate);

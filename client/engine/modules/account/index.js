@@ -23,13 +23,13 @@ class Account extends React.Component {
 		}
 
 		this.props.getStrategies();
-		this.props.getAccountDetails(this.props.user.id, this.props.authToken);
+		this.props.getAccountDetails(this.props.account.id, this.props.authToken);
 	}
 
 	componentDidUpdate() {
-		if (this.state.keyToken !== this.props.user.keyToken) {
+		if (this.state.keyToken !== this.props.account.keyToken) {
 			this.setState({
-				keyToken: this.props.user.keyToken,
+				keyToken: this.props.account.keyToken,
 			});
 		}
 	}
@@ -67,7 +67,7 @@ class Account extends React.Component {
 function mapStateToProps(state) {
 	return {
 		strategies: state.auth.strategies || [],
-		user: state.account.user,
+		account: state.account.account,
 		authToken: state.account.authToken,
 		loggedIn: state.account.loggedIn,
 	};

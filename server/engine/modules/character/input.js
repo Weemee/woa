@@ -8,7 +8,7 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 	let name = params[0];
 
 	try{
-		const newCharacter = await Server.characterFacade.create(socket.user.userID, name);
+		const newCharacter = await Server.characterFacade.create(socket.account.userID, name);
 
 		Server.socketFacade.dispatchToSocket(socket, {
 			type: CHARACTER_CREATE_SUCCESS,
@@ -32,7 +32,7 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 
 async function inputSelectCharacter(socket, character, input, params, inputObject, Server) {
 	const characterToLoad = params[0];
-	await Server.socketFacade.logoutOutSession(socket, socket.user.userID);
+	await Server.socketFacade.logoutOutSession(socket, socket.account.userID);
 
 	try {
 

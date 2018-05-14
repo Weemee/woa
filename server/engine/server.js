@@ -3,8 +3,9 @@ import child_process from 'child_process';
 
 import SocketFacade from './modules/socket/facade';
 import CharacterFacade from './modules/character/facade';
-import UserFacade from './modules/user/facade';
+import UserFacade from './modules/account/facade';
 import InputFacade from './modules/input/facade';
+import ServerMapFacade from './modules/serverMap/facade';
 
 import {newEvent} from './actions';
 
@@ -27,6 +28,7 @@ class Server {
 		this.userFacade = new UserFacade(this);
 		this.characterFacade = new CharacterFacade(this);
 		this.inputFacade = new InputFacade(this);
+		this.serverMapFacade = new ServerMapFacade(this);
 
 		if (autoIni) {
 			this.init();
@@ -39,6 +41,7 @@ class Server {
 
 		await this.inputFacade.init();
 		await this.characterFacade.init();
+		await this.serverMapFacade.init();
 
 		this.setupServerTimers();
 
@@ -55,17 +58,17 @@ class Server {
 		}
 	}
 
-	onError(err, user) {
+	onError(err, account) {
 		this.log.error(err);
 
-		if(!user) {
+		if(!account) {
 			return;
 		}
 
-		if(typeof user === 'string') {
-			this.eventToUser(user, 'error', 'Something went wrong user! Please try again in a moment.');
+		if(typeof account === 'string') {
+			this.eventToUser(account, 'error', 'Something went wrong account! Please try again in a moment.');
 		} else {
-			this.eventToSocket(user, 'error', 'Something went wrong socket. Please try again in a moment.');
+			this.eventToSocket(account, 'error', 'Something went wrong socket. Please try again in a moment.');
 		}
 	}
 
@@ -79,12 +82,12 @@ class Server {
 	}
 
 	eventToUser(userID, type, message) {
-		this.log.debug('User event', {userID, type, message});
+		this.log.debug('account event', {userID, type, message});
 		this.socketFacade.dispatchToUser(userID, newEvent(type, message));
 	}
 
 	eventToSocket(socket, type, message) {
-		this.log.debug('Socket event', {socket: (socket.user || null), type, message});
+		this.log.debug('Socket event', {socket: (socket.account || null), type, message});
 		this.socketFacade.dispatchToSocket(socket, newEvent(type, message));
 	}
 

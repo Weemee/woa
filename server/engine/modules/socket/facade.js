@@ -32,7 +32,7 @@ export default class SocketFacade extends EventEmitter
 		const socket = this.clients[userID];
 
 		if (!socket) {
-			throw new Error(`No socket found for user: ${userID}`);
+			throw new Error(`No socket found for account: ${userID}`);
 		}
 
 		return socket;
@@ -80,7 +80,7 @@ export default class SocketFacade extends EventEmitter
 
 	add(socket) {
 		console.log('Socket::add');
-		this.clients[socket.user.userID] = socket;
+		this.clients[socket.account.userID] = socket;
 	}
 
 	remove(userID) {
@@ -101,45 +101,45 @@ export default class SocketFacade extends EventEmitter
 	}
 
 	async onDisconnect(socket, forced = false, accountLogout = false) {
-		const user = socket.user ? {...socket.user} : null;
+		const account = socket.account ? {...socket.account} : null;
 		console.log('Socket::onDisconnect\n');
 
-		console.log(socket.user);
+		console.log(socket.account);
 
-		//If the user is logged in, set a timer for when we remove them from the server.
-		if (user) {
+		//If the account is logged in, set a timer for when we remove them from the server.
+		if (account) {
 			// leave the server channel for server-wide events
 			socket.leave('server');
 
 			if (accountLogout) {
 				console.log('Socket::onDisconnect, accountLogout!');
-				socket.user = null;
+				socket.account = null;
 			}
 
 			if (forced) {
 				console.log('Socket::onDisconnect, forced!');
-				return this.emit('disconnect', user);
+				return this.emit('disconnect', account);
 			}
 
 
 			console.log('Socket::onDisconnect, no forced!\n');
 			//Temp save, then save as timed out
 			try {
-				if (!this.Server.characterFacade.get(user.userID)) {
-					console.log('Socket::onDisconnect, no character with: ' + user.userID);
+				if (!this.Server.characterFacade.get(account.userID)) {
+					console.log('Socket::onDisconnect, no character with: ' + account.userID);
 					return;
 				}
 
-				await this.Server.characterFacade.save(user.userID);
+				await this.Server.characterFacade.save(account.userID);
 			} catch (err) {
 				this.Server.onError(err);
 			}
 
-			console.log('Socket::onDisconnect, start timer! ' + user.userID);
-			this.timers[user.userID] = setTimeout(() =>{
-				this.emit('disconnect', user);
+			console.log('Socket::onDisconnect, start timer! ' + account.userID);
+			this.timers[account.userID] = setTimeout(() =>{
+				this.emit('disconnect', account);
 			}, this.Server.config.server.logoutTimer);
-			console.log('Socket::onDisconnect, timer: ' + this.timers[user.userID]);
+			console.log('Socket::onDisconnect, timer: ' + this.timers[account.userID]);
 		}
 	}
 
@@ -164,7 +164,7 @@ export default class SocketFacade extends EventEmitter
 		}
 
 		//None authenticated dispatches
-		if (!socket.user && action.type !== ACCOUNT_AUTHENTICATE) {
+		if (!socket.account && action.type !== ACCOUNT_AUTHENTICATE) {
 			console.log('Socket::onClientDispatch, no auth, dispatching???');
 			return;
 		}
@@ -185,7 +185,7 @@ export default class SocketFacade extends EventEmitter
 	dispatchToUser(userID, action) {
 		console.log('Socket::dispatchToUser, userID: ' + userID + ' & action: ' + action);
 		if (!this.clients[userID]) {
-			console.log('Socket::dispatchToUser, no user...');
+			console.log('Socket::dispatchToUser, no account...');
 			return;
 		}
 

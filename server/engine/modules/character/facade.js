@@ -26,9 +26,9 @@ export default class CharacterFacade {
 		this.Server.log.debug('CharacterFacade::constructor Loaded');
 
 		this.Server.socketFacade.on('dispatch', this.onDispatch.bind(this));
-		this.Server.socketFacade.on('disconnect', (user) => {
+		this.Server.socketFacade.on('disconnect', (account) => {
 			console.log('Character::constructor, on disconnect');
-			this.remove(user.userID);
+			this.remove(account.userID);
 			console.log('Character::constructor, on disconnect, removed character?');
 		});
 	}
@@ -137,7 +137,7 @@ export default class CharacterFacade {
 				{
 						userID:
 						{
-							 [db.Op.like]: [socket.user.userID]
+							 [db.Op.like]: [socket.account.userID]
 						}
 				},
 			}).then(async(result) =>

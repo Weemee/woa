@@ -40,12 +40,12 @@ export async function getAccount(req, res) {
 		const identities = 'local';
 		res.json({
 			status: 200,
-			user: {
-				id: req.user.id.toString(),
-				email: req.user.email || '',
-				createdAt: req.user.createdAt,
-				hasPassword: req.user.password,
-				keyToken: req.user.keyToken,
+			account: {
+				id: req.account.id.toString(),
+				email: req.account.email || '',
+				createdAt: req.account.createdAt,
+				hasPassword: req.account.password,
+				keyToken: req.account.keyToken,
 				identities,
 			},
 		});
@@ -104,7 +104,7 @@ export function createAccount(req, res) {
 		});
 	}
 
-	db.user.findOne({
+	db.account.findOne({
 		where:
 		{
 			usr:
@@ -112,15 +112,15 @@ export function createAccount(req, res) {
 				[db.Op.like]: [req.body.username]
 			}
 		},
-	}).then(user => {
-		if(user) {
+	}).then(account => {
+		if(account) {
 			return res.status(409).json({
 				status: 409,
 				error: 'Username already in use.',
 			});
 		}
 
-		user = db.user.findOne({
+		account = db.account.findOne({
 			where:
 			{
 				email:
@@ -146,7 +146,7 @@ export function createAccount(req, res) {
 				token.update(uuid());
 			}
 
-			db.user.create({
+			db.account.create({
 				usr: req.body.username,
 				email: req.body.email,
 				password: req.body.password,
@@ -179,7 +179,7 @@ export function createAccount(req, res) {
 			}
 		});
 
-		return user;
+		return account;
 
 	}).catch(err => {
 		if(err) {

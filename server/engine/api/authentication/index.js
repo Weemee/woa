@@ -119,7 +119,7 @@ export function isAuthenticated(req, res, next) {
 			}
 		}
 
-		db.user.findOne({
+		db.account.findOne({
 		where:
 		{
 			[db.Op.and]: [
@@ -139,7 +139,7 @@ export function isAuthenticated(req, res, next) {
 		}).then(result => {
 			const userDetails = result;
 			userDetails.password = userDetails.password ? true : false;
-			req.user = userDetails;
+			req.account = userDetails;
 			next()
 		}).catch(err => {
 			return output(req, res, {
@@ -154,13 +154,13 @@ export function onAuth(req, res, data, redirect) {
 	const config = req.app.get('config');
 
 	const token = jwt.sign({
-		id: data.user.dataValues.id || null,
-		sessionToken: data.user.dataValues.sessionToken,
+		id: data.account.dataValues.id || null,
+		sessionToken: data.account.dataValues.sessionToken,
 		identity: data.identity.id || null,
 	}, req.app.get('config').protocol.signingSecret, {expiresIn: '1h'});
 
 	//Move this if statement to account action
-	if(!data.user.dataValues.keyToken) {
+	if(!data.account.dataValues.keyToken) {
 		console.log('No keyToken seen');
 		const key = randomKey(10);
 		const encodedKey = base32.encode(key);

@@ -165,7 +165,7 @@ Archive:
 	√	Move create character to a seperate instance @done (18-05-05 17:04) @project(UI / Re-design character create)
 	√	Show account information @done (18-05-05 15:14) @project(Account)
 	√	Create character @done (18-04-24 14:59) @project(Character)
-	√	user @done (18-04-24 13:41) @project(Database)
+	√	account @done (18-04-24 13:41) @project(Database)
 	√	password hash @done (18-04-23 19:21) @project(Database)
 	√	accountLevel @done (18-04-23 19:21) @project(Database)
 	√	Hash @done (18-04-23 19:21) @project(Register)

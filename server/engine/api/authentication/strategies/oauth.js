@@ -25,7 +25,7 @@ export default function setup(passport, details, loggerObj) {
 
 function Auth(accessToken, refreshToken, profile, cb) {
 	return cb(null, {
-		identity, 
-		user: {},
+		identity,
+		account: {},
 	});
 }

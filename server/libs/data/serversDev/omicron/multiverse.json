@@ -1,0 +1,9 @@
+{
+	"id": "omicron",
+	"name": "Omicron",
+	"gridSize": {
+		"x": 10,
+		"y": 10,
+		"z": 10
+	}
+}

@@ -18,8 +18,8 @@ export default function(state = defaultState, action) {
 		case ACCOUNT_DETAILS:
 		return {
 			...state,
-			user: {
-				...state.user,
+			account: {
+				...state.account,
 				...action.payload,
 			},
 		};
@@ -30,7 +30,7 @@ export default function(state = defaultState, action) {
 		return {
 			authToken: action.payload.authToken,
 			loggedIn: true,
-			user: {
+			account: {
 				identities: [],
 				...decoded,
 			},

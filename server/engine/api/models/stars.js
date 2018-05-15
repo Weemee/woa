@@ -4,34 +4,42 @@ import bcrypt from 'bcrypt';
 
 module.exports = (sequelize, DataTypes) =>
 {
-	const Universe = sequelize.define('universes',
+	const Star = sequelize.define('stars',
 	{
-		multiverseID:
+		solarsystemID:
 		{
 			type: DataTypes.INTEGER,
-		}
-	});
-
-	const Multiverse = sequelize.define('multiverses',
-	{
+		},
 		name:
 		{
 			type: DataTypes.STRING,
 		},
-		gridSizeX:
+		mass:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
 		},
-		gridSizeY:
+		temperature:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
 		},
-		gridSizeZ:
+		radius:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+		},
+		ownedBy:
+		{
+			type: DataTypes.STRING,
+			defaultValue: 'system',
+		},
+		discoveredBy:
+		{
+			type: DataTypes.STRING,
+			defaultValue: 'undiscovered',
+		},
+		createdBy:
+		{
+			type: DataTypes.STRING,
+			defaultValue: 'system',
 		},
 		createdAt:
 		{
@@ -46,8 +54,5 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	Multiverse.hasMany(Universe);
-	Universe.belongsTo(Multiverse, {foreignKey: 'multiverseID', targetKey: 'id'});
-
-	return Multiverse;
+	return Star;
 }

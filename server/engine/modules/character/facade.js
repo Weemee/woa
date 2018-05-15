@@ -508,7 +508,9 @@ export default class CharacterFacade {
 
 	getServerData() {
 		console.log('Character::getServerData');
+
 		return {
+			serverMaps: this.Server.serverMapFacade.getList(),
 			players: this.getOnline(),
 		};
 	}

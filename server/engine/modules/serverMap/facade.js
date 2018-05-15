@@ -13,7 +13,10 @@ import db from '../../api/models';
 export default class ServerMapFacade {
 	constructor(Server) {
 		this.Server = Server;
-		this.serverMaps = {};
+
+		this.loadedData = [];
+		this.serverMaps = [];
+
 		this.Server.socketFacade.on('dispatch',
 			this.onDispatch.bind(this)
 		);
@@ -25,69 +28,81 @@ export default class ServerMapFacade {
 	}
 
 	async loadAllServerMaps() {
-		const temp = this.loadMultiverse();
-		console.log(temp);
-		this.loadUniverse();
-		this.loadSupercluster();
-		this.loadLocalcluster();
-		this.loadInterstellar();
-		this.loadGalaxy();
-		this.loadSolarsystem();
-		this.loadStars();
-		this.loadPlanets();
-
-		this.generateServerMap();
+		const firstLoad = await this.generateServerMap();
+		//console.log('Loaded data: ', JSON.stringify(this.loadedData.find((obj) => obj.id === 3), null, 2));
+		for (let i = 0; i < firstLoad.length; i++) {
+			this.loadedData[i.id] = new ServerMap(this.Server, firstLoad[i]);
+			this.serverMaps.push(this.loadedData[i.id]);
+		}
+		console.log('\n', this.getList());
 	}
 
-	async loadMultiverse() {
+	async generateServerMap() {
+		//Apparently I can do this...
+		let objects;
 		try {
-			const managedCharacters = await db.multiverses.all().then(async(result) =>
+			objects = await db.multiverses.findAll({
+				include: [
+					{
+						model: db.universes,
+						include: [
+							{
+								model: db.superclusters,
+								include: [
+									{
+										model: db.localclusters,
+										include: [
+											{
+												model: db.interstellars,
+												include: [
+													{
+														model: db.galaxies,
+														include: [
+															{
+																model: db.solarsystems,
+																include: [
+																	{
+																		model: db.stars,
+																	},
+																	{
+																		model: db.planets,
+																	}
+																]
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				],
+				order: [
+				['id', 'ASC']
+				]
+			},
+			{
+				raw: true
+			}).then(result =>
 			{
 				return result;
+			}).catch (err => {
+				console.log('\nFailed getting server map!\n', err);
+				return err;
 			});
 
 		} catch(err) {
 			this.Server.onError(err);
 		}
+		return objects;
 	}
 
-	async loadUniverse() {
+	getByID(source, ID){
 
 	}
-
-	async loadSupercluster() {
-
-	}
-
-	async loadLocalcluster() {
-
-	}
-
-	async loadInterstellar() {
-
-	}
-
-	async loadGalaxy() {
-
-	}
-
-	async loadSolarsystem() {
-
-	}
-
-	async loadStars() {
-
-	}
-
-	async loadPlanets() {
-
-	}
-
-	generateServerMap() {
-
-	}
-
-
 
 	async load(userID, characterName) {
 		const character = await this.databaseLoad(userID, characterName);
@@ -151,7 +166,13 @@ export default class ServerMapFacade {
 	getList() {
 		const list = {};
 
-		//Add list Object
+		Object.keys(this.serverMaps).forEach((serverID) => {
+			console.log(serverID);
+			list[serverID] = {
+				name: this.serverMaps[serverID].getName(),
+				gridSize: this.serverMaps[serverID].getGrid(),
+			};
+		});
 
 		return list;
 	}

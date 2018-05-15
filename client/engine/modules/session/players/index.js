@@ -43,6 +43,7 @@ function mapStateToProps(state) {
 	return {
 		players: [...state.session.players],
 		character: state.character.selected,
+		open: state.playerUI.open,
 	};
 }
 

@@ -427,7 +427,7 @@ export default class CharacterFacade {
 
 	getServerData() {
 		return {
-			serverMaps: this.Server.serverMapFacade.getList(),
+			servers: this.Server.serverMapFacade.getList(),
 			players: this.getOnline(),
 		};
 	}

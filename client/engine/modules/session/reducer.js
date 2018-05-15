@@ -5,16 +5,24 @@ import {
 	CHARACTER_LOGOUT,
 	CHARACTER_REMOTE_LOGOUT,
 	ACCOUNT_AUTHENTICATE_SUCCESS,
+	SERVER_LIST,
 } from 'libs/constants';
 
 const defualtState = {
 	players: [],
+	servers: {},
 };
 
 export default function(state = defualtState, action) {
 	let players;
 
 	switch(action.type) {
+		case SERVER_LIST:
+			return {
+				...state,
+				servers: action.payload,
+			};
+
 		case CHARACTER_LOGIN:
 
 		case ACCOUNT_AUTHENTICATE_SUCCESS:

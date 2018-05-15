@@ -43,7 +43,7 @@ async function inputSelectCharacter(socket, character, input, params, inputObjec
 			type: CHARACTER_LOGIN,
 			payload: {
 				character: characterToLoad.exportToClient(),
-				serverData: Server.characterFacade.getServerData(),
+				gameData: Server.characterFacade.getServerData(),
 			},
 		});
 

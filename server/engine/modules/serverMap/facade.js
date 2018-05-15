@@ -78,6 +78,9 @@ export default class ServerMapFacade {
 							}
 						]
 					}
+				],
+				order: [
+					['name', 'ASC'],
 				]
 			},
 			{
@@ -109,7 +112,7 @@ export default class ServerMapFacade {
 		return null;
 	}
 
-	dispatchMapList() {
+	dispatchMapList(socket) {
 		const list = this.getList();
 
 		this.Server.socketFacade.dispatchToSocket(socket, {
@@ -127,7 +130,7 @@ export default class ServerMapFacade {
 				gridSize: this.serverMaps[serverID].getGrid(),
 			};
 		});
-
+		console.log(list);
 		return list;
 	}
 }

@@ -1,5 +1,6 @@
 import {
 	CHARACTER_GET_LIST,
+	GET_SERVER_LIST,
 } from 'libs/constants';
 
 import React from 'react';
@@ -41,6 +42,11 @@ class Character extends React.Component {
 			type: CHARACTER_GET_LIST,
 			payload: null,
 		});
+
+		this.props.socketSend({
+			type: GET_SERVER_LIST,
+			payload: null,
+		});
 	}
 
 	selectCharacter(name) {
@@ -73,6 +79,24 @@ class Character extends React.Component {
 									value={this.state.name}
 								/>
 							</FormGroup>
+							<FormGroup>
+								<Input
+									type='select'
+									onChange={(e) => {
+										this.setState({
+											location: e.target.value,
+										});
+									}}
+									value={this.state.location}
+								>
+									<option value="" defaultValue hidden>Select server</option>
+									{
+										Object.keys(this.props.serverMaps).map((serverID) => {
+											return <option key={serverID} value={`"${this.props.serverMaps[serverID].name}"`}>{this.props.serverMaps[serverID].name}</option>
+										})
+									}
+								</Input>
+							</FormGroup>
 							<Button color='blue' block={true} onClick={this.createCharacter}>Create character</Button>
 						</CardBody>
 					</Card>
@@ -81,7 +105,7 @@ class Character extends React.Component {
 		} else {
 			return (
 				<div>
-					Show character
+					Show stuff
 				</div>
 			);
 		}
@@ -137,6 +161,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
 	return {
+		serverMaps: state.session.servers,
 		socket: state.app.socket,
 		character: state.character.selected,
 		characterList: state.character.list,

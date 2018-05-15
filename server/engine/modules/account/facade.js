@@ -74,11 +74,13 @@ export default class UserFacade {
 			// Add the socket to the list of active clients
 			this.Server.socketFacade.add(socket);
 
+			const serverMaps = this.Server.serverMapFacade.getList();
+
 			return this.Server.socketFacade.dispatchToSocket(socket, {
 				type: ACCOUNT_AUTHENTICATE_SUCCESS,
 				payload: {
 					gameData: {
-						maps: null,
+						servers: serverMaps,
 					},
 				},
 			});

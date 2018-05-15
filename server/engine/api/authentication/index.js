@@ -119,7 +119,7 @@ export function isAuthenticated(req, res, next) {
 			}
 		}
 
-		db.account.findOne({
+		db.accounts.findOne({
 		where:
 		{
 			[db.Op.and]: [
@@ -140,7 +140,7 @@ export function isAuthenticated(req, res, next) {
 			const userDetails = result;
 			userDetails.password = userDetails.password ? true : false;
 			req.account = userDetails;
-			next()
+			next();
 		}).catch(err => {
 			return output(req, res, {
 				status: 401,

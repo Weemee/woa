@@ -18,10 +18,10 @@ export function setup(passport, loggerObj) {
 }
 
 function Auth(username, password, done) {
-	db.account.findOne({
+	db.accounts.findOne({
 		where:
 		{
-			usr:
+			account:
 			{
 				[db.Op.like]: [username]
 			}
@@ -31,7 +31,7 @@ function Auth(username, password, done) {
 			return done('Invalid input combination.');
 		}
 
-		const check = await db.account.verifyHash(password, result.password);
+		const check = await db.accounts.verifyHash(password, result.password);
 
 		if(!check) {
 			return done('Invalid hash.');

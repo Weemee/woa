@@ -8,6 +8,8 @@ import {
 import ServerMap from './object';
 import serverMapInputs from './inputs';
 
+import db from '../../api/models';
+
 export default class ServerMapFacade {
 	constructor(Server) {
 		this.Server = Server;
@@ -23,8 +25,69 @@ export default class ServerMapFacade {
 	}
 
 	async loadAllServerMaps() {
+		const temp = this.loadMultiverse();
+		console.log(temp);
+		this.loadUniverse();
+		this.loadSupercluster();
+		this.loadLocalcluster();
+		this.loadInterstellar();
+		this.loadGalaxy();
+		this.loadSolarsystem();
+		this.loadStars();
+		this.loadPlanets();
+
+		this.generateServerMap();
+	}
+
+	async loadMultiverse() {
+		try {
+			const managedCharacters = await db.multiverses.all().then(async(result) =>
+			{
+				return result;
+			});
+
+		} catch(err) {
+			this.Server.onError(err);
+		}
+	}
+
+	async loadUniverse() {
 
 	}
+
+	async loadSupercluster() {
+
+	}
+
+	async loadLocalcluster() {
+
+	}
+
+	async loadInterstellar() {
+
+	}
+
+	async loadGalaxy() {
+
+	}
+
+	async loadSolarsystem() {
+
+	}
+
+	async loadStars() {
+
+	}
+
+	async loadPlanets() {
+
+	}
+
+	generateServerMap() {
+
+	}
+
+
 
 	async load(userID, characterName) {
 		const character = await this.databaseLoad(userID, characterName);
@@ -69,7 +132,7 @@ export default class ServerMapFacade {
 
 	onDispatch(socket, action) {
 		switch (action.type) {
-			case SERVER_GET_LIST:
+			case GET_SERVER_LIST:
 				return this.dispatchMapList(socket, action);
 		}
 

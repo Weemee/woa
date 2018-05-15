@@ -13,14 +13,25 @@ module.exports = (sequelize, DataTypes) =>
 		gridSizeX:
 		{
 			type: DataTypes.INTEGER,
+			defaultValue: 10,
 		},
 		gridSizeY:
 		{
 			type: DataTypes.INTEGER,
+			defaultValue: 10,
 		},
 		gridSizeZ:
 		{
 			type: DataTypes.INTEGER,
+			defaultValue: 10,
+		},
+		createdAt:
+		{
+			type: DataTypes.DATE,
+		},
+		updatedAt:
+		{
+			type: DataTypes.DATE,
 		},
 	},
 	{

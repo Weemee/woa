@@ -45,7 +45,7 @@ export default class UserFacade {
 			let userID;
 
 			try {
-				account = await db.account.findOne({where: {id: decoded.id, sessionToken: decoded.sessionToken}});
+				account = await db.accounts.findOne({where: {id: decoded.id, sessionToken: decoded.sessionToken}});
 
 				if (!account) {
 					return this.Server.socketFacade.dispatchToSocket(socket, {

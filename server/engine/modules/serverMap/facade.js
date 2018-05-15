@@ -29,12 +29,11 @@ export default class ServerMapFacade {
 
 	async loadAllServerMaps() {
 		const firstLoad = await this.generateServerMap();
-		//console.log('Loaded data: ', JSON.stringify(this.loadedData.find((obj) => obj.id === 3), null, 2));
+
 		for (let i = 0; i < firstLoad.length; i++) {
 			this.loadedData[i.id] = new ServerMap(this.Server, firstLoad[i]);
 			this.serverMaps.push(this.loadedData[i.id]);
 		}
-		console.log('\n', this.getList());
 	}
 
 	async generateServerMap() {
@@ -79,9 +78,6 @@ export default class ServerMapFacade {
 							}
 						]
 					}
-				],
-				order: [
-				['id', 'ASC']
 				]
 			},
 			{
@@ -102,47 +98,6 @@ export default class ServerMapFacade {
 
 	getByID(source, ID){
 
-	}
-
-	async load(userID, characterName) {
-		const character = await this.databaseLoad(userID, characterName);
-
-		if (character === null) {
-			return null;
-		}
-
-		console.log('Character::load, Load character object...');
-		const newCharacter = new Character(this.Server, character);
-
-		console.log('Character::load, Returning object!');
-		return newCharacter;
-	}
-
-	async databaseLoad(userID, characterName) {
-		const newCharacter = await db.characters.findOne({
-			where:
-			{
-				[db.Op.and]: [
-				{
-					userID:
-					{
-						[db.Op.like]: [userID]
-					}
-				},
-				{
-					nameLowercase:
-					{
-						[db.Op.like]: [characterName.toLowerCase()]
-					}
-				}]
-			},
-			//raw: true
-		}).catch(err => {
-			if (err) {
-				return 'Error load character.';
-			}
-		});
-		return newCharacter;
 	}
 
 	onDispatch(socket, action) {
@@ -167,7 +122,6 @@ export default class ServerMapFacade {
 		const list = {};
 
 		Object.keys(this.serverMaps).forEach((serverID) => {
-			console.log(serverID);
 			list[serverID] = {
 				name: this.serverMaps[serverID].getName(),
 				gridSize: this.serverMaps[serverID].getGrid(),

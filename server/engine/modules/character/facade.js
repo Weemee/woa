@@ -27,9 +27,7 @@ export default class CharacterFacade {
 
 		this.Server.socketFacade.on('dispatch', this.onDispatch.bind(this));
 		this.Server.socketFacade.on('disconnect', (account) => {
-			console.log('Character::constructor, on disconnect');
 			this.remove(account.userID);
-			console.log('Character::constructor, on disconnect, removed character?');
 		});
 	}
 
@@ -49,16 +47,13 @@ export default class CharacterFacade {
 
 	updateClient(userID, property = null) {
 		const character = this.get(userID);
-		console.log('Character::updateClient');
 
 		if(!character) {
-			console.log('Character::updateClient, no character...');
 			return;
 		}
 
 		const characterData = character.exportToClient();
 
-		console.log('Character::updateClient, dispatchToUser: ' + userID + ' & payload: ' + property ? {[property]: characterData[property]} : characterData);
 		this.Server.socketFacade.dispatchToUser(userID, {
 			type: CHARACTER_UPDATE,
 			payload: property ? {[property]: characterData[property]} : characterData,
@@ -66,11 +61,9 @@ export default class CharacterFacade {
 	}
 
 	updateAllClients(property = null) {
-		console.log('Character::updateAllClients');
 		this.managedCharacters.forEach((character) => {
 			const characterData = character.exportToClient();
 
-			console.log('Character::updateAllClients, dispatchToUser: ' + character.userID + ' & payload: ' + property ? {[property]: characterData[property]} : characterData);
 			this.Server.socketFacade.dispatchToUser(character.userID, {
 				type: CHARACTER_UPDATE,
 				payload: property ? {[property]: characterData[property]} : characterData,
@@ -84,22 +77,13 @@ export default class CharacterFacade {
 
 	get(userID) {
 		if(!userID) {
-			console.log('CharacterFacade::get(userID), no userID provided...');
 			return null;
 		}
 
-		console.log('\nType of save: ' + typeof(userID));
-		console.log('\nType of save: ' + typeof(66) + '\n');
-
 		if (typeof userID != 'number') {
-			console.log('NOT AN INT, fixing!');
 			userID = parseInt(userID);
 		}
 
-		console.log('Getting character: ' + userID);
-
-		// this.characters.find((obj) => obj.userID === userID)
-		// this.characters.find((obj) => obj.userID === character.userID)
 		return this.managedCharacters.find((obj) => obj.userID === userID) || null;
 	}
 
@@ -110,7 +94,6 @@ export default class CharacterFacade {
 			return;
 		}
 
-		console.log('Dispatch character online');
 		this.Server.socketFacade.dispatchToRoom('server', {
 			type: CHARACTER_ONLINE,
 			payload: {
@@ -121,7 +104,6 @@ export default class CharacterFacade {
 	}
 
 	dispatchRemoveFromCharacterList(userID) {
-		console.log('Dispatch character offline');
 		this.Server.socketFacade.dispatchToRoom('server', {
 			type: CHARACTER_OFFLINE,
 			payload: {
@@ -145,7 +127,6 @@ export default class CharacterFacade {
 				return result;
 			});
 
-			console.log('Dispatch character list');
 			this.Server.socketFacade.dispatchToSocket(socket, {
 				type: CHARACTER_LIST,
 				payload: managedCharacters.map((obj) => {
@@ -167,45 +148,17 @@ export default class CharacterFacade {
 
 		return value;
 	}
-	/*
-		const derpa = Object.keys(action).length;
-        console.log('Length of ' + action + ': ' + derpa + '\n');
-
-        let result = '';
-
-        for (let i = 0; i < derpa; i++) {
-            const a = Object.entries(action)[i];
-            result += 'Item: ' + a;
-
-            for (let j = 0; j < Object.keys(a).length; j++) {
-                const b = Object.entries(a[i])[j];
-                result += ' & contains: ' + b;
-                //console.log('Item: ' + a[i] + ' & with content: ' + b + '\n');
-            }
-            result += '.';
-            console.log(result);
-        }
-	 */
 
 	async manage(character) {
 		const wasLoggedIn = this.Server.socketFacade.clearTimer(character);
-		console.log('Manage::Logged in: ' + wasLoggedIn);
 		const existingCharacter = this.managedCharacters.find((obj) => obj.userID === character.userID);
 		const isLoggedIn = character.loggedIn;
-		console.log('Manage::Is the character logged in?: ' + existingCharacter);
-
-		console.log('\nType of character: ' + typeof(character.userID));
-		console.log('\nType of character: ' + typeof(66) + '\n');
 
 		if (wasLoggedIn && existingCharacter) {
-			//console.log('Manage::Existing character: ' + character.loggedIn);
-			console.log('Manage::wasLoggedIn && existingCharacter, Call::remove!');
 			await this.remove(character.userID);
 		}
 
 		//const successfullLogin = await this.loginCharacter(character.id);
-
-		//console.log('The const: ' + successfullLogin);
 
 		//if (successfullLogin) {
 			//console.log('Success character DB login!');
@@ -221,7 +174,6 @@ export default class CharacterFacade {
 
 			try {
 				socket.join(character.getSessionID());
-				console.log('Manage::socket.join: ' + character.getSessionID());
 			} catch (err) {
 				this.Server.onError(err, socket);
 			}
@@ -229,18 +181,14 @@ export default class CharacterFacade {
 	}
 
 	async remove(userID) {
-		console.log('\nType of remove: ' + typeof(userID));
-		console.log('\nType of remove: ' + typeof(66) + '\n');
 
 		if (typeof userID != 'number') {
-			console.log('NOT AN INT, fixing!');
 			userID = parseInt(userID);
 		}
 
 		const character = this.get(userID);
 
 		if (!character) {
-			console.log('Character::remove, no character to remove?');
 			return;
 		}
 
@@ -248,7 +196,6 @@ export default class CharacterFacade {
 
 		//if (successfullLogout) {
 			try {
-				console.log('Character::remove, saving');
 				await this.save(character.userID);
 			} catch (err) {
 				this.Server.onError(err);
@@ -258,18 +205,9 @@ export default class CharacterFacade {
 				type: CHARACTER_LEFT_SERVER,
 				payload: character.userID,
 			});
-			console.log('Character::remove, left server: ' + character.name);
 
 			this.managedCharacters = this.managedCharacters.filter((obj) => obj.userID !== userID);
-			console.log('Character::remove, remove character: ' + character.userID);
 
-			/*
-			const derpa = Object.keys(this.characters).length;
-
-			for (let i = 0; i < derpa; i++) {
-				console.log('Manage::Characters:   ' + Object.entries(this.characters)[i]);
-			}
-			*/
 			this.dispatchRemoveFromCharacterList(userID);
 		//}
 	}
@@ -284,8 +222,7 @@ export default class CharacterFacade {
 				{
 					[db.Op.like]: [charID]
 				}
-			},
-			//raw: true
+			}
 		}).then ((success) => {
 			if (success) {
 				success.updateAttributes({
@@ -312,8 +249,7 @@ export default class CharacterFacade {
 				{
 					[db.Op.like]: [charID]
 				}
-			},
-			//raw: true
+			}
 		}).then ((success) => {
 			if (success) {
 				success.updateAttributes({
@@ -331,7 +267,6 @@ export default class CharacterFacade {
 	}
 
 	getOnline() {
-		console.log('Get online');
 		return this.managedCharacters.map((character) => ({
 				name: character.name,
 				userID: character.userID,
@@ -346,10 +281,8 @@ export default class CharacterFacade {
 			return null;
 		}
 
-		console.log('Character::load, Load character object...');
 		const newCharacter = new Character(this.Server, character);
 
-		console.log('Character::load, Returning object!');
 		return newCharacter;
 	}
 
@@ -370,8 +303,7 @@ export default class CharacterFacade {
 						[db.Op.like]: [characterName.toLowerCase()]
 					}
 				}]
-			},
-			//raw: true
+			}
 		}).catch(err => {
 			if (err) {
 				return 'Error load character.';
@@ -402,7 +334,6 @@ export default class CharacterFacade {
 	async saveAll() {
 		await Promise.all(this.managedCharacters.map(async (character) => {
 			try {
-				console.log('Character::saveAll, saving all!');
 				return await this.save(character.userID);
 			} catch(err) {
 				this.Server.onError(err);
@@ -415,11 +346,7 @@ export default class CharacterFacade {
 			throw new Error('No userID for save()');
 		}
 
-		console.log('\nType of save: ' + typeof(userID));
-		console.log('\nType of save: ' + typeof(66) + '\n');
-
 		if (typeof userID != 'number') {
-			console.log('NOT AN INT, fixing!');
 			userID = parseInt(userID);
 		}
 
@@ -442,7 +369,6 @@ export default class CharacterFacade {
 			name: character.name,
 		};
 
-		console.log('Character::dbSave, return save!');
 		return dbSaveChar;
 	}
 
@@ -467,17 +393,14 @@ export default class CharacterFacade {
 		};
 
 		if (!action) {
-			console.log('Character::joinedServer, no action!');
 			return details;
 		}
 
-		console.log('Character::joinedServer, return details!');
 		return joinedServer(details);
 	}
 
 	removeFromServer(position, character) {
 		const playersOnServer = this.locations[`${position.map}_${position.x}_${position.y}_${position.z}`];
-		console.log('Character::removeFromServer, removing from server.');
 
 		if (playersOnServer) {
 			const i = playersOnServer.findIndex((char) => char.userID === character.userID);
@@ -491,15 +414,11 @@ export default class CharacterFacade {
 	addToServer(position, character) {
 		const location = `${position.map}_${position.x}_${position.y}_${position.z}`;
 
-		console.log('Character::addToServer, add to server.');
-
 		if (!this.locations[location]) {
-			console.log('Character::addToServer, setting location.');
 			this.locations[location] = [];
 		}
 
 		if (this.locations[location].findIndex((char) => char.userID === character.userID) !== -1) {
-			console.log('Character::addToServer, already in list.');
 			return;
 		}
 
@@ -507,8 +426,6 @@ export default class CharacterFacade {
 	}
 
 	getServerData() {
-		console.log('Character::getServerData');
-
 		return {
 			serverMaps: this.Server.serverMapFacade.getList(),
 			players: this.getOnline(),

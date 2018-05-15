@@ -54,7 +54,6 @@ export default class UserFacade {
 					});
 				}
 
-				console.log('Logs: ' + account.dataValues.password.toString() + ' & ' + account.password.toString() + ' & ' + account.toString() + ' & ' + account.dataValues.toString());
 				userID = account.dataValues.id.toString();
 			} catch (err) {
 				this.Server.onError(err, socket);

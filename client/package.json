@@ -38,6 +38,7 @@
 		"reactstrap": "^5.0.0",
 		"redux": "^3.7.2",
 		"redux-saga": "^0.16.0",
+		"three": "^0.92.0",
 		"tunnel-agent": "^0.6.0"
 	},
 	"devDependencies": {
@@ -45,14 +46,14 @@
 		"babel-eslint": "^8.2.3",
 		"babel-loader": "^7.1.4",
 		"babel-polyfill": "^6.26.0",
-		"babel-preset-env": "^1.6.1",
+		"babel-preset-env": "^1.7.0",
 		"babel-preset-react": "^6.24.1",
 		"babel-preset-stage-0": "^6.24.1",
-		"cross-env": "^5.1.4",
+		"cross-env": "^5.1.5",
 		"css-loader": "^0.28.11",
 		"eslint": "^4.19.1",
 		"eslint-plugin-babel": "^4.1.2",
-		"eslint-plugin-react": "^7.7.0",
+		"eslint-plugin-react": "^7.8.2",
 		"extract-text-webpack-plugin": "^3.0.2",
 		"file-loader": "^1.1.11",
 		"html-webpack-plugin": "^3.2.0",
@@ -62,7 +63,7 @@
 		"style-loader": "^0.20.3",
 		"svgo": "^1.0.5",
 		"svgo-loader": "^2.1.0",
-		"webpack": "^4.8.1",
+		"webpack": "^4.8.3",
 		"webpack-cli": "^2.1.3",
 		"webpack-dev-server": "^3.1.4"
 	}

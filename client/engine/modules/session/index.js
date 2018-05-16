@@ -14,6 +14,8 @@ import Character from './character';
 import CharacterUI from './character/ui';
 import CharacterCard from './character/card';
 
+import TestThree from './three';
+
 class Session extends React.Component {
 	constructor(props) {
 		super(props);
@@ -87,6 +89,11 @@ class Session extends React.Component {
 
 						<Col sm="9" className="middle">
 							<CharacterUI />
+						</Col>
+					</Row>
+					<Row>
+						<Col>
+							<TestThree />
 						</Col>
 					</Row>
 				</Container>

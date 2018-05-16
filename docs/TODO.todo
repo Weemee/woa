@@ -1,135 +1,124 @@
-Bugs: @Bugs
-	☐	Fix temp fix: CharacterFacade::save::remove::manage sometimes gets typeof 'string'. Make sure it's a number being sent.
+How to:
+	☐	Navigate with ctrl + R
+	☐	Navigate to 'at sign' with ctrl+shift+R
 
-Main functions:
-	☐	Login @high @Login
-	☐	Logout @high @Logout
-	☐	Register @high @Register
-	☐	Account @Account
-	☐	Play @Play
-	☐	Character @Character
-	☐	Save @high @Save
-	☐	Load @high @Load
-	☐	Update @high @Update
-	☐	Theme system @Themes
-	☐	UI @UI
-	☐	Securtiy @Security
+Category:
+	☐	Bugs @bugs
+	☐	Login @login
+	☐	Register @register
+	☐	Account @account
+	☐	Character @character
+	☐	Theme @theme
+	☐	UI @ui
+	☐	Imrpovements @improvements
 
-Login: @Login
-	☐	@low Methods
+Bugs:
+	☐	@bugs, Fix temp fix: CharacterFacade::save::remove::manage sometimes gets typeof 'string'. Make sure it's a number being sent.
+
+Login:
+	☐	@low Methods @account @login
 		☐	Twitch
 		☐	Google
 		☐	Facebook
-	☐	@low Trial account
+	☐	@low Trial account @account @login
 		☐	Captcha
 			☐	Can create account / authenticate with saved trial account
 		☐	Local game
 			☐	Can not use trial progress, flush everything
-	☐	@low Otp
+	☐	@low Otp @account @login
 
-Logout: @Logout
-	☐	Save progress
+Account:
+	☐	Define methods @account
+	☐	Link methods @account
+	☐	Unlink methods @account
+	☐	Change password @account
+	☐	Add otp @account
+	☐	Save account @account
 
-Register: @Register
-	☐	Verify email
-		☐	Email sent with link
+	Register:
+		☐	Verify email @account
+		☐	Email sent with link @account
 
-Account: @Account
-	☐	Define methods
-	☐	Link methods
-	☐	Unlink methods
-	☐	Change password
-	☐	Add otp
+	Functions:
+		☐	Update account @account
 
-Play: @Play
-	☐	Load character
-		☐	Load character stats
-		☐	Create character stats
-	☐	Loading screen after character select and "Enter" button
-	☐	Specialization scheme
+Character:
+	Load:
+		☐	Load character @character
+		☐	Load character stats @character
+		☐	Load resources @character
+		☐	Load unlocks @character
+		☐	Load research @character
+		☐	Load talents @character
+		☐	Load specialization @character
+	Create:
+		☐	Create character stats @character
+		☐	Specialization scheme @character
+	Misc:
+		☐	View character @character
+			☐	Show after list selection @character
+			☐	Show @character
+				☐	Name
+				☐	Specialization
+				☐	Location
+					☐	Server
+						☐	Super Cluster
+							☐	Galaxy
+								☐	Cluster
+									☐	Solar system
+										☐	X
+										☐	Y
+				☐	Options
+					☐	Delete
+					☐	Edit name
+					☐	Play
+				☐	Time played
 
-Character: @Character
-	☐	View character
-		☐	Show after list selection
-		☐	Show
-			☐	Name
-			☐	Specialization
-			☐	Location
-				☐	Server
-					☐	Super Cluster
-						☐	Galaxy
-							☐	Cluster
-								☐	Solar system
-									☐	X
-									☐	Y
-			☐	Options
-				☐	Delete
-				☐	Edit name
-				☐	Play
-			☐	Time played
-	☐	Save character
-	☐	Delete character
-	☐	Maximum characters (5)
+		☐	Save character @character
+			☐	Logout
+			☐	Disconnect
+		☐	Delete character @character
+		☐	Maximum characters (5) @character
+		☐	Update character @character
 
-Save: @Save
-	☐	Save account
-	☐	Save character
-	☐	Check for injections
+Theme system:
+	☐	Theme elements @theme
+		☐	Main @theme
+		☐	UI @theme
+		☐	Buttons @theme
+		☐	Labels @theme
+		☐	Text @theme
+			☐	Hover @theme
+			☐	Click @theme
 
-Load: @Load
-	☐	Load character
-		☐	Load resources
-		☐	Load unlocks
-		☐	Load research
-		☐	Load talents
-		☐	Load specialization
+UI:
+	☐	Add the HUD @ui
+		☐	Stuff in HUD
 
-Update: @Update
-	☐	Update account
-	☐	Update character
+	Re-design character create:
+		☐	Droplist for character select @ui
+			☐	Put it into a theme @ui
+		☐	Show needed information @ui
+			☐	Make it show in the middle @ui
+		☐	Structure character @ui
+		☐	Make "Play" appear on the top @ui
+		☐	Make "Delete" in the corner @ui
 
-Database: @DB
-
-Security: @Security
-	https://expressjs.com/en/advanced/developing-template-engines.html
-	☐	Express security
-		☐	TLS
-		☐	Cookies
-		☐	Session
-		☐	NPM security
-		☐	Node checklist
-			☐
-		☐	Other
-			☐	Rate-limiting, loopback.io, express-limiter, Strongloop
-			☐	CSRF, csurf
-
-Theme system: @Themes
-	☐	Theme elements
-		☐	Main
-		☐	UI
-		☐	Buttons
-		☐	Labels
-		☐	Text
-			☐	Hover
-			☐	Click
-
-UI: @UI
-	Re-design character create: @UI
-		☐	Droplist for character select
-			☐	Put it into a theme
-		☐	Show needed information @Character
-			☐	Make it show in the middle
-		☐	Structure character
-		☐	Make "Play" appear on the top
-		☐	Make "Delete" in the corner
-	Re-design header: @UI
+	Re-design header:
 		☐	Make it look like the mock-up
 		☐	Create the dropdown fields for login/register
-Other: @Other
-	☐	Improve logging
+
+Improvements:
+	☐	Change the entire layout on character login @improvements @high
+		☐	Loading screen @ui
+		☐	Make the layout for 'inside the game' @ui
+	☐	Check for injections @improvements
+
+Other:
+	☐	Improve logging @Other
 	√	Move db to global import, not "from '../../../api/models' " but "from 'libs/db' " @done (18-05-16 15:12)
 	√	Remove all debugging, aka, 'console.log'....... @done (18-05-16 14:55)
-	☐	Comment everything @high
+	☐	Comment everything @Other @high
 
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿

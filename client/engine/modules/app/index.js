@@ -55,7 +55,7 @@ class App extends React.Component {
 	// Networking docs: https://facebook.github.io/react-native/docs/network.html
 	// Request docs: https://developer.mozilla.org/en-US/docs/Web/API/Request
 	getIssueURL() {
-		fetch('https://raw.githubusercontent.com/Weemee/woa/dev/docs/issues.md')
+		fetch('https://raw.githubusercontent.com/Weemee/woa/dev/docs/ISSUE_TEMPLATE.md')
 		.then((response) => response.text())
 		.then((responseText) => {
 			responseText = responseText.replace('__OS__:', `__OS__: ${window.navigator.platform}`);

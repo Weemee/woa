@@ -1,7 +1,7 @@
 import uuid from 'uuid/v4';
 import crypto from 'crypto';
 
-import db from '../models';
+import db from 'libs/db';
 
 async function checkEmailExist(email, log) {
 	try {

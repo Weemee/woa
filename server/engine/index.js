@@ -6,7 +6,7 @@ import express from 'express';
 import Promise from 'bluebird';
 
 import API from './api';
-import db from './api/models';
+import db from 'libs/db';
 import Logger from './modules/log';
 
 import {buildConfig} from 'libs/config';

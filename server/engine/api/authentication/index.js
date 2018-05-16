@@ -6,7 +6,7 @@ import base32 from 'thirty-two';
 import * as localAuth from './strategies/local';
 import oauthSetup from './strategies/oauth';
 
-import db from '../models';
+import db from 'libs/db';
 
 function output(req, res, output, forceRedirect = false) {
 	const redirect = req.params.provider ? true : false;

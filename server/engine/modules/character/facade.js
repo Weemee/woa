@@ -14,7 +14,7 @@ import characterInput from './input';
 
 import {joinedServer} from './actions';
 
-import db from '../../api/models';
+import db from 'libs/db';
 import serializeObjectInArray from '../../../libs/utils/functions';
 
 export default class CharacterFacade {

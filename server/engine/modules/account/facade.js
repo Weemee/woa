@@ -7,7 +7,7 @@ import {
 	ACCOUNT_AUTHENTICATE_SUCCESS,
 } from 'libs/constants';
 
-import db from '../../api/models';
+import db from 'libs/db';
 const Op = db.Sequelize.Op;
 
 export default class UserFacade {

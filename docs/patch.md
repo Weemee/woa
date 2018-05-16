@@ -26,6 +26,7 @@
 * Added server map module
 * Added server structure schema for MySQL
 * Removed local server data folders, everything in database now
+* Moved database module from 'engine/api/models' to 'libs/db'
 
 =============================================================================
 

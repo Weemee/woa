@@ -8,7 +8,7 @@ import {
 import ServerMap from './object';
 import serverMapInputs from './inputs';
 
-import db from '../../api/models';
+import db from 'libs/db';
 
 export default class ServerMapFacade {
 	constructor(Server) {

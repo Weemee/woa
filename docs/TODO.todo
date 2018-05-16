@@ -128,7 +128,7 @@ UI: @UI
 Other: @Other
 	☐	Improve logging
 	☐	Move db to global import, not "from '../../../api/models' " but "from 'libs/db' "
-	☐	Remove all debugging, aka, 'console.log'.......
+	√	Remove all debugging, aka, 'console.log'....... @done (18-05-16 14:55)
 	☐	Comment everything @high
 
 

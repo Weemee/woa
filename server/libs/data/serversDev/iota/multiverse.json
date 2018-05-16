@@ -1,9 +1,0 @@
-{
-	"id": "iota",
-	"name": "Iota",
-	"gridSize": {
-		"x": 10,
-		"y": 10,
-		"z": 10
-	}
-}

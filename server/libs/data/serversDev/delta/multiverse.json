@@ -1,9 +1,0 @@
-{
-	"id": "delta",
-	"name": "Delta",
-	"gridSize": {
-		"x": 10,
-		"y": 10,
-		"z": 10
-	}
-}

@@ -1,9 +1,0 @@
-{
-	"id": "lambda",
-	"name": "Lambda",
-	"gridSize": {
-		"x": 10,
-		"y": 10,
-		"z": 10
-	}
-}

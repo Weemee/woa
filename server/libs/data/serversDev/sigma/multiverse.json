@@ -1,9 +1,0 @@
-{
-	"id": "sigma",
-	"name": "Sigma",
-	"gridSize": {
-		"x": 10,
-		"y": 10,
-		"z": 10
-	}
-}

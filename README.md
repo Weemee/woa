@@ -2,7 +2,7 @@
 
 This is a game project of mine about rebuilding your own world, solar system, cluster and eventually universe. I can't say exactly what will be included in the game yet, since I haven't figured it out myself yet. I will add my list of ideas eventually, but for now things will be in development for a while.
 
-Additional docs can be found in the folder "docs", just general other information, like patch notes, how-to, config e.t.c.
+Additional docs can be found in the folder "docs", just general other information, like patch notes, how-to, config e.t.c
 
 # Many thanks to the mentioned below
 

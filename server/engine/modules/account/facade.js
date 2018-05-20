@@ -1,13 +1,13 @@
 import jwt from 'jsonwebtoken';
 
-// user specific imports
+// account specific imports
 import {
 	ACCOUNT_AUTHENTICATE,
 	ACCOUNT_AUTHENTICATE_ERROR,
 	ACCOUNT_AUTHENTICATE_SUCCESS,
 } from 'libs/constants';
 
-import db from '../../api/models';
+import db from 'libs/db';
 const Op = db.Sequelize.Op;
 
 export default class UserFacade {
@@ -41,42 +41,47 @@ export default class UserFacade {
 				});
 			}
 
-			let user;
+			let account;
 			let userID;
 
 			try {
-				user = await db.user.findOne({where: {id: decoded.id, sessionToken: decoded.sessionToken}});
+				account = await db.accounts.findOne({where: {id: decoded.id, sessionToken: decoded.sessionToken}});
 
-				if (!user) {
+				if (!account) {
 					return this.Server.socketFacade.dispatchToSocket(socket, {
 						type: ACCOUNT_AUTHENTICATE_ERROR,
 						payload: 'Invalid authentication token. Please try again.',
 					});
 				}
 
-				userID = user.dataValues.id.toString();
+				userID = account.dataValues.id.toString();
 			} catch (err) {
 				this.Server.onError(err, socket);
 			}
 
 			try {
-				// logout any other session(s) if found
+				// Logout any other session(s) if found
 				await this.Server.socketFacade.logoutOutSession(socket, userID);
 			} catch (err) {
 				this.Server.onError(err, socket);
 			}
 
-			// add the authenticated use to the socket object
-			socket.user = {
+			// Add the authenticated account to the socket object
+			socket.account = {
 				userID,
 			};
 
-			// add the socket to the list of active clients
+			// Add the socket to the list of active clients
 			this.Server.socketFacade.add(socket);
+
+			const serverMaps = this.Server.serverMapFacade.getList();
 
 			return this.Server.socketFacade.dispatchToSocket(socket, {
 				type: ACCOUNT_AUTHENTICATE_SUCCESS,
 				payload: {
+					gameData: {
+						servers: serverMaps,
+					},
 				},
 			});
 		});

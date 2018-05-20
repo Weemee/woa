@@ -2,6 +2,7 @@ import Sequelize from 'sequelize';
 import fs from 'fs';
 import path from 'path';
 import config from 'libs/conf/database';
+
 const basename = path.basename(__filename);
 const db = {};
 

@@ -10,7 +10,8 @@ export default {
 			database: dotEnv('DATABASE_TABLE', 'WoA'),
 			dialect: dotEnv('DATABASE_DIALECT', 'mysql'),
 			freezeTableName: dotEnv('DATABASE_FREEZE_TABLE_NAME', true),
-			operatorsAliases: dotEnv('DATASE_OPERATOR_ALIASES', false)
+			operatorsAliases: dotEnv('DATABASE_OPERATOR_ALIASES', false),
+			logging: dotEnv('DATABASE_LOGGING', false)
 		},
 	},
 };

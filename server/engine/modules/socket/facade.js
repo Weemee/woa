@@ -10,17 +10,17 @@ import {
 
 export default class SocketFacade extends EventEmitter
 {
-	constructor(Server, server)
+	constructor(Server, session)
 	{
-		super(Server, server);
+		super(Server, session);
 
 		this.Server = Server;
 
 		this.clients = {};
 
-		this.server = server;
+		this.session = session;
 
-		this.io = io(server);
+		this.io = io(session);
 
 		this.timers = {};
 
@@ -32,7 +32,7 @@ export default class SocketFacade extends EventEmitter
 		const socket = this.clients[userID];
 
 		if (!socket) {
-			throw new Error(`No socket found for user: ${userID}`);
+			throw new Error(`No socket found for account: ${userID}`);
 		}
 
 		return socket;
@@ -41,7 +41,8 @@ export default class SocketFacade extends EventEmitter
 	listen()
 	{
 		this.io.on('connection', this.onConnection.bind(this));
-		this.server.listen(this.Server.config.app.serverPort);
+
+		this.session.listen(this.Server.config.app.serverPort);
 
 		console.log(`Socket is listening on port ${this.Server.config.app.serverPort}`);
 	}
@@ -75,7 +76,7 @@ export default class SocketFacade extends EventEmitter
 	}
 
 	add(socket) {
-		this.clients[socket.user.userID] = socket;
+		this.clients[socket.account.userID] = socket;
 	}
 
 	remove(userID) {
@@ -88,42 +89,38 @@ export default class SocketFacade extends EventEmitter
 			delete this.timers[userID];
 			return true;
 		}
-
 		return false;
 	}
 
 	async onDisconnect(socket, forced = false, accountLogout = false) {
-		const user = socket.user ? {...socket.user} : null;
+		const account = socket.account ? {...socket.account} : null;
 
-		//If the user is logged in, set a timer for when we remove them from the server.
-		if (user) {
-			this.Server.log.info('Socket disconnected', user);
-			console.log(this.Server.characterFacade.get(user.userID));
-
+		//If the account is logged in, set a timer for when we remove them from the server.
+		if (account) {
 			// leave the server channel for server-wide events
 			socket.leave('server');
 
 			if (accountLogout) {
-				socket.user = null;
+				socket.account = null;
 			}
 
 			if (forced) {
-				return this.emit('disconnect', user);
+				return this.emit('disconnect', account);
 			}
 
 			//Temp save, then save as timed out
 			try {
-				if (!this.Server.characterFacade.get(user.userID)) {
+				if (!this.Server.characterFacade.get(account.userID)) {
 					return;
 				}
 
-				await this.Server.characterFacade.save(user.userID);
+				await this.Server.characterFacade.save(account.userID);
 			} catch (err) {
 				this.Server.onError(err);
 			}
 
-			this.timers[user.userID] = setTimeout(() =>{
-				this.emit('disconnect', user);
+			this.timers[account.userID] = setTimeout(() =>{
+				this.emit('disconnect', account);
 			}, this.Server.config.server.logoutTimer);
 		}
 	}
@@ -145,7 +142,7 @@ export default class SocketFacade extends EventEmitter
 		}
 
 		//None authenticated dispatches
-		if (!socket.user && action.type !== ACCOUNT_AUTHENTICATE) {
+		if (!socket.account && action.type !== ACCOUNT_AUTHENTICATE) {
 			return;
 		}
 

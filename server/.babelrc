@@ -19,7 +19,7 @@
 					"alias": {
 						"libs": "./libs",
 						"config": "./libs/conf",
-						"utils": "./libs"
+						"utils": "./libs/utils"
 					}
 				}]
 			]

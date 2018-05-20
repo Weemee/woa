@@ -14,19 +14,20 @@ import characterInput from './input';
 
 import {joinedServer} from './actions';
 
-import db from '../../api/models';
+import db from 'libs/db';
+import serializeObjectInArray from '../../../libs/utils/functions';
 
 export default class CharacterFacade {
 	constructor(Server) {
 		this.Server = Server;
 
-		this.characters = [];
+		this.managedCharacters = [];
 
 		this.Server.log.debug('CharacterFacade::constructor Loaded');
 
 		this.Server.socketFacade.on('dispatch', this.onDispatch.bind(this));
-		this.Server.socketFacade.on('disconnect', (user) => {
-			this.remove(user.userID);
+		this.Server.socketFacade.on('disconnect', (account) => {
+			this.remove(account.userID);
 		});
 	}
 
@@ -59,12 +60,31 @@ export default class CharacterFacade {
 		});
 	}
 
+	updateAllClients(property = null) {
+		this.managedCharacters.forEach((character) => {
+			const characterData = character.exportToClient();
+
+			this.Server.socketFacade.dispatchToUser(character.userID, {
+				type: CHARACTER_UPDATE,
+				payload: property ? {[property]: characterData[property]} : characterData,
+			});
+		});
+	}
+
+	getName(characterName) {
+		return serializeObjectInArray(this.managedCharacters, 'name_lowercase', characterName.toLowerCase());
+	}
+
 	get(userID) {
 		if(!userID) {
 			return null;
 		}
 
-		return this.characters.find((obj) => obj.userID === userID) || null;
+		if (typeof userID != 'number') {
+			userID = parseInt(userID);
+		}
+
+		return this.managedCharacters.find((obj) => obj.userID === userID) || null;
 	}
 
 	dispatchUpdateCharacterList(userID) {
@@ -88,18 +108,18 @@ export default class CharacterFacade {
 			type: CHARACTER_OFFLINE,
 			payload: {
 				userID,
-			}
+			},
 		});
 	}
 
 	async getCharacterList(socket, action) {
 		try {
-			const characters = await db.characters.findAll({
+			const managedCharacters = await db.characters.findAll({
 				where:
 				{
 						userID:
 						{
-							 [db.Op.like]: [socket.user.userID]
+							 [db.Op.like]: [socket.account.userID]
 						}
 				},
 			}).then(async(result) =>
@@ -109,9 +129,10 @@ export default class CharacterFacade {
 
 			this.Server.socketFacade.dispatchToSocket(socket, {
 				type: CHARACTER_LIST,
-				payload: characters.map((obj) => {
+				payload: managedCharacters.map((obj) => {
 					return {
 						name: obj.name,
+						stats: obj.stats,
 					};
 				}),
 			});
@@ -120,53 +141,133 @@ export default class CharacterFacade {
 		}
 	}
 
+	replace(key, value) {
+		if (typeof value === 'string') {
+			return undefined;
+		}
+
+		return value;
+	}
+
 	async manage(character) {
-		const wasLoggedIn = this.Server.socketFacade.clearTimer(character.userID);
-		const existingCharacter = this.characters.find((obj) => obj.userID === character.userID);
+		const wasLoggedIn = this.Server.socketFacade.clearTimer(character);
+		const existingCharacter = this.managedCharacters.find((obj) => obj.userID === character.userID);
+		const isLoggedIn = character.loggedIn;
 
 		if (wasLoggedIn && existingCharacter) {
 			await this.remove(character.userID);
 		}
 
-		if (wasLoggedIn) {
-			await this.remove(character.userID);
-		}
+		//const successfullLogin = await this.loginCharacter(character.id);
 
-		if (existingCharacter) {
-			await this.remove(character.userID);
-		}
+		//if (successfullLogin) {
+			//console.log('Success character DB login!');
+			this.managedCharacters.push(character);
+			this.dispatchUpdateCharacterList(character.userID);
 
-		this.characters.push(character);
-		this.dispatchUpdateCharacterList(character.userID);
+			const socket = this.Server.socketFacade.get(character.userID);
 
-		const socket = this.Server.socketFacade.get(character.userID);
+			this.Server.socketFacade.dispatchToRoom(
+				character.getSessionID(),
+				this.joinedServer(character)
+			);
 
-		try {
-			socket.join(character);
-		} catch (err) {
-			this.Server.onError(err, socket);
-		}
+			try {
+				socket.join(character.getSessionID());
+			} catch (err) {
+				this.Server.onError(err, socket);
+			}
+		//}
 	}
 
 	async remove(userID) {
+
+		if (typeof userID != 'number') {
+			userID = parseInt(userID);
+		}
+
 		const character = this.get(userID);
 
-		if(!character) {
+		if (!character) {
 			return;
 		}
 
-		try {
-			await this.save(character.userID);
-		} catch (err) {
-			this.Server.onError(err);
-		}
+		//const successfullLogout = await this.logoutCharacter(character.id);
 
-		this.characters = this.characters.filter((obj) => obj.userID !== userID);
-		this.dispatchRemoveFromCharacterList(userID);
+		//if (successfullLogout) {
+			try {
+				await this.save(character.userID);
+			} catch (err) {
+				this.Server.onError(err);
+			}
+
+			this.Server.socketFacade.dispatchToRoom(character.getSessionID(), {
+				type: CHARACTER_LEFT_SERVER,
+				payload: character.userID,
+			});
+
+			this.managedCharacters = this.managedCharacters.filter((obj) => obj.userID !== userID);
+
+			this.dispatchRemoveFromCharacterList(userID);
+		//}
+	}
+
+	async loginCharacter(charID) {
+		//Testing and learning sequelize update
+		//Move/merge this to load/save
+		const result = await db.characters.findOne({
+			where:
+			{
+				id:
+				{
+					[db.Op.like]: [charID]
+				}
+			}
+		}).then ((success) => {
+			if (success) {
+				success.updateAttributes({
+					loggedIn: true
+				});
+				return success;
+			}
+		}).catch(err => {
+			if (err) {
+				return 'Error: ' + err;
+			}
+		});
+
+		return result.loggedIn;
+	}
+
+	async logoutCharacter(charID) {
+		//Testing and learning sequelize update
+		//Move/merge this to load/save
+		const result = await db.characters.findOne({
+			where:
+			{
+				id:
+				{
+					[db.Op.like]: [charID]
+				}
+			}
+		}).then ((success) => {
+			if (success) {
+				success.updateAttributes({
+					loggedIn: false
+				});
+				return success;
+			}
+		}).catch(err => {
+			if (err) {
+				return err;
+			}
+		});
+
+		return result.loggedIn;
 	}
 
 	getOnline() {
-		return this.characters.map((character) => ({
+		return this.managedCharacters.map((character) => ({
 				name: character.name,
 				userID: character.userID,
 			})
@@ -176,7 +277,7 @@ export default class CharacterFacade {
 	async load(userID, characterName) {
 		const character = await this.databaseLoad(userID, characterName);
 
-		if(character === null) {
+		if (character === null) {
 			return null;
 		}
 
@@ -202,9 +303,9 @@ export default class CharacterFacade {
 						[db.Op.like]: [characterName.toLowerCase()]
 					}
 				}]
-			},
+			}
 		}).catch(err => {
-			if(err) {
+			if (err) {
 				return 'Error load character.';
 			}
 		});
@@ -223,7 +324,7 @@ export default class CharacterFacade {
 			userID: userID,
 			name: characterName,
 		}).catch(err => {
-			if(err) {
+			if (err) {
 				return err;
 			}
 		});
@@ -231,7 +332,7 @@ export default class CharacterFacade {
 	}
 
 	async saveAll() {
-		await Promise.all(this.characters.map(async (character) => {
+		await Promise.all(this.managedCharacters.map(async (character) => {
 			try {
 				return await this.save(character.userID);
 			} catch(err) {
@@ -241,14 +342,18 @@ export default class CharacterFacade {
 	}
 
 	async save(userID) {
-		if(!userID) {
+		if (!userID) {
 			throw new Error('No userID for save()');
+		}
+
+		if (typeof userID != 'number') {
+			userID = parseInt(userID);
 		}
 
 		const character = this.get(userID);
 
-		if(!character) {
-			throw new Error('No character found online, matching userID ${userID}');
+		if (!character) {
+			throw new Error(`No character found online, matching userID ${userID}`);
 		}
 
 		this.Server.log.info(`Saving characters ${userID}`);
@@ -259,12 +364,26 @@ export default class CharacterFacade {
 	}
 
 	async databaseSave(character) {
-		const dbCharacter = {
+		const dbSaveChar = {
 			userID: character.userID,
 			name: character.name,
 		};
 
-		return;
+		return dbSaveChar;
+	}
+
+	getServerPlayerList(map, x = null, y = null, z = null, dispatch = false) {
+		let players;
+
+		if (!dispatch) {
+			return players;
+		}
+
+		return players
+			.filter((obj) => obj.userID !== ignore)
+			.map((character) => {
+				return this.joinedServer(character, false);
+			});
 	}
 
 	joinedServer(character, action = true) {
@@ -276,20 +395,39 @@ export default class CharacterFacade {
 		if (!action) {
 			return details;
 		}
-		// joinedServer(details)
-		return;
+
+		return joinedServer(details);
 	}
 
 	removeFromServer(position, character) {
+		const playersOnServer = this.locations[`${position.map}_${position.x}_${position.y}_${position.z}`];
 
+		if (playersOnServer) {
+			const i = playersOnServer.findIndex((char) => char.userID === character.userID);
+
+			if (i !== -1) {
+				playersOnServer.splice(i, 1);
+			}
+		}
 	}
 
 	addToServer(position, character) {
+		const location = `${position.map}_${position.x}_${position.y}_${position.z}`;
 
+		if (!this.locations[location]) {
+			this.locations[location] = [];
+		}
+
+		if (this.locations[location].findIndex((char) => char.userID === character.userID) !== -1) {
+			return;
+		}
+
+		this.locations[location].push(character);
 	}
 
 	getServerData() {
 		return {
+			servers: this.Server.serverMapFacade.getList(),
 			players: this.getOnline(),
 		};
 	}

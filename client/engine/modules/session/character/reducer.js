@@ -17,37 +17,37 @@ export default function(state = defaultState, action) {
 		case CHARACTER_REMOTE_LOGOUT:
 
 		case CHARACTER_LOGOUT:
-		return defaultState;
+			return defaultState;
 
 		case CHARACTER_LIST:
-		return {
-			...state,
-			list: action.payload,
-		};
+			return {
+				...state,
+				list: action.payload,
+			};
 
 		case CHARACTER_LOGIN:
-		return {
-			...state,
-			selected: action.payload.character,
-		};
+			return {
+				...state,
+				selected: action.payload.character,
+			};
 
 		case CHARACTER_CREATE_SUCCESS:
-		return {
-			...state,
-			list: [
-				...state.list,
-				action.payload.character,
-			],
-		};
+			return {
+				...state,
+				list: [
+					...state.list,
+					action.payload.character,
+				],
+			};
 
 		case CHARACTER_UPDATE:
-		return {
-			...state,
-			selected: {
-				...state.selected,
-				...action.payload,
-			}
-		};
+			return {
+				...state,
+				selected: {
+					...state.selected,
+					...action.payload,
+				}
+			};
 	}
 
 	return state;

@@ -2,7 +2,7 @@ import LocalStrategy from 'passport-local';
 import uuid from 'uuid/v4';
 import crypto from 'crypto';
 
-import db from '../../models';
+import db from 'libs/db';
 
 let logger;
 
@@ -25,7 +25,7 @@ export default function setup(passport, details, loggerObj) {
 
 function Auth(accessToken, refreshToken, profile, cb) {
 	return cb(null, {
-		identity, 
-		user: {},
+		identity,
+		account: {},
 	});
 }

@@ -2,7 +2,7 @@ import LocalStrategy from 'passport-local';
 import uuid from 'uuid/v4';
 import crypto from 'crypto';
 
-import db from '../../models';
+import db from 'libs/db';
 
 let logger;
 
@@ -18,10 +18,10 @@ export function setup(passport, loggerObj) {
 }
 
 function Auth(username, password, done) {
-	db.user.findOne({
+	db.accounts.findOne({
 		where:
 		{
-			usr:
+			account:
 			{
 				[db.Op.like]: [username]
 			}
@@ -31,19 +31,19 @@ function Auth(username, password, done) {
 			return done('Invalid input combination.');
 		}
 
-		const check = await db.user.verifyHash(password, result.password);
+		const check = await db.accounts.verifyHash(password, result.password);
 
 		if(!check) {
 			return done('Invalid hash.');
 		}
 
 		return done(null, {
-			user: result,
+			account: result,
 			identity: {},
 		});
 	}).catch(err => {
 		return done(err, {
-			user: null,
+			account: null,
 			identity: {},
 		});
 	});

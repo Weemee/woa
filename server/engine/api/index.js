@@ -10,7 +10,7 @@ import {
 	getAuthList,
 	isAuthenticated,
 	getOtpAuth,
-	autehnticateOtp,
+	authenticateOtp,
 } from './authentication';
 
 import {
@@ -47,7 +47,7 @@ export default function(app, webServerAPI, config) {
 		next();
 	});
 
-	loadStrategies(passport, app.get('customLogger'), config);
+	loadStrategies(passport, app.get('log'), config);
 
 	//API routes
 	const routes = express.Router({
@@ -57,20 +57,20 @@ export default function(app, webServerAPI, config) {
 	//Account routes
 	routes.route('/account')
 		.post(createAccount);
-	routes.route('/account/:userID')
+	routes.route('/account/:id')
 		.get(isAuthenticated, getAccount)
 		.delete(isAuthenticated, deleteAccount)
 		.patch(isAuthenticated, updateAccount);
 
 	// Authentication routes
-	// user/password authentication
+	// account/password authentication
 	routes.route('/authentication')
 		.get(getAuthList)
 		.post(authenticate);
 
 	/*routes.route('/autehnticate/veritfyOtp')
 		.get(getOtpAuth)
-		.post(autehnticateOtp);*/
+		.post(authenticateOtp);*/
 
 	// OAuth
 	routes.route('/authentication/provider/:provider')

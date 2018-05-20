@@ -5,9 +5,9 @@ import config from 'config/security';
 
 module.exports = (sequelize, DataTypes) =>
 {
-	const User = sequelize.define('user',
+	const Account = sequelize.define('accounts',
 	{
-		usr:
+		account:
 		{
 			type: DataTypes.STRING,
 		},
@@ -56,25 +56,25 @@ module.exports = (sequelize, DataTypes) =>
 	});
 
 	//External hooks
-	User.beforeCreate(async function (user, options) {
-		user.password = await bcrypt.hash(user.password, config.passwordSecurity.rounds);
+	Account.beforeCreate(async function (account, options) {
+		account.password = await bcrypt.hash(account.password, config.passwordSecurity.rounds);
 	});
 
-	User.beforeSave(async function(user, options) {
-		user.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
+	Account.beforeSave(async function(account, options) {
+		account.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 
-		if(!user.createdAt) {
-			user.createdAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
+		if(!account.createdAt) {
+			account.createdAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 		}
 
-		if(!user.sessionToken) {
-			user.sessionToken = uuid();
+		if(!account.sessionToken) {
+			account.sessionToken = uuid();
 		}
 	});
 
-	User.verifyHash = function(string, password) {
+	Account.verifyHash = function(string, password) {
 		return bcrypt.compare(string, password);
 	}
 
-	return User;
+	return Account;
 }

@@ -2,7 +2,7 @@ import {dotEnv} from '../config';
 
 export default {
 	logoutTimer: dotEnv('SERVER_LOGOUT_TIMER', 10000),
-	serverVersion: dotEnv('SERVER_VERSION', '0.0.73'),
+	serverVersion: dotEnv('SERVER_VERSION', '0.0.92'),
 	defaultStats: {
 
 	},

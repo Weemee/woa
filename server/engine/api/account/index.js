@@ -1,16 +1,16 @@
 import uuid from 'uuid/v4';
 import crypto from 'crypto';
 
-import db from '../models';
+import db from 'libs/db';
 
-async function checkEmailExist(email, customLogger) {
+async function checkEmailExist(email, log) {
 	try {
 		//Find one email
 		const account = 'default';
 		return account ? true : false;
 	}
 	catch (err) {
-		customLogger.error(err);
+		log.error(err);
 		return 500;
 	}
 }
@@ -26,7 +26,7 @@ export async function deleteAccount(req, res) {
 		});
 	}
 	catch(err) {
-		req.app.get('customLogger').error(err);
+		req.app.get('log').error(err);
 
 		return res.status(500).json({
 			status: 500,
@@ -40,17 +40,17 @@ export async function getAccount(req, res) {
 		const identities = 'local';
 		res.json({
 			status: 200,
-			user: {
-				id: req.user.dataValues.id.toString(),
-				email: req.user.email || '',
-				createdAt: req.user.createdAt,
-				hasPassword: req.user.password,
-				keyToken: req.user.keyToken,
+			account: {
+				id: req.account.id.toString(),
+				email: req.account.email || '',
+				createdAt: req.account.createdAt,
+				hasPassword: req.account.password,
+				keyToken: req.account.keyToken,
 				identities,
 			},
 		});
 	} catch (err) {
-		req.app.get('customLogger').error(err);
+		req.app.get('log').error(err);
 
 		return res.status(500).json({
 			status: 500,
@@ -104,23 +104,23 @@ export function createAccount(req, res) {
 		});
 	}
 
-	db.user.findOne({
+	db.accounts.findOne({
 		where:
 		{
-			usr:
+			account:
 			{
 				[db.Op.like]: [req.body.username]
 			}
 		},
-	}).then(user => {
-		if(user) {
+	}).then(account => {
+		if(account) {
 			return res.status(409).json({
 				status: 409,
 				error: 'Username already in use.',
 			});
 		}
 
-		user = db.user.findOne({
+		account = db.accounts.findOne({
 			where:
 			{
 				email:
@@ -146,14 +146,14 @@ export function createAccount(req, res) {
 				token.update(uuid());
 			}
 
-			db.user.create({
-				usr: req.body.username,
+			db.accounts.create({
+				account: req.body.username,
 				email: req.body.email,
 				password: req.body.password,
 				validationToken: requireActivation ? token.digest('hex') : '',
 			}).catch(err => {
 				if(err) {
-					req.app.get('customLogger').error(err);
+					req.app.get('log').error(err);
 					return res.status(500).json({
 						status: 500,
 						error: 'Windows 10 released an update and thus it crashed, sorry.',
@@ -170,7 +170,7 @@ export function createAccount(req, res) {
 			}
 		}).catch(err => {
 			if(err) {
-				req.app.get('customLogger').error(err);
+				req.app.get('log').error(err);
 				return res.status(500).json({
 					status: 500,
 					error: 'Oops! Email! Maybe Windows 10 is still alive...',
@@ -179,11 +179,11 @@ export function createAccount(req, res) {
 			}
 		});
 
-		return user;
+		return account;
 
 	}).catch(err => {
 		if(err) {
-			req.app.get('customLogger').error(err);
+			req.app.get('log').error(err);
 			return res.status(500).json({
 				status: 500,
 				error: 'Oops! Username! Maybe Windows 10 is still alive...',

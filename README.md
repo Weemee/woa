@@ -2,7 +2,7 @@
 
 This is a game project of mine about rebuilding your own world, solar system, cluster and eventually universe. I can't say exactly what will be included in the game yet, since I haven't figured it out myself yet. I will add my list of ideas eventually, but for now things will be in development for a while.
 
-Additional docs can be found in the folder "docs", just general other information, like patch notes, how-to, config e.t.c.
+Additional docs can be found in the folder "docs", just general other information, like patch notes, how-to, config e.t.c
 
 # Many thanks to the mentioned below
 
@@ -45,6 +45,6 @@ The content of this repository (8th of April, 2018) is where I am now since I fo
 
 ## License
 
-Same license as my Sensei, since I do use parts of his code under the same license and I want everything that I add/remove/improve/make worse to avaible for everyone else out there in need of help.
+Same license as my Sensei, since I do use parts of his code under the same license and I want everything that I add/remove/improve/make worse to avaible for everyone else out there in need of help. Based on: [original code](https://github.com/MrEliasen/path-to-power)
 
-This work is licensed under a [Creative Commons Attribution 3.0 Unported License](https://creativecommons.org/licenses/by/3.0/) - [Link](https://creativecommons.org/licenses/by/3.0/legalcode)
+This work is licensed under a [Creative Commons Attribution 3.0 Unported License](https://creativecommons.org/licenses/by/3.0/) - [READABLE Link](https://creativecommons.org/licenses/by/3.0/legalcode)

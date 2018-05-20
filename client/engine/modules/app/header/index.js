@@ -28,7 +28,7 @@ class Header extends React.Component {
 				<React.Fragment>
 					<NavLink className="nav-link" to="/session">Play Game</NavLink>
 					<NavLink className="nav-link" to="/account">Account</NavLink>
-					<a className="nav-link" href="/authentication/logout" onClick={this.logout.bind(this)}>Logout</a>
+					<a className="nav-link" href="#" onClick={this.logout.bind(this)}>Logout</a>
 				</React.Fragment>
 			);
 		} else {

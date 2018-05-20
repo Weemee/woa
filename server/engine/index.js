@@ -6,8 +6,8 @@ import express from 'express';
 import Promise from 'bluebird';
 
 import API from './api';
-import db from './api/models';
-import Log from './modules/log';
+import db from 'libs/db';
+import Logger from './modules/log';
 
 import {buildConfig} from 'libs/config';
 const dotEnvLoaded = dotenv.config();
@@ -31,7 +31,7 @@ db.sequelize.authenticate().then(
 		webServer = http.createServer(app);
 		webServerAPI = http.createServer(app);
 
-		const customLogger = new Log(
+		const log = new Logger(
 		{
 			level: (process.env.NODE_ENV === 'development' ? 'info' : 'error'),
 			debugFile: `${__dirname}/../logs/debug.log`,
@@ -40,9 +40,9 @@ db.sequelize.authenticate().then(
 			errorFile: `${__dirname}/../logs/error.log`,
 		});
 
-		app.set('customLogger', customLogger);
+		app.set('log', log);
 
-		const gameServer = new Server(webServer, config, customLogger);
+		const gameServer = new Server(webServer, config, log);
 		const restServer = new API(app, webServerAPI, config);
 
 		process.on('SIGTERM', async function()

@@ -48,9 +48,14 @@ class Header extends React.Component {
 		});
 	}
 
+	disableContext(event) {
+		event.preventDefault();
+		return false;
+	}
+
 	render() {
 		return (
-			<Navbar className={`theme-${this.props.selectedTheme} header-${this.props.selectedTheme}`} expand="md" id="header">
+			<Navbar className={`theme-${this.props.selectedTheme} header-${this.props.selectedTheme}`} expand="md" id="header" onContextMenu={this.disableContext}>
 				<Container>
 				<NavbarBrand href="#" onClick={() => this.props.history.push('/')}>Penis</NavbarBrand>
 				<NavbarToggler onClick={this.toggle.bind(this)} className="mr-2" />

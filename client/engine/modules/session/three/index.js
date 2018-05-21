@@ -29,7 +29,7 @@ class TestThree extends Component {
 			1000
 		)
 		const renderer = new THREE.WebGLRenderer({ antialias: true });
-		const geometry = new THREE.SphereGeometry(4, 32, 32);
+		const geometry = new THREE.SphereGeometry(4, 16, 16);
 		const material = new THREE.MeshBasicMaterial({
 			color: '#FFFF00',
 			wireframe: true
@@ -69,6 +69,7 @@ class TestThree extends Component {
 	animate() {
 		this.sphere.rotation.x += 0.01;
 		this.sphere.rotation.y += 0.01;
+		this.sphere.rotation.z += 0.02;
 
 		this.renderScene();
 		this.frameId = window.requestAnimationFrame(this.animate);

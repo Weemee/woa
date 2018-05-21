@@ -9,6 +9,8 @@ import {Container, Row, Col} from 'reactstrap';
 import {setMousePos} from '../utils/actions';
 import {setTheme} from '../theme/actions';
 
+import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
+
 class Page extends React.Component {
 	constructor(props) {
 		super(props);
@@ -20,6 +22,10 @@ class Page extends React.Component {
 
 	changeTheme(theme) {
 		this.props.setTheme(theme);
+	}
+
+	handleClick(e, data) {
+		console.log(data.penis);
 	}
 
 	render() {
@@ -45,6 +51,23 @@ class Page extends React.Component {
 					<button type="button" className="btn btn-cyan" onClick={() => this.changeTheme('cyan')}>Cyan</button>
 					<button type="button" className="btn btn-dark" onClick={() => this.changeTheme('dark')}>Dark</button>
 					<button type="button" className="btn btn-light" onClick={() => this.changeTheme('light')}>Light</button>
+				</Row>
+				<Row>
+					<Col>
+						<div>
+							<ContextMenuTrigger id="lizaPenis">
+								<button type="button" className={`btn btn-${this.props.selectedTheme}`}>ContextMenuTrigger</button>
+							</ContextMenuTrigger>
+							<ContextMenu className="contextMenuItems" id="lizaPenis">
+								<MenuItem data={{penis: 'Derp'}} onClick={this.handleClick}>
+									<button type="button" className={`btn btn-${this.props.selectedTheme}`}>Derp</button>
+								</MenuItem>
+								<MenuItem className="contextMenuItem" data={{penis: 'Herp'}} onClick={this.handleClick}>
+									<button type="button" className={`btn btn-${this.props.selectedTheme}`}>Herp</button>
+								</MenuItem>
+							</ContextMenu>
+						</div>
+					</Col>
 				</Row>
 			</Container>
 		);

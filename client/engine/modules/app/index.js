@@ -21,7 +21,7 @@ class App extends React.Component {
 		super(props);
 
 		this.state = {
-			pages: [],
+			visible: false,
 		};
 	}
 
@@ -55,7 +55,7 @@ class App extends React.Component {
 	// Networking docs: https://facebook.github.io/react-native/docs/network.html
 	// Request docs: https://developer.mozilla.org/en-US/docs/Web/API/Request
 	getIssueURL() {
-		fetch('https://raw.githubusercontent.com/Weemee/woa/serverMap/docs/ISSUE_TEMPLATE.md')
+		fetch('https://raw.githubusercontent.com/Weemee/woa/master/docs/ISSUE_TEMPLATE.md')
 		.then((response) => response.text())
 		.then((responseText) => {
 			responseText = responseText.replace('__OS__:', `__OS__: ${window.navigator.platform}`);
@@ -74,11 +74,16 @@ class App extends React.Component {
 		});
 	}
 
+	disableContext(event) {
+		event.preventDefault();
+		return false;
+	}
+
 	render() {
 		return (
 			<React.Fragment>
-				<Header pages={this.state.pages} />
-				<main className={`theme-${this.props.selectedTheme}`} id="main">
+				<Header/>
+				<main className={`theme-${this.props.selectedTheme}`} id="main" onContextMenu={this.disableContext}>
 					<Container>
 						<Switch>
 							<Route exact path="/" render={() => this.renderSessionRoute(<Page/>)} />

@@ -102,7 +102,7 @@ class AuthenticationLogin extends React.Component {
 						<Notes />
 						<FormGroup>
 							<Input
-							type="username"
+							type="text"
 							name="username"
 							placeholder="Username"
 							autoComplete="username"

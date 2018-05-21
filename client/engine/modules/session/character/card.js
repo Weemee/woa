@@ -1,4 +1,6 @@
 import React from 'react';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import {Card, CardBody, Button, Progress} from 'reactstrap';
 
 
@@ -28,5 +30,16 @@ class CharacterCard extends React.Component {
 		);
 	}
 }
+function mapDispatchToProps(dispatch) {
+	return bindActionCreators({
+		
+	}, dispatch);
+}
 
-export default CharacterCard;
+function mapStateToProps(state) {
+	return {
+		
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CharacterCard);

@@ -1,13 +1,57 @@
 {
 	"louie": {
-
+		"id": "1",
+		"name": "Louie",
+		"type": "buff",
+		"reason": "He happened to be around",
+		"effect": "Happiness",
+		"buffAmount": 25,
+		"buffMaximum": 100,
+		"description": ["Clearly, this super intelligent dog was ahead of it's time when it came to driving spaceships. No other dog could, but no other tried. I guess it's the diet of eating everything his owner gave him.\n",
+							"Louie is unique, since he can trigger more events and effects (only buffs).\n",
+							"He can lick your face randomly to trigger a weird thing called 'laughter'. You like and it gives you 5% happiness (this effect stacks).\n",
+							"He can also trigger 'total destruction'. Yes, it sounds bad, but it will just fill your nasal cavity with CH4 (methane gas). In other words, you'll smell a lot of farts. How is this a buff? Well, if you combine this with a special micro-organism, the production of CH4 will increase by 100%, up to a maximum of 5000%.\n",
+							"If you can control the CH4 release, it can transform into electricity through burning, which will give you CO2 and H2O. You need a controlled environment though, but free atoms from this gas producing dog! 0-100% increase in food consumption (in hope for more dog farts)!\n",
+							"This super dog has more hidden effects, figure them out!\n",
+							"25% increase in food consumption and happiness. If you pair this effect with the owner, who knows what could happen!\n"
+		],
+		"condition": "0"
 	},
 
 	"nippe": {
-
+		"id": "2",
+		"name": "Nippe",
+		"type": "buff",
+		"reason": "He's looking for something, or someone'",
+		"effect": "Questionable",
+		"buffAmount": 25,
+		"buffMaximum": 150,
+		"description": ["If you would ever do something, he's there to question it.\n",
+			"'Why?'\n'Where?'\n'What?'\n'Reasoning?'\n'How?'\n",
+			"You will go crazy from all the questions and if you ask something yourself, you will be overwhelmed by intelligent information.\n",
+			"However, you will get more aware of what you're doing and why you're doing it. Eventually you'll question yourself before the micro-organism even has a chance.\n",
+			"You'll end up asking more and more since you hunger for knowledge. Seriously, keep asking and you will evolve faster than everyone else around you (if you have found anyone else).\n",
+			"If you happen to have a certain beverage and start bonding with this micro-organism, he will always come back and share with his stash of collected electronics (which will help your research).\n",
+			"25-150% increase in research. The strength of this effect is based on your bonding. More bonding, more intelligence. This micro-organism has hidden effects.\n"
+		],
+		"condition": "0"
 	},
 
 	"purre": {
-		
+		"id": "3",
+		"name": "Purre",
+		"type": "buff",
+		"reason": "How do they survive?",
+		"effect": "Hyperactivity",
+		"buffAmount": 10,
+		"buffMaximum": 200,
+		"description": ["You find this drifting stick looking meteoroid, filled with a weird substance. The substance tastes good and makes you able to push it to the limit! Don't push it to far to the danger zone, just the tip!\n",
+			"You later notice the organisms living in the meteoroid, Purreneers, clever and tiny tinkers. They live off collections of this substance. It's their only source of nutrients and the only one they need. You sometimes hear cheers, 'TROCADERO'. You have no clue why they do it or what it means.\n",
+			"You will go crazy from all the questions and if you ask something yourself, you will be overwhelmed by intelligent information.\n",
+			"The strength of the buff is determined by the level of 'TROCADERO'. Higher levels, better effect. Too much can make them push it to the danger zone  and crash, giving you a debuff instead.\n",
+			"The debuff is 50% decrease in production to restore the levels of the meteoroid. You can choose to throw it away, they will recover.\n",
+			"10-200% in production and/or crafting speed. This micro-organism has hidden effects.\n"
+		],
+		"condition": "0"
 	}
 }

@@ -28,6 +28,7 @@
 		"bootstrap": "^4.1.1",
 		"history": "^4.7.2",
 		"jsonwebtoken": "^8.2.1",
+		"orbit-controls-es6": "^1.0.12",
 		"react": "^16.3.2",
 		"react-contextmenu": "^2.9.2",
 		"react-dom": "^16.3.2",

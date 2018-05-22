@@ -33,17 +33,17 @@ module.exports = (sequelize, DataTypes) =>
 		gridSizeX:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 100000000,
 		},
 		gridSizeY:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 100000000,
 		},
 		gridSizeZ:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 100000000,
 		},
 		ownedBy:
 		{

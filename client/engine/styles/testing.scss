@@ -1,0 +1,10 @@
+#sessionCanvas {
+	position: absolute;
+	width: 1280px;
+	height: 720px;
+	//visibility: hidden;
+}
+
+#sessionCanvas:-webkit-full-screen {
+	visibility: visible;
+}

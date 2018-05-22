@@ -164,7 +164,7 @@ function* saveAuthDetails(action) {
 			authToken: action.payload,
 		},
 	});
-	yield put(push('/account'));
+	yield put(push('/session'));
 }
 
 function* logoutAccount(action = null) {

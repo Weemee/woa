@@ -312,23 +312,107 @@ export default class CharacterFacade {
 		return newCharacter;
 	}
 
+	async delete(userID, characterName) {
+		const character = await this.databaseDelete(userID, characterName);
+		if(!character) 
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	async databaseDelete(userID, characterName) {
+		userID = parseInt(userID);
+		const checkDelete = await db.characters.findOne({
+			where:
+			{
+				[db.Op.and]: [
+				{
+					userID:
+					{
+						[db.Op.like]: [userID]
+					}
+				},
+				{
+					nameLowercase:
+					{
+						[db.Op.like]: [characterName.toLowerCase()]
+					}
+				}]
+			}
+		}).then(result => {
+			const deleting = db.characters.destroy({
+				where:
+				{
+					[db.Op.and]: [
+					{
+						userID:
+						{
+							[db.Op.like]: [userID]
+						}
+					},
+					{
+						nameLowercase:
+						{
+							[db.Op.like]: [characterName.toLowerCase()]
+						}
+					}]
+				}
+			}).catch(err => {
+				if(err) {
+					return;
+				}
+			});
+			return deleting;
+		}).catch(err => {
+			if(err) {
+				return;
+			}
+		});
+		return checkDelete;
+	}
+
 	async create(userID, characterName) {
 		const character = await this.databaseCreate(userID, characterName);
+
+		if(!character) {
+			return;
+		}
 		const newCharacter = new Character(this.Server, character);
 
 		return newCharacter;
 	}
 
 	async databaseCreate(userID, characterName) {
-		const newCharacter = await db.characters.create({
-			userID: userID,
-			name: characterName,
+		//Find and count all, check if you have 5 already.
+		const checkLimit = await db.characters.count({
+			where:
+			{
+				userID:
+				{
+					[db.Op.like]: [userID]
+				}
+			}
 		}).catch(err => {
 			if (err) {
-				return err;
+				return 'Error count chracters.';
 			}
 		});
-		return newCharacter;
+
+		if(checkLimit < 5) {
+			const newCharacter = await db.characters.create({
+				userID: userID,
+				name: characterName,
+			}).catch(err => {
+				if (err) {
+					return err;
+				}
+			});
+			return newCharacter;
+		}
+		
+		return;
 	}
 
 	async saveAll() {

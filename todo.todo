@@ -57,7 +57,7 @@ Account: @Account
 
 Play: @Play
 	☐	Load character
-		☐	Load character stats
+		✔ Load character stats @done (5/24/2018, 10:15:19 PM)
 		☐	Create character stats
 	☐	Loading screen after character select and "Enter" button
 	☐	Specialization scheme
@@ -83,7 +83,7 @@ Character: @Character
 			☐	Time played
 	☐	Save character
 	☐	Delete character
-	☐	Maximum characters (5)
+	✔ Maximum characters (5) @done (5/24/2018, 10:15:03 PM)
 
 Save: @Save
 	☐	Save account
@@ -141,7 +141,7 @@ UI: @UI
 		☐	Create the dropdown fields for login/register
 Other: @Other
 	☐	Improve logging
-	☐	Move db to global import, not "from '../../../api/models' " but "from 'libs/db' "
+	✔ Move db to global import, not "from '../../../api/models' " but "from 'libs/db' " @done (5/24/2018, 11:54:36 AM)
 	☐	Remove all debugging, aka, 'console.log'.......
 	☐	Comment everything @high
 

@@ -22,12 +22,17 @@ class Character extends React.Component {
 
 		this.state = {
 			name: '',
+			serverSelect: '',
+			delete: '',
 			create: false,
+			preview: '',
 		};
 
-		this.selectCharacter = this.selectCharacter.bind(this);
-		this.toggle = this.toggle.bind(this);
 		this.renderContent = this.renderContent.bind(this);
+		this.toggle = this.toggle.bind(this);
+		this.previewCharacter = this.previewCharacter.bind(this);
+		this.deleteCharacter = this.deleteCharacter.bind(this);
+		this.selectCharacter = this.selectCharacter.bind(this);
 		this.createCharacter = this.createCharacter.bind(this);
 	}
 
@@ -56,7 +61,17 @@ class Character extends React.Component {
 	createCharacter() {
 		const {name} = this.state;
 		this.props.newInput(`createcharacter ${name}`);
-		this.toggle();
+	}
+
+	deleteCharacter(name) {
+		this.props.newInput(`deletecharacter ${name}`);
+		this.setState({
+			name: '',
+			serverSelect: '',
+			delete: '',
+			create: false,
+			preview: '',
+		});
 	}
 
 	renderContent() {
@@ -84,7 +99,7 @@ class Character extends React.Component {
 									type='select'
 									onChange={(e) => {
 										this.setState({
-											location: e.target.value,
+											serverSelect: e.target.value,
 										});
 									}}
 									value={this.state.location}
@@ -102,9 +117,48 @@ class Character extends React.Component {
 					</Card>
 				</div>
 			);
+		}
+		if(this.state.preview) {
+			return (
+				<div>
+					<Card>
+						<CardBody>
+						<CardTitle>Preview character</CardTitle>
+							{this.state.preview}
+
+							<Button color='blue' block={true} onClick={() => this.selectCharacter(this.state.preview)}>Play character</Button>
+							<div>
+								<br />
+								Type in 'DELETE' in the input field to activate the button
+							</div>
+
+							<FormGroup>
+								<Input
+									type="text"
+									placeholder="DELETE"
+									onChange={(e) => {
+										this.setState({
+											delete: e.target.value,
+										});
+									}}
+									value={this.state.delete}
+								/>
+							</FormGroup>
+							{
+								this.state.delete === 'DELETE' ? (
+									<Button color='red' block={true} onClick={() => this.deleteCharacter(this.state.preview)}>Delete character</Button>
+								) : (
+									<Button color='red' block={true} onClick={() => this.deleteCharacter(this.state.preview)} disabled>Delete character</Button>
+								)
+							}
+						</CardBody>
+					</Card>
+				</div>
+			);
 		} else {
 			return (
 				<div>
+					<Notes />
 					Show stuff
 				</div>
 			);
@@ -114,6 +168,19 @@ class Character extends React.Component {
 	toggle() {
 		this.setState({
 			create: !this.state.create,
+			delete: '',
+		});
+	}
+
+	previewCharacter(name) {
+		if(this.state.create) {
+			this.toggle();
+		}
+		this.setState ({
+			name: '',
+			serverSelect: '',
+			delete: '',
+			preview: name,
 		});
 	}
 
@@ -133,7 +200,14 @@ class Character extends React.Component {
 								}
 								{
 									this.props.characterList &&
-									this.props.characterList.map((obj, index) => <CharacterCard key={index} onSelect={this.selectCharacter} character={obj} />)
+									this.props.characterList.map((obj, index) => 
+										
+											obj.name === `${this.state.preview}` ? (
+											<CharacterCard key={index} onClick={this.previewCharacter} character={obj} color="pink"/>
+											) : (
+												<CharacterCard key={index} onClick={this.previewCharacter} character={obj} color="white"/>
+											)
+									)
 								}
 								{
 									!this.state.create &&

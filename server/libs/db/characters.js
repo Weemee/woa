@@ -23,6 +23,11 @@ module.exports = (sequelize, DataTypes) =>
 			type: DataTypes.INTEGER,
 			defaultValue: 0,
 		},
+		stats:
+		{
+			type: DataTypes.JSON,
+			defaultValue: {},
+		},
 		loggedIn:
 		{
 			type: DataTypes.BOOLEAN,

@@ -20,6 +20,8 @@ const Config = {
 	caching: {
 		strategies: 300,
 	},
+
+	version: '0.0.101',
 };
 
 export default Config;

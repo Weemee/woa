@@ -10,12 +10,22 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 	try{
 		const newCharacter = await Server.characterFacade.create(socket.account.userID, name);
 
-		Server.socketFacade.dispatchToSocket(socket, {
-			type: CHARACTER_CREATE_SUCCESS,
-			payload: {
-				character: newCharacter.exportToClient(),
-			},
-		});
+		if(!newCharacter) {
+			return Server.socketFacade.dispatchToSocket(socket, {
+				type: SET_NOTES,
+				payload: {
+					message: 'Character limit reached (maximum five (5))',
+				},
+			});
+		}
+		else {
+			Server.socketFacade.dispatchToSocket(socket, {
+				type: CHARACTER_CREATE_SUCCESS,
+				payload: {
+					character: newCharacter.exportToClient(),
+				},
+			});
+		}
 
 	} catch (err) {
 		if(err.code === 11000) {
@@ -53,6 +63,29 @@ async function inputSelectCharacter(socket, character, input, params, inputObjec
 	}
 }
 
+async function inputDeleteCharacter(socket, character, input, params, inputObject, Server) {
+	const characterToDelete = params[0];
+	
+	try {
+		console.log('Delete character ', characterToDelete.name, '!');
+		const deletecharacter = await Server.characterFacade.delete(socket.account.userID, characterToDelete.name);
+
+		if(!deletecharacter) {
+			return Server.socketFacade.dispatchToSocket(socket, {
+				type: SET_NOTES,
+				payload: {
+					message: 'Could not delete character!',
+				},
+			});
+		} else {
+			Server.characterFacade.getCharacterList(socket);
+			//Send notes about successfull character delete
+		}
+	} catch (err) {
+		Server.onError(err, socket);
+	}
+}
+
 module.exports = [
 	{
 		input: 'selectcharacter',
@@ -79,5 +112,18 @@ module.exports = [
 		onServerInput: false,
 		description: 'Create character',
 		method: inputCreateCharacter,
+	},
+	{
+		input: 'deletecharacter',
+		aliases: [],
+		params: [
+			{
+				name: 'Name',
+				rules: 'required|character',
+			},
+		],
+		onServerInput: false,
+		description: 'Delete character',
+		method: inputDeleteCharacter,
 	},
 ];

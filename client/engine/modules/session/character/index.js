@@ -23,26 +23,32 @@ class Character extends React.Component {
 		this.state = {
 			name: '',
 			serverSelect: '',
+			specialization: '',
+			newName: '',
+			case: {
+				create: false,
+				editing: '',
+				preview: '',
+			},
 			delete: '',
-			create: false,
-			preview: '',
+			confirm: '',
 		};
 
 		this.renderContent = this.renderContent.bind(this);
 		this.toggle = this.toggle.bind(this);
+		this.doEdit = this.doEdit.bind(this);
 		this.previewCharacter = this.previewCharacter.bind(this);
 		this.deleteCharacter = this.deleteCharacter.bind(this);
 		this.selectCharacter = this.selectCharacter.bind(this);
 		this.createCharacter = this.createCharacter.bind(this);
-	}
-
-	componentWillMount() {
-		if(!this.props.loggedIn) {
-			return this.props.history.push('/authentication');
-		}
+		this.editCharacter = this.editCharacter.bind(this);
 	}
 
 	componentDidMount() {
+		if(!this.props.loggedIn) {
+			return this.props.history.push('/authentication');
+		}
+
 		this.props.socketSend({
 			type: CHARACTER_GET_LIST,
 			payload: null,
@@ -52,6 +58,35 @@ class Character extends React.Component {
 			type: GET_SERVER_LIST,
 			payload: null,
 		});
+	}
+
+	static getDerivedStateFromProps(props, state) {
+		if(!props.notes) {
+			return null;
+		}
+
+		if(props.notes.type === 'success') {
+			return {
+				characterList: props.characterList,
+				notes: props.notes,
+				name: '',
+				serverSelect: '',
+				newName: '',
+				case: {
+					create: false,
+					editing: '',
+					preview: '',
+				},
+				delete: '',
+				confirm: '',
+			};
+		}
+		
+		if(props.notes.type === 'error') {
+			return null;
+		}
+
+		return;
 	}
 
 	selectCharacter(name) {
@@ -65,23 +100,58 @@ class Character extends React.Component {
 
 	deleteCharacter(name) {
 		this.props.newInput(`deletecharacter ${name}`);
-		this.setState({
-			name: '',
-			serverSelect: '',
-			delete: '',
-			create: false,
-			preview: '',
+	}
+
+	editCharacter(name, newName) {
+		this.props.newInput(`editcharacter ${name} ${newName}`);
+		this.props.socketSend({
+			type: GET_SERVER_LIST,
+			payload: null,
 		});
 	}
 
 	renderContent() {
-		if (this.state.create) {
+		if (this.state.case.create) {
+			//Add explanation to it
+			const specs = [
+				{
+					name: 'Arithmetic',
+					description: 'is a very smart person when it comes to numbers! 01+11=100 (or 4 if you prefer), easy!',
+				},
+				{
+					name: 'Capitalist',
+					description: 'is the one the loves money. More money, more love. More love, more fun!',
+				},
+				{
+					name: 'Casual',
+					description: 'is a casual pleb. Nothing special...',
+				},
+				{
+					name: 'Collector',
+					description: 'is someone to keep an eye on. Before you know it, everything there is to collect is gone in a jiffy. Speedy speedy!',
+				},
+				{
+					name: 'Engineer',
+					description: 'is THE tinkerer. Without the Engineer, there would not be anything else. Please thank the Engineer next time you her/him.',
+				},
+				{
+					name: 'Explorer',
+					description: 'is maybe not around for the cruical times. But who cares? There is an entire universe to explore, let us go!',
+				},
+				{
+					name: 'Farmer',
+					description: 'is not the person you bring to a party. Farming, harvesting, producing and repeat. No time for parties, out me way!',
+				},
+				{
+					name: 'Scientist',
+					description: 'is perhaps the most tricky individual to understand. What is the science for? Any specific subject? NO, FOR SCIENCE!',
+				},
+		];
 			return (
 				<div>
 					<Card>
 						<CardBody>
 							<CardTitle>Create character</CardTitle>
-							<Notes />
 							<FormGroup>
 								<Input
 									type="text"
@@ -102,7 +172,7 @@ class Character extends React.Component {
 											serverSelect: e.target.value,
 										});
 									}}
-									value={this.state.location}
+									value={this.state.serverSelect}
 								>
 									<option value="" defaultValue hidden>Select server</option>
 									{
@@ -112,21 +182,46 @@ class Character extends React.Component {
 									}
 								</Input>
 							</FormGroup>
+							<FormGroup>
+								<Input
+									type='select'
+									onChange={(e) => {
+										this.setState({
+											specialization: e.target.value,
+										});
+									}}
+									value={this.state.specialization}
+								>
+									<option value="" defaultValue hidden>Select specialization</option>
+									{
+										Object.keys(specs).map((index) => {
+											return <option key={index} value={index}>{specs[index].name}</option>
+										})
+									}
+								</Input>
+							</FormGroup>
+							{
+								this.state.specialization &&
+								<div>
+									Description: <b>{specs[this.state.specialization].name}</b> <br />
+									The <b>{specs[this.state.specialization].name}</b> {specs[this.state.specialization].description}
+								</div>
+							}
 							<Button color='blue' block={true} onClick={this.createCharacter}>Create character</Button>
 						</CardBody>
 					</Card>
 				</div>
 			);
 		}
-		if(this.state.preview) {
+		if(this.state.case.preview) {
 			return (
 				<div>
 					<Card>
 						<CardBody>
 						<CardTitle>Preview character</CardTitle>
-							{this.state.preview}
-
-							<Button color='blue' block={true} onClick={() => this.selectCharacter(this.state.preview)}>Play character</Button>
+							{this.state.case.preview} <Button color='dark' onClick={() => this.doEdit(this.state.case.preview)}>Edit</Button>
+							<br />
+							<Button color='blue' onClick={() => this.selectCharacter(this.state.case.preview)}>Play character</Button>
 							<div>
 								<br />
 								Type in 'DELETE' in the input field to activate the button
@@ -146,9 +241,58 @@ class Character extends React.Component {
 							</FormGroup>
 							{
 								this.state.delete === 'DELETE' ? (
-									<Button color='red' block={true} onClick={() => this.deleteCharacter(this.state.preview)}>Delete character</Button>
+									<Button color='red' onClick={() => this.deleteCharacter(this.state.case.preview)}>Delete character</Button>
 								) : (
-									<Button color='red' block={true} onClick={() => this.deleteCharacter(this.state.preview)} disabled>Delete character</Button>
+									<Button color='red' disabled>Delete character</Button>
+								)
+							}
+						</CardBody>
+					</Card>
+				</div>
+			);
+		}
+		if(this.state.case.editing) {
+			return (
+				<div>
+					<Card>
+						<CardBody>
+						<CardTitle>Edit character</CardTitle>
+							Current name: {this.state.case.editing}
+							<br />
+
+							<FormGroup>
+								<Input
+									type="text"
+									placeholder="New name"
+									onChange={(e) => {
+										this.setState({
+											newName: e.target.value,
+										});
+									}}
+									value={this.state.newName}
+								/>
+							</FormGroup>
+
+							<div>
+								Type in 'CONFIRM' in the input field to activate the button
+							</div>
+							<FormGroup>
+								<Input
+									type="text"
+									placeholder="CONFIRM"
+									onChange={(e) => {
+										this.setState({
+											confirm: e.target.value,
+										});
+									}}
+									value={this.state.confirm}
+								/>
+							</FormGroup>
+							{
+								this.state.confirm === 'CONFIRM' ? (
+									<Button color='blue' onClick={() => this.editCharacter(this.state.case.editing, this.state.newName)}>Edit character</Button>
+								) : (
+									<Button color='blue' disabled>Edit character</Button>
 								)
 							}
 						</CardBody>
@@ -158,7 +302,6 @@ class Character extends React.Component {
 		} else {
 			return (
 				<div>
-					<Notes />
 					Show stuff
 				</div>
 			);
@@ -167,20 +310,45 @@ class Character extends React.Component {
 
 	toggle() {
 		this.setState({
-			create: !this.state.create,
+			case: {
+				create: !this.state.case.create,
+			},
 			delete: '',
+			confirm: '',
 		});
 	}
 
-	previewCharacter(name) {
-		if(this.state.create) {
+	doEdit(name) {
+		if(this.state.case.create) {
 			this.toggle();
 		}
 		this.setState ({
 			name: '',
 			serverSelect: '',
+			newName: '',
+			case: {
+				preview: '',
+				editing: name,
+			},
 			delete: '',
-			preview: name,
+			confirm: '',
+		});
+	}
+
+	previewCharacter(name) {
+		if(this.state.case.create) {
+			this.toggle();
+		}
+		this.setState ({
+			name: '',
+			serverSelect: '',
+			newName: '',
+			case: {
+				preview: name,
+				editing: '',
+			},
+			delete: '',
+			confirm: '',
 		});
 	}
 
@@ -190,6 +358,7 @@ class Character extends React.Component {
 				<Container>
 					<Row>
 						<Col xs="6" sm="9">
+							<Notes />
 							{this.renderContent()}
 						</Col>
 
@@ -202,7 +371,7 @@ class Character extends React.Component {
 									this.props.characterList &&
 									this.props.characterList.map((obj, index) => 
 										
-											obj.name === `${this.state.preview}` ? (
+											obj.name === `${this.state.case.preview}` ? (
 											<CharacterCard key={index} onClick={this.previewCharacter} character={obj} color="pink"/>
 											) : (
 												<CharacterCard key={index} onClick={this.previewCharacter} character={obj} color="white"/>
@@ -210,11 +379,11 @@ class Character extends React.Component {
 									)
 								}
 								{
-									!this.state.create &&
+									!this.state.case.create &&
 									<Button color='blue' block={true} onClick={this.toggle}>New character</Button>
 								}
 								{
-									this.state.create &&
+									this.state.case.create &&
 									<Button color='red' block={true} onClick={this.toggle}>Back</Button>
 								}
 
@@ -235,6 +404,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
 	return {
+		notes: state.app.notes,
 		serverMaps: state.session.servers,
 		socket: state.app.socket,
 		character: state.character.selected,

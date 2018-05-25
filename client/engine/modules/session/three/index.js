@@ -119,6 +119,10 @@ class TestThree extends Component {
 	}
 
 	onKeyPress(e) {
+		if(!this.props.character) {
+			return;	
+		}
+		
 		if (e.keyCode == 13) {
 			this.toggleFullscreen();
 		}
@@ -170,7 +174,7 @@ class TestThree extends Component {
 
 function mapStateToProps(state) {
 	return {
-		//getProps
+		character: state.character.selected,
 	};
 }
 

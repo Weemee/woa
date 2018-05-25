@@ -117,14 +117,18 @@ export default class CharacterFacade {
 			const managedCharacters = await db.characters.findAll({
 				where:
 				{
-						userID:
-						{
-							 [db.Op.like]: [socket.account.userID]
-						}
+					userID:
+					{
+						 [db.Op.like]: [socket.account.userID]
+					}
 				},
 			}).then(async(result) =>
 			{
 				return result;
+			}).catch(err => {
+				if(err) {
+					return err;
+				}
 			});
 
 			this.Server.socketFacade.dispatchToSocket(socket, {
@@ -158,10 +162,6 @@ export default class CharacterFacade {
 			await this.remove(character.userID);
 		}
 
-		//const successfullLogin = await this.loginCharacter(character.id);
-
-		//if (successfullLogin) {
-			//console.log('Success character DB login!');
 			this.managedCharacters.push(character);
 			this.dispatchUpdateCharacterList(character.userID);
 
@@ -177,7 +177,6 @@ export default class CharacterFacade {
 			} catch (err) {
 				this.Server.onError(err, socket);
 			}
-		//}
 	}
 
 	async remove(userID) {
@@ -212,60 +211,6 @@ export default class CharacterFacade {
 		//}
 	}
 
-	async loginCharacter(charID) {
-		//Testing and learning sequelize update
-		//Move/merge this to load/save
-		const result = await db.characters.findOne({
-			where:
-			{
-				id:
-				{
-					[db.Op.like]: [charID]
-				}
-			}
-		}).then ((success) => {
-			if (success) {
-				success.updateAttributes({
-					loggedIn: true
-				});
-				return success;
-			}
-		}).catch(err => {
-			if (err) {
-				return 'Error: ' + err;
-			}
-		});
-
-		return result.loggedIn;
-	}
-
-	async logoutCharacter(charID) {
-		//Testing and learning sequelize update
-		//Move/merge this to load/save
-		const result = await db.characters.findOne({
-			where:
-			{
-				id:
-				{
-					[db.Op.like]: [charID]
-				}
-			}
-		}).then ((success) => {
-			if (success) {
-				success.updateAttributes({
-					loggedIn: false
-				});
-				return success;
-			}
-		}).catch(err => {
-			if (err) {
-				return err;
-			}
-		});
-
-		return result.loggedIn;
-	}
-
 	getOnline() {
 		return this.managedCharacters.map((character) => ({
 				name: character.name,
@@ -275,11 +220,10 @@ export default class CharacterFacade {
 	}
 
 	async load(userID, characterName) {
-		const character = await this.databaseLoad(userID, characterName);
-
+		const character = await this.databaseLoad(parseInt(userID), characterName);
 		if (character === null) {
 			return null;
-		}
+			}
 
 		const newCharacter = new Character(this.Server, character);
 
@@ -295,13 +239,13 @@ export default class CharacterFacade {
 					userID:
 					{
 						[db.Op.like]: [userID]
-					}
+				}
 				},
 				{
-					nameLowercase:
+					nameLowerCase:
 					{
 						[db.Op.like]: [characterName.toLowerCase()]
-					}
+			}
 				}]
 			}
 		}).catch(err => {
@@ -310,6 +254,59 @@ export default class CharacterFacade {
 			}
 		});
 		return newCharacter;
+	}
+
+	async edit(userID, characterName, newName) {
+		const nameFormat = /^[\u00C0-\u017Fa-zA-Z'][\u00C0-\u017Fa-zA-Z-' ]+[\u00C0-\u017Fa-zA-Z']?$/g;
+
+		if(!nameFormat.test(newName)) {
+			return 'regex';
+		}
+
+		const editedCharacter = await this.databaseEdit(userID, characterName, newName);
+
+		if(!editedCharacter) {
+			return false;
+		}
+
+		return editedCharacter;
+	}
+
+	async databaseEdit(userID, characterName, newName) {
+		userID = parseInt(userID);
+		const checkEdit = await db.characters.findOne({
+			where:
+			{
+				[db.Op.and]: [
+				{
+					userID:
+					{
+						[db.Op.like]: [userID]
+					}
+				},
+				{
+					nameLowerCase:
+					{
+						[db.Op.like]: [characterName.toLowerCase()]
+					}
+				}]
+			}
+		}).then(result => {
+			return result.update({
+				name: newName,
+				nameLowerCase: newName.toLowerCase(),
+			}).catch(err => {
+				if(err) {
+					return err;
+				}
+			});
+		}).catch(err => {
+			if(err) {
+				return err;
+			}
+		});
+
+		return checkEdit;
 	}
 
 	async delete(userID, characterName) {
@@ -374,11 +371,18 @@ export default class CharacterFacade {
 	}
 
 	async create(userID, characterName) {
+		const nameFormat = /^[\u00C0-\u017Fa-zA-Z][\u00C0-\u017Fa-zA-Z]+[\u00C0-\u017Fa-zA-Z]?$/g;
+		
+		if(!nameFormat.test(characterName)) {
+			return 'Only letters allowed!';
+		}
+
 		const character = await this.databaseCreate(userID, characterName);
 
 		if(!character) {
 			return;
 		}
+
 		const newCharacter = new Character(this.Server, character);
 
 		return newCharacter;
@@ -396,7 +400,7 @@ export default class CharacterFacade {
 			}
 		}).catch(err => {
 			if (err) {
-				return 'Error count chracters.';
+				return 'Error count characters.';
 			}
 		});
 

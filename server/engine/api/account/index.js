@@ -81,6 +81,14 @@ export function createAccount(req, res) {
 		});
 	}
 
+	const nameFormat = /^[\u00C0-\u017Fa-zA-Z'][\u00C0-\u017Fa-zA-Z-' ]+[\u00C0-\u017Fa-zA-Z']?$/g;
+	if(!nameFormat.test(req.body.username)) {
+		return res.status(400).json({
+			status: 400,
+			error: 'Username can only contain letters.',
+		});
+	}
+
 	if(req.body.password !== req.body.passwordConfirm) {
 		return res.status(400).json({
 			status: 400,

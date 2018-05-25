@@ -196,7 +196,7 @@ export default class InputFacade {
 						break;
 
 						case 'character':
-							temp = await this.Server.characterFacade.load(socket.account.userID, msgPar.toLowerCase());
+							temp = await this.Server.characterFacade.load(socket.account.userID, msgPar);
 							//404
 							if(!temp) {
 								return `No character named ${param.name} found.`;

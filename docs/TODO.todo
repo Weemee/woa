@@ -1,108 +1,122 @@
-Bugs: @Bugs
-	☐	Fix temp fix: CharacterFacade::save::remove::manage sometimes gets typeof 'string'. Make sure it's a number being sent.
+How to (sublime):
+	☐	Navigate with ctrl + R
+	☐	Navigate to 'at sign' with ctrl+shift+R
 
-Main functions:
-	☐	Login @high @Login
-	☐	Logout @high @Logout
-	☐	Register @high @Register
-	☐	Account @Account
-	☐	Play @Play
-	☐	Character @Character
-	☐	Save @high @Save
-	☐	Load @high @Load
-	☐	Update @high @Update
-	☐  Theme system @Themes
-	☐	UI @UI
-	☐	Securtiy @Security
+Category:
+	☐	Bugs @bugs
+	☐	Login @login
+	☐	Register @register
+	☐	Account @account
+	☐	Character @character
+	☐	Theme @theme
+	☐	UI @ui
+	☐	Imrpovements @improvements
+	☐	Server security @security
 
-Game:
-	☐ Roles
-	☐ Specialization
-	☐ Talents
-	☐ Localization
-	☐ Navigation
-	☐ Generate universe
-	☐ Resources
-	☐ Crafting
-	☐ Research
-	☐ Upgrades
-	☐ Production
-	☐ Settings
-
-Login: @Login
-	☐	@low Methods
+Bugs:
+	☐	Wrong 'typeof' for Character handling
+		☐	Where (file, function(s), callback[boolean]): CharacterFacade, {manage, remove, save}, yes
+		☐	What: Sometimes gets 'typeof' (string) for 'userID' instead of (integer)
+		☐	Solution: Make sure the 'typeof' (integer) is being sent as 'userID', not 'typeof' (string)
+Login:
+	☐	@low Methods @account @login
 		☐	Twitch
 		☐	Google
 		☐	Facebook
-	☐	@low Trial account
+	☐	@low Trial account @account @login
 		☐	Captcha
 			☐	Can create account / authenticate with saved trial account
 		☐	Local game
 			☐	Can not use trial progress, flush everything
-	☐	@low Otp
+	☐	@low Otp @account @login
 
-Logout: @Logout
-	☐	Save progress
+Account:
+	☐	Define methods @account
+	☐	Link methods @account
+	☐	Unlink methods @account
+	☐	Change password @account
+	☐	Add otp @account
+	☐	Save account @account
 
-Register: @Register
-	☐	Verify email
-		☐	Email sent with link
+	Register:
+		☐	Verify email @account
+		☐	Email sent with link @account
 
-Account: @Account
-	☐	Define methods
-	☐	Link methods
-	☐	Unlink methods
-	☐	Change password
-	☐	Add otp
+	Functions:
+		☐	Update account @account
 
-Play: @Play
-	☐	Load character
-		✔ Load character stats @done (5/24/2018, 10:15:19 PM)
-		☐	Create character stats
-	☐	Loading screen after character select and "Enter" button
-	☐	Specialization scheme
+Character:
+	Load:
+		☐	Load resources @character
+		☐	Load unlocks @character
+		☐	Load research @character
+		☐	Load talents @character
+		☐	Load specialization @character
+	Create:
+		☐	Create character stats @character
+		√	Specialization scheme @character @done (18-05-25 22:34)
+	Misc:
+		☐	View character @character
+			☐	Show after list selection @character
+			☐	Show @character
+				☐	Specialization
+				☐	Location
+					☐	Server
+						☐	Super Cluster
+							☐	Galaxy
+								☐	Cluster
+									☐	Solar system
+										☐	X
+										☐	Y
+				☐	Options
+					☐	Delete
+					☐	Edit name
+					☐	Play
+				☐	Time played
+		☐	Save character @character
+			☐	Logout
+			☐	Disconnect
 
-Character: @Character
-	☐	View character
-		☐	Show after list selection
-		☐	Show
-			☐	Name
-			☐	Specialization
-			☐	Location
-				☐	Server
-					☐	Super Cluster
-						☐	Galaxy
-							☐	Cluster
-								☐	Solar system
-									☐	X
-									☐	Y
-			☐	Options
-				☐	Delete
-				☐	Edit name
-				☐	Play
-			☐	Time played
-	☐	Save character
-	☐	Delete character
-	✔ Maximum characters (5) @done (5/24/2018, 10:15:03 PM)
+Theme system:
+	☐	Theme elements @theme
+		☐	Main @theme
+		☐	UI @theme
+		☐	Buttons @theme
+		☐	Labels @theme
+		☐	Text @theme
+			☐	Hover @theme
+			☐	Click @theme
 
-Save: @Save
-	☐	Save account
-	☐	Save character
-	☐	Check for injections
+UI:
+	☐	Add the HUD @ui
+		☐	Stuff in HUD
 
-Load: @Load
-	☐	Load character
-		☐	Load resources
-		☐	Load unlocks
-		☐	Load research
-		☐	Load talents
-		☐	Load specialization
+	Re-design character create:
+		☐	Droplist for character select @ui
+			☐	Put it into a theme @ui
+		☐	Show needed information @ui
+			☐	Make it show in the middle @ui
+		☐	Structure character @ui
+		☐	Make "Play" appear on the top @ui
+		☐	Make "Delete" in the corner @ui
 
-Update: @Update
-	☐	Update account
-	☐	Update character
+	Current:
+		☐	Preview
+			☐	Stats shown
+				☐	Level
+				☐	Specialization
+				☐	Location
+				☐	Resources
 
-Database: @DB
+	Re-design header:
+		☐	Make it look like the mock-up
+		☐	Create the dropdown fields for login/register
+
+Improvements:
+	☐	Change the entire layout on character login @improvements @high
+		☐	Loading screen @ui
+		☐	Make the layout for 'inside the game' @ui
+	☐	Check for injections @improvements
 
 Security: @Security
 	https://expressjs.com/en/advanced/developing-template-engines.html
@@ -117,41 +131,37 @@ Security: @Security
 			☐	Rate-limiting, loopback.io, express-limiter, Strongloop
 			☐	CSRF, csurf
 
-Theme system: @Themes
-	☐	Theme elements
-		☐	Main
-		☐	UI
-		☐	Buttons
-		☐	Labels
-		☐	Text
-			☐	Hover
-			☐	Click
-
-UI: @UI
-	Re-design character create: @UI
-		☐	Droplist for character select
-			☐	Put it into a theme
-		☐	Show needed information @Character
-			☐	Make it show in the middle
-		☐	Structure character
-		☐	Make "Play" appear on the top
-		☐	Make "Delete" in the corner
-	Re-design header: @UI
-		☐	Make it look like the mock-up
-		☐	Create the dropdown fields for login/register
-Other: @Other
-	☐	Improve logging
-	✔ Move db to global import, not "from '../../../api/models' " but "from 'libs/db' " @done (5/24/2018, 11:54:36 AM)
-	☐	Remove all debugging, aka, 'console.log'.......
-	☐	Comment everything @high
-
-Post updates:
-	✔ Github RSS feed @done (5/21/2018, 10:45:40 AM)
-		✔ https://github.com/Weemee/woa/commits/dev.atom @done (5/21/2018, 10:45:37 AM)
-
+Other:
+	☐	Improve logging @Other
+	☐	Comment everything @Other @high
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+	✔ Github RSS feed @done (5/21/2018, 10:45:40 AM) @project(Post updates)
+	✔ https://github.com/Weemee/woa/commits/dev.atom @done (5/21/2018, 10:45:37 AM) @project(Post updates)
+	√	Edit character @done (18-05-25 20:04) @project(Character / Misc)
+	√	Load character stats @character @done (18-05-25 20:03) @project(Character / Load)
+	√	Load character @character @done (18-05-25 20:03) @project(Character / Load)
+	√ Post updates: @done (18-05-25 17:05)
+	√	Sets you in play mode @done (18-05-25 17:05) @project(UI / Current)
+	√	Play button @done (18-05-25 17:05) @project(UI / Current)
+	√	Name @done (18-05-25 17:05) @project(UI / Current)
+	√	Name @done (18-05-25 17:05) @project(UI / Current)
+	√	List on the right as World of Warcraft @done (18-05-25 17:05) @project(UI / Current)
+	√	Enabled after filling the form with 'DELETE' @done (18-05-25 17:05) @project(UI / Current)
+	√	Editable @done (18-05-25 17:05) @project(UI / Current)
+	√	Edit button @done (18-05-25 17:05) @project(UI / Current)
+	√	Disabled @done (18-05-25 17:05) @project(UI / Current)
+	√	Delete button @done (18-05-25 17:05) @project(UI / Current)
+	√	Clicking character shows a 'preview' of the character @done (18-05-25 17:05) @project(UI / Current)
+	√	Being able to edit your character in the menu @done (18-05-25 17:05) @project(UI / Current)
+	√	Update character @character @done (18-05-25 17:04) @project(Character / Misc)
+	√	Name @done (18-05-25 17:04) @project(Character / Misc)
+	√	Name @done (18-05-25 17:04) @project(Character / Misc)
+	√	Maximum characters (5) @character @done (18-05-25 09:00) @project(Character / Misc)
+	√	Delete character @character @done (18-05-25 09:00) @project(Character / Misc)
+	√	Move db to global import, not "from '../../../api/models' " but "from 'libs/db' " @done (18-05-16 15:12) @project(Other)
+	√	Remove all debugging, aka, 'console.log'....... @done (18-05-16 14:55) @project(Other)
 	√	Fix logout on live @done (18-05-12 17:27) @project(Bugs)
 	√	Fix complete logout after browser closing, character stuck in limbo. TEMP FIX @done (18-05-12 17:26) @project(Bugs)
 	√	Move utils to global import, not "from '../../../libs/utils' " but "from 'libs/utils' " @done (18-05-09 12:18) @project(Other)

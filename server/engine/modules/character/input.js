@@ -9,12 +9,21 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 
 	try{
 		const newCharacter = await Server.characterFacade.create(socket.account.userID, name);
-
 		if(!newCharacter) {
 			return Server.socketFacade.dispatchToSocket(socket, {
 				type: SET_NOTES,
 				payload: {
 					message: 'Character limit reached (maximum five (5))',
+					type: 'error',
+				},
+			});
+		}
+		else if(newCharacter === 'Only letters allowed!') {
+			return Server.socketFacade.dispatchToSocket(socket, {
+				type: SET_NOTES,
+				payload: {
+					message: newCharacter,
+					type: 'error',
 				},
 			});
 		}
@@ -23,16 +32,24 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 				type: CHARACTER_CREATE_SUCCESS,
 				payload: {
 					character: newCharacter.exportToClient(),
+					type: 'success',
+				},
+			});
+			return Server.socketFacade.dispatchToSocket(socket, {
+				type: SET_NOTES,
+				payload: {
+					message: 'Successfully created character!',
+					type: 'success',
 				},
 			});
 		}
-
 	} catch (err) {
 		if(err.code === 11000) {
 			return Server.socketFacade.dispatchToSocket(socket, {
 				type: SET_NOTES,
 				payload: {
 					message: 'That character name is already taken.',
+					type: 'error',
 				},
 			});
 		}
@@ -68,18 +85,67 @@ async function inputDeleteCharacter(socket, character, input, params, inputObjec
 	
 	try {
 		console.log('Delete character ', characterToDelete.name, '!');
-		const deletecharacter = await Server.characterFacade.delete(socket.account.userID, characterToDelete.name);
+		const deleteCharacter = await Server.characterFacade.delete(socket.account.userID, characterToDelete.name);
 
-		if(!deletecharacter) {
+		if(!deleteCharacter) {
 			return Server.socketFacade.dispatchToSocket(socket, {
 				type: SET_NOTES,
 				payload: {
 					message: 'Could not delete character!',
+					type: 'error',
 				},
 			});
-		} else {
+		}
+		else {
 			Server.characterFacade.getCharacterList(socket);
-			//Send notes about successfull character delete
+			return Server.socketFacade.dispatchToSocket(socket, {
+				type: SET_NOTES,
+				payload: {
+					message: `Successfully deleted ${characterToDelete.name}!`,
+					type: 'success',
+				},
+			});
+		}
+	} catch (err) {
+		Server.onError(err, socket);
+	}
+}
+
+async function inputEditCharacter(socket, character, input, params, inputObject, Server) {
+	const characterToEdit = params[0];
+	const newName = params[1];
+
+	try {
+		const editCharacter = await Server.characterFacade.edit(socket.account.userID, characterToEdit.name, newName);
+
+		if(editCharacter === 'regex') {
+			return Server.socketFacade.dispatchToSocket(socket, {
+				type: SET_NOTES,
+				payload: {
+					message: 'Only letters allowed!',
+					type: 'error',
+				},
+			});
+		}
+		
+		if(!editCharacter) {
+			return Server.socketFacade.dispatchToSocket(socket, {
+				type: SET_NOTES,
+				payload: {
+					message: 'Could not edit character!',
+					type: 'error',
+				},
+			});
+		}
+		else {
+			Server.characterFacade.getCharacterList(socket);
+			return Server.socketFacade.dispatchToSocket(socket, {
+				type: SET_NOTES,
+				payload: {
+					message: `Successfully edited ${characterToEdit.name} to ${editCharacter.name}!`,
+					type: 'success',
+				},
+			});
 		}
 	} catch (err) {
 		Server.onError(err, socket);
@@ -106,7 +172,7 @@ module.exports = [
 		params: [
 			{
 				name: 'Character name',
-				rules: 'required|minimumlength:4|maximumlength:32',
+				rules: 'required|minimumlength:3|maximumlength:32',
 			},
 		],
 		onServerInput: false,
@@ -125,5 +191,22 @@ module.exports = [
 		onServerInput: false,
 		description: 'Delete character',
 		method: inputDeleteCharacter,
+	},
+	{
+		input: 'editcharacter',
+		aliases: [],
+		params: [
+			{
+				name: 'Name',
+				rules: 'required|character',
+			},
+			{
+				name: 'New name',
+				rules: 'required|minimumlength:3|maximumlength:32',
+			},
+		],
+		onServerInput: false,
+		description: 'Edit character',
+		method: inputEditCharacter,
 	},
 ];

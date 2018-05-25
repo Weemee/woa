@@ -14,24 +14,18 @@ module.exports = (sequelize, DataTypes) =>
 		{
 			type: DataTypes.STRING,
 		},
-		nameLowercase:
+		nameLowerCase:
 		{
 			type: DataTypes.STRING,
 		},
 		spec:
 		{
-			type: DataTypes.INTEGER,
-			defaultValue: 0,
+			type: DataTypes.STRING,
 		},
 		stats:
 		{
 			type: DataTypes.JSON,
 			defaultValue: {},
-		},
-		loggedIn:
-		{
-			type: DataTypes.BOOLEAN,
-			defaultValue: false,
 		},
 		createdAt:
 		{
@@ -50,7 +44,7 @@ module.exports = (sequelize, DataTypes) =>
 		characters.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 
 		if(characters.name) {
-			characters.nameLowercase = characters.name.toLowerCase();
+			characters.nameLowerCase = characters.name.toLowerCase();
 		}
 	});
 

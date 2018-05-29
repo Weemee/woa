@@ -1,18 +1,16 @@
 import moment from 'moment';
-import uuid from 'uuid/v4';
-import bcrypt from 'bcrypt';
 
 module.exports = (sequelize, DataTypes) =>
 {
-	const Universe = sequelize.define('universes',
+	const ServerUniverse = sequelize.define('serverUniverses',
 	{
-		multiverseID:
+		serverMultiverseID:
 		{
 			type: DataTypes.INTEGER,
 		}
 	});
 
-	const Multiverse = sequelize.define('multiverses',
+	const ServerMultiverse = sequelize.define('serverMultiverses',
 	{
 		name:
 		{
@@ -46,8 +44,8 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	Multiverse.hasMany(Universe);
-	Universe.belongsTo(Multiverse, {foreignKey: 'multiverseID', targetKey: 'id'});
+	ServerMultiverse.hasMany(ServerUniverse);
+	ServerUniverse.belongsTo(ServerMultiverse, {foreignKey: 'serverMultiverseID', targetKey: 'id'});
 
-	return Multiverse;
+	return ServerMultiverse;
 }

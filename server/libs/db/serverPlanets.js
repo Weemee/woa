@@ -1,28 +1,10 @@
 import moment from 'moment';
-import uuid from 'uuid/v4';
-import bcrypt from 'bcrypt';
 
 module.exports = (sequelize, DataTypes) =>
 {
-	const Star = sequelize.define('stars',
+	const ServerPlanet = sequelize.define('serverPlanets',
 	{
-		solarsystemID:
-		{
-			type: DataTypes.INTEGER,
-		}
-	});
-
-	const Planet = sequelize.define('planets',
-	{
-		solarsystemID:
-		{
-			type: DataTypes.INTEGER,
-		}
-	});
-
-	const Solarsystem = sequelize.define('solarsystems',
-	{
-		galaxyID:
+		serverSolarsystemID:
 		{
 			type: DataTypes.INTEGER,
 		},
@@ -30,20 +12,33 @@ module.exports = (sequelize, DataTypes) =>
 		{
 			type: DataTypes.STRING,
 		},
-		gridSizeX:
+		mass:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 100000,
 		},
-		gridSizeY:
+		temperature:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 100000,
 		},
-		gridSizeZ:
+		radius:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 100000,
+		},
+		distanceToStar:
+		{
+			type: DataTypes.INTEGER,
+		},
+		type:
+		{
+			type: DataTypes.STRING,
+		},
+		selfRotation:
+		{
+			type: DataTypes.INTEGER,
+		},
+		starRotation:
+		{
+			type: DataTypes.INTEGER,
 		},
 		ownedBy:
 		{
@@ -73,9 +68,5 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	Solarsystem.hasOne(Star);
-	Solarsystem.hasMany(Planet);
-	Star.belongsTo(Solarsystem, {foreignKey: 'solarsystemID', targetKey: 'id'});
-
-	return Solarsystem;
+	return ServerPlanet;
 }

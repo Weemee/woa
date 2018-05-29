@@ -12,7 +12,7 @@ import {socketSend} from '../app/actions';
 import {Container, Row, Col, Input, Button, Form} from 'reactstrap';
 import Character from './character';
 import CharacterUI from './character/ui';
-import CharacterCard from './character/card';
+import SelectedCard from './character/selectedCard';
 
 import TestThree from './three';
 
@@ -78,7 +78,7 @@ class Session extends React.Component {
 				<Container>
 					<Row>
 						<Col className="left">
-							<CharacterCard character={this.props.character} />
+							<SelectedCard character={this.props.character} />
 							<ServerMap />
 							<div style={{textAlign: 'center'}}>
 								{this.props.connection.lastEvent}<br/>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Card, CardBody, Button, Progress} from 'reactstrap';
 
-class CharacterCard extends React.Component {
+class PreviewCard extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -13,8 +13,8 @@ class CharacterCard extends React.Component {
 					{this.props.character.name}
 				</div>
 				<CardBody style={{backgroundColor: `${this.props.color}`}}>
-					<Progress color="success" value="12" max="40">
-						Health: 12
+					<Progress color="success" value="32" max="40">
+						Health: 32
 					</Progress>
 				</CardBody>
 			</Card>
@@ -22,4 +22,4 @@ class CharacterCard extends React.Component {
 	}
 }
 
-export default CharacterCard;
+export default PreviewCard;

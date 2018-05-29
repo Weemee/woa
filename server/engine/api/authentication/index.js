@@ -119,7 +119,7 @@ export function isAuthenticated(req, res, next) {
 			}
 		}
 
-		db.accounts.findOne({
+		db.accountObject.findOne({
 		where:
 		{
 			[db.Op.and]: [

@@ -1,14 +1,12 @@
 import moment from 'moment';
-import uuid from 'uuid/v4';
-import bcrypt from 'bcrypt';
 
 module.exports = (sequelize, DataTypes) =>
 {
-	const Location = sequelize.define('location',
+	const CharacterLocation = sequelize.define('characterLocation',
 	{
 		charID:
 		{
-			type: DataTypes.STRING,
+			type: DataTypes.INTEGER,
 		},
 		multiverse:
 		{
@@ -58,9 +56,9 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	Location.beforeCreate(async function(location, options) {
-		location.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
+	CharacterLocation.beforeCreate(async function(characterLocation, options) {
+		characterLocation.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 	});
 
-	return Location;
+	return CharacterLocation;
 }

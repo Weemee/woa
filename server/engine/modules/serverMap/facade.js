@@ -40,31 +40,31 @@ export default class ServerMapFacade {
 		//Apparently I can do this...
 		let objects;
 		try {
-			objects = await db.multiverses.findAll({
+			objects = await db.serverMultiverses.findAll({
 				include: [
 					{
-						model: db.universes,
+						model: db.serverUniverses,
 						include: [
 							{
-								model: db.superclusters,
+								model: db.serverSuperclusters,
 								include: [
 									{
-										model: db.localclusters,
+										model: db.serverLocalclusters,
 										include: [
 											{
-												model: db.interstellars,
+												model: db.serverInterstellars,
 												include: [
 													{
-														model: db.galaxies,
+														model: db.serverGalaxies,
 														include: [
 															{
-																model: db.solarsystems,
+																model: db.serverSolarsystems,
 																include: [
 																	{
-																		model: db.stars,
+																		model: db.serverStars,
 																	},
 																	{
-																		model: db.planets,
+																		model: db.serverPlanets,
 																	}
 																]
 															}

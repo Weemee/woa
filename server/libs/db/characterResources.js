@@ -1,14 +1,12 @@
 import moment from 'moment';
-import uuid from 'uuid/v4';
-import bcrypt from 'bcrypt';
 
 module.exports = (sequelize, DataTypes) =>
 {
-	const Resources = sequelize.define('resources',
+	const CharacterResources = sequelize.define('characterResources',
 	{
 		charID:
 		{
-			type: DataTypes.STRING,
+			type: DataTypes.INTEGER,
 		},
 		hydrogen:
 		{
@@ -33,9 +31,9 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	Resources.beforeCreate(async function(resources, options) {
-		resources.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
+	CharacterResources.beforeCreate(async function(characterResources, options) {
+		characterResources.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 	});
 
-	return Resources;
+	return CharacterResources;
 }

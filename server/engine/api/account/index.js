@@ -112,10 +112,10 @@ export function createAccount(req, res) {
 		});
 	}
 
-	db.accounts.findOne({
+	db.accountObject.findOne({
 		where:
 		{
-			account:
+			name:
 			{
 				[db.Op.like]: [req.body.username]
 			}
@@ -128,7 +128,7 @@ export function createAccount(req, res) {
 			});
 		}
 
-		account = db.accounts.findOne({
+		account = db.accountObject.findOne({
 			where:
 			{
 				email:
@@ -154,8 +154,8 @@ export function createAccount(req, res) {
 				token.update(uuid());
 			}
 
-			db.accounts.create({
-				account: req.body.username,
+			db.accountObject.create({
+				name: req.body.username,
 				email: req.body.email,
 				password: req.body.password,
 				validationToken: requireActivation ? token.digest('hex') : '',

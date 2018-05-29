@@ -1,20 +1,26 @@
 import moment from 'moment';
-import uuid from 'uuid/v4';
-import bcrypt from 'bcrypt';
 
 module.exports = (sequelize, DataTypes) =>
 {
-	const Localcluster = sequelize.define('localclusters',
+	const ServerStar = sequelize.define('serverStars',
 	{
-		superclusterID:
+		serverSolarsystemID:
 		{
 			type: DataTypes.INTEGER,
 		}
 	});
 
-	const Supercluster = sequelize.define('superclusters',
+	const ServerPlanet = sequelize.define('serverPlanets',
 	{
-		universeID:
+		serverSolarsystemID:
+		{
+			type: DataTypes.INTEGER,
+		}
+	});
+
+	const ServerSolarsystem = sequelize.define('serverSolarsystems',
+	{
+		serverGalaxyID:
 		{
 			type: DataTypes.INTEGER,
 		},
@@ -25,17 +31,17 @@ module.exports = (sequelize, DataTypes) =>
 		gridSizeX:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 100000,
 		},
 		gridSizeY:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 100000,
 		},
 		gridSizeZ:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 100000,
 		},
 		ownedBy:
 		{
@@ -65,8 +71,9 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	Supercluster.hasMany(Localcluster);
-	Localcluster.belongsTo(Supercluster, {foreignKey: 'superclusterID', targetKey: 'id'});
+	ServerSolarsystem.hasOne(ServerStar);
+	ServerSolarsystem.hasMany(ServerPlanet);
+	ServerStar.belongsTo(ServerSolarsystem, {foreignKey: 'serverSolarsystemID', targetKey: 'id'});
 
-	return Supercluster;
+	return ServerSolarsystem;
 }

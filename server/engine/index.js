@@ -21,7 +21,6 @@ let config = buildConfig();
 const Server = require('./server').Server;
 const app = express();
 
-Promise.promisifyAll(db);
 db.sequelize.authenticate().then(
 	() =>
 	{

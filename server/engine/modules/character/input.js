@@ -2,13 +2,15 @@ import {
 	CHARACTER_LOGIN,
 	SET_NOTES,
 	CHARACTER_CREATE_SUCCESS,
+	CLEAR_LOADING,
 } from 'libs/constants';
 
 async function inputCreateCharacter(socket, character, input, params, inputObject, Server) {
 	let name = params[0];
+	let spec = params[1];
 
 	try{
-		const newCharacter = await Server.characterFacade.create(socket.account.userID, name);
+		const newCharacter = await Server.characterFacade.create(socket.account.userID, name, spec);
 		if(!newCharacter) {
 			return Server.socketFacade.dispatchToSocket(socket, {
 				type: SET_NOTES,
@@ -60,11 +62,20 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 async function inputSelectCharacter(socket, character, input, params, inputObject, Server) {
 	const characterToLoad = params[0];
 	await Server.socketFacade.logoutOutSession(socket, socket.account.userID);
+	console.log('\nCharacter to load: ', characterToLoad);
 
 	try {
-
-		console.log('Character::Input::inputSelectCharacter, character to load: ' + characterToLoad);
-		await Server.characterFacade.manage(characterToLoad);
+		if(characterToLoad) {
+			await Server.characterFacade.firstLogin(characterToLoad);
+		}
+		else {
+			await Server.characterFacade.manage(characterToLoad);
+		}
+		
+		Server.socketFacade.dispatchToSocket(socket, {
+			type: CLEAR_LOADING,
+			payload: null,
+		});
 
 		Server.socketFacade.dispatchToSocket(socket, {
 			type: CHARACTER_LOGIN,
@@ -171,8 +182,12 @@ module.exports = [
 		aliases: [],
 		params: [
 			{
-				name: 'Character name',
+				name: 'Name',
 				rules: 'required|minimumlength:3|maximumlength:32',
+			},
+			{
+				spec: 'Specialization',
+				rules: 'required',
 			},
 		],
 		onServerInput: false,

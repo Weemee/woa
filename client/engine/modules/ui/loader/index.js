@@ -13,8 +13,8 @@ class Loader extends React.Component {
 
 		return (
 			<div id="loading">
-				<div>
-					<div className="loadar">
+				<div id="loading-content">
+					<div className="loader">
 						<div>
 							<div>
 								<div>

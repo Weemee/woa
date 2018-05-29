@@ -1,20 +1,18 @@
 import moment from 'moment';
-import uuid from 'uuid/v4';
-import bcrypt from 'bcrypt';
 
 module.exports = (sequelize, DataTypes) =>
 {
-	const Solarsystem = sequelize.define('solarsystems',
+	const ServerGalaxy = sequelize.define('serverGalaxies',
 	{
-		galaxyID:
+		serverInterstellarID:
 		{
 			type: DataTypes.INTEGER,
 		}
 	});
 
-	const Galaxy = sequelize.define('galaxies',
+	const ServerInterstellar = sequelize.define('serverInterstellars',
 	{
-		interstellarID:
+		serverLocalclusterID:
 		{
 			type: DataTypes.INTEGER,
 		},
@@ -65,8 +63,8 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	Galaxy.hasMany(Solarsystem);
-	Solarsystem.belongsTo(Galaxy, {foreignKey: 'galaxyID', targetKey: 'id'});
+	ServerInterstellar.hasMany(ServerGalaxy);
+	ServerGalaxy.belongsTo(ServerInterstellar, {foreignKey: 'serverInterstellarID', targetKey: 'id'});
 
-	return Galaxy;
+	return ServerInterstellar;
 }

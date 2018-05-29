@@ -14,7 +14,8 @@ import {socketSend} from '../../app/actions';
 
 import Notes from '../../ui/notes';
 
-import CharacterCard from './card';
+import PreviewCard from './previewCard';
+import {setLoading} from '../../app/actions';
 
 class Character extends React.Component {
 	constructor(props) {
@@ -90,12 +91,12 @@ class Character extends React.Component {
 	}
 
 	selectCharacter(name) {
+		this.props.setLoading('Loading penis...');
 		this.props.newInput(`selectcharacter ${name}`);
 	}
 
-	createCharacter() {
-		const {name} = this.state;
-		this.props.newInput(`createcharacter ${name}`);
+	createCharacter(name, spec) {
+		this.props.newInput(`createcharacter ${name} ${spec}`);
 	}
 
 	deleteCharacter(name) {
@@ -111,42 +112,42 @@ class Character extends React.Component {
 	}
 
 	renderContent() {
-		if (this.state.case.create) {
-			//Add explanation to it
-			const specs = [
-				{
-					name: 'Arithmetic',
-					description: 'is a very smart person when it comes to numbers! 01+11=100 (or 4 if you prefer), easy!',
-				},
-				{
-					name: 'Capitalist',
-					description: 'is the one the loves money. More money, more love. More love, more fun!',
-				},
-				{
-					name: 'Casual',
-					description: 'is a casual pleb. Nothing special...',
-				},
-				{
-					name: 'Collector',
-					description: 'is someone to keep an eye on. Before you know it, everything there is to collect is gone in a jiffy. Speedy speedy!',
-				},
-				{
-					name: 'Engineer',
-					description: 'is THE tinkerer. Without the Engineer, there would not be anything else. Please thank the Engineer next time you her/him.',
-				},
-				{
-					name: 'Explorer',
-					description: 'is maybe not around for the cruical times. But who cares? There is an entire universe to explore, let us go!',
-				},
-				{
-					name: 'Farmer',
-					description: 'is not the person you bring to a party. Farming, harvesting, producing and repeat. No time for parties, out me way!',
-				},
-				{
-					name: 'Scientist',
-					description: 'is perhaps the most tricky individual to understand. What is the science for? Any specific subject? NO, FOR SCIENCE!',
-				},
+		//Add explanation to it
+		const specs = [
+			{
+				name: 'Arithmetic',
+				description: 'is a very smart person when it comes to numbers! 01+11=100 (or 4 if you prefer), easy!',
+			},
+			{
+				name: 'Capitalist',
+				description: 'is the one the loves money. More money, more love. More love, more fun!',
+			},
+			{
+				name: 'Casual',
+				description: 'is a casual pleb. Nothing special...',
+			},
+			{
+				name: 'Collector',
+				description: 'is someone to keep an eye on. Before you know it, everything there is to collect is gone in a jiffy. Speedy speedy!',
+			},
+			{
+				name: 'Engineer',
+				description: 'is THE tinkerer. Without the Engineer, there would not be anything else. Please thank the Engineer next time you her/him.',
+			},
+			{
+				name: 'Explorer',
+				description: 'is maybe not around for the cruical times. But who cares? There is an entire universe to explore, let us go!',
+			},
+			{
+				name: 'Farmer',
+				description: 'is not the person you bring to a party. Farming, harvesting, producing and repeat. No time for parties, out me way!',
+			},
+			{
+				name: 'Scientist',
+				description: 'is perhaps the most tricky individual to understand. What is the science for? Any specific subject? NO, FOR SCIENCE!',
+			},
 		];
+		if (this.state.case.create) {
 			return (
 				<div>
 					<Card>
@@ -207,7 +208,7 @@ class Character extends React.Component {
 									The <b>{specs[this.state.specialization].name}</b> {specs[this.state.specialization].description}
 								</div>
 							}
-							<Button color='blue' block={true} onClick={this.createCharacter}>Create character</Button>
+							<Button color='blue' block={true} onClick={() => this.createCharacter(this.state.name, specs[this.state.specialization].name)}>Create character</Button>
 						</CardBody>
 					</Card>
 				</div>
@@ -372,9 +373,9 @@ class Character extends React.Component {
 									this.props.characterList.map((obj, index) => 
 										
 											obj.name === `${this.state.case.preview}` ? (
-											<CharacterCard key={index} onClick={this.previewCharacter} character={obj} color="pink"/>
+											<PreviewCard key={index} onClick={this.previewCharacter} character={obj} color="pink"/>
 											) : (
-												<CharacterCard key={index} onClick={this.previewCharacter} character={obj} color="white"/>
+												<PreviewCard key={index} onClick={this.previewCharacter} character={obj} color="white"/>
 											)
 									)
 								}
@@ -399,6 +400,7 @@ function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
 		socketSend,
 		newInput,
+		setLoading,
 	}, dispatch);
 }
 

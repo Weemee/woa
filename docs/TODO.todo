@@ -1,232 +1,240 @@
-How to (sublime):
-	☐	Navigate with ctrl + R
-	☐	Navigate to 'at sign' with ctrl+shift+R
-
-Category:
-	☐	Bugs @bugs
-	☐	Login @login
-	☐	Register @register
-	☐	Account @account
-	☐	Character @character
-	☐	Theme @theme
-	☐	UI @ui
-	☐	Imrpovements @improvements
-	☐	Server security @security
-
 Bugs:
-	☐	Wrong 'typeof' for Character handling
-		☐	Where (file, function(s), callback[boolean]): CharacterFacade, {manage, remove, save}, yes
-		☐	What: Sometimes gets 'typeof' (string) for 'userID' instead of (integer)
-		☐	Solution: Make sure the 'typeof' (integer) is being sent as 'userID', not 'typeof' (string)
+	☐ Wrong 'typeof' for Character handling
+		☐ Where (file, function(s), callback[boolean]): CharacterFacade, {manage, remove, save}, yes
+		☐ What: Sometimes gets 'typeof' (string) for 'userID' instead of (integer)
+		☐ Solution: Make sure the 'typeof' (integer) is being sent as 'userID', not 'typeof' (string)
+
 Login:
-	☐	@low Methods @account @login
-		☐	Twitch
-		☐	Google
-		☐	Facebook
-	☐	@low Trial account @account @login
-		☐	Captcha
-			☐	Can create account / authenticate with saved trial account
-		☐	Local game
-			☐	Can not use trial progress, flush everything
-	☐	@low Otp @account @login
+	☐ @low Methods
+		☐ Twitch
+		☐ Google
+		☐ Facebook
+	☐ @low Trial account
+		☐ Captcha
+			☐ Can create account / authenticate with saved trial account
+		☐ Local game
+			☐ Can not use trial progress, flush everything
+	☐ @low Otp
 
 Account:
-	☐	Define methods @account
-	☐	Link methods @account
-	☐	Unlink methods @account
-	☐	Change password @account
-	☐	Add otp @account
-	☐	Save account @account
-
+	☐ Define methods
+	☐ Link methods
+	☐ Unlink methods
+	☐ Change password
+	☐ Add otp
+	☐ Save account
 	Register:
-		☐	Verify email @account
-		☐	Email sent with link @account
-
+		☐ Verify email
+		☐ Email sent with link
 	Functions:
-		☐	Update account @account
+		☐ Update account
+
+Database: 
+	☐ @high Proper error logging
+	☐ @critical Refactor modules to ES6
 
 Character:
+	Refactor:
+		Load: 
+			☐ Use inner join?
+	Check:
+		☐ If the character is logging in for the first time
+			☐ Loading bar
+			☐ Generate
+				☐ Resources
+				☐ Unlocks
+				☐ Research
+				☐ Talents
+				☐ Location
+				☐ Stats
 	Load:
-		☐	Load resources @character
-		☐	Load unlocks @character
-		☐	Load research @character
-		☐	Load talents @character
-		☐	Load specialization @character
+		☐ Load resources
+		☐ Load unlocks
+		☐ Load research
+		☐ Load talents
 	Create:
-		☐	Create character stats @character
-		√	Specialization scheme @character @done (18-05-25 22:34)
-	Misc:
-		☐	View character @character
-			☐	Show after list selection @character
-			☐	Show @character
-				☐	Specialization
-				☐	Location
-					☐	Server
-						☐	Super Cluster
-							☐	Galaxy
-								☐	Cluster
-									☐	Solar system
-										☐	X
-										☐	Y
-				☐	Options
-					☐	Delete
-					☐	Edit name
-					☐	Play
-				☐	Time played
-		☐	Save character @character
-			☐	Logout
-			☐	Disconnect
+		☐ Create character stats
+	Preview:
+		☐ Specialization
+		☐ Level
+		☐ Location
+		☐ Resources
+	Save:
+		☐ Logout
+		☐ Disconnect
 
 Theme system:
-	☐	Theme elements @theme
-		☐	Main @theme
-		☐	UI @theme
-		☐	Buttons @theme
-		☐	Labels @theme
-		☐	Text @theme
-			☐	Hover @theme
-			☐	Click @theme
+	☐ Theme elements
+		☐ Main
+		☐ UI
+		☐ Buttons
+		☐ Labels
+		☐ Text
+			☐ Hover
+			☐ Click
 
 UI:
-	☐	Add the HUD @ui
-		☐	Stuff in HUD
-
+	☐ Add the HUD
+		☐ Stuff in HUD
 	Re-design character create:
-		☐	Droplist for character select @ui
-			☐	Put it into a theme @ui
-		☐	Show needed information @ui
-			☐	Make it show in the middle @ui
-		☐	Structure character @ui
-		☐	Make "Play" appear on the top @ui
-		☐	Make "Delete" in the corner @ui
-
-	Current:
-		☐	Preview
-			☐	Stats shown
-				☐	Level
-				☐	Specialization
-				☐	Location
-				☐	Resources
-
+		☐ Droplist for character select
+			☐ Put it into a theme
+		☐ Show needed information
+			☐ Make it show in the middle
+		☐ Structure character
+		☐ Make "Play" appear on the top
+		☐ Make "Delete" in the corner
 	Re-design header:
-		☐	Make it look like the mock-up
-		☐	Create the dropdown fields for login/register
+		☐ Make it look like the mock-up
+		☐ Create the dropdown fields for login/register
 
 Improvements:
-	☐	Change the entire layout on character login @improvements @high
-		☐	Loading screen @ui
-		☐	Make the layout for 'inside the game' @ui
-	☐	Check for injections @improvements
+	☐ @high Change the entire layout for logged in character
+		☐ Loading screen
+		☐ Make the layout for 'inside the game'
+	☐ Check for injections
+	☐ @medium Re-structure 'character/index.js', split 'create', 'preview' and 'editing' into seperate files
+	☐ @low Re-structure/re-build themes
+	☐ @low Re-structure loading to be handled server side (call when loading and loading done) and client only renders
 
-Security: @Security
+Security:
 	https://expressjs.com/en/advanced/developing-template-engines.html
-	☐	Express security
-		☐	TLS
-		☐	Cookies
-		☐	Session
-		☐	NPM security
-		☐	Node checklist
-			☐
-		☐	Other
-			☐	Rate-limiting, loopback.io, express-limiter, Strongloop
-			☐	CSRF, csurf
+	☐ Express security
+		☐ TLS
+		☐ Cookies
+		☐ Session
+		☐ NPM security
+		☐ Node checklist
+		☐ Other
+			☐ Rate-limiting, loopback.io, express-limiter, Strongloop
+			☐ CSRF, csurf
 
 Other:
-	☐	Improve logging @Other
-	☐	Comment everything @Other @high
+	☐ Improve logging
+	☐ @high Comment everything
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
-	✔ Github RSS feed @done (5/21/2018, 10:45:40 AM) @project(Post updates)
-	✔ https://github.com/Weemee/woa/commits/dev.atom @done (5/21/2018, 10:45:37 AM) @project(Post updates)
-	√	Edit character @done (18-05-25 20:04) @project(Character / Misc)
-	√	Load character stats @character @done (18-05-25 20:03) @project(Character / Load)
-	√	Load character @character @done (18-05-25 20:03) @project(Character / Load)
-	√ Post updates: @done (18-05-25 17:05)
-	√	Sets you in play mode @done (18-05-25 17:05) @project(UI / Current)
-	√	Play button @done (18-05-25 17:05) @project(UI / Current)
-	√	Name @done (18-05-25 17:05) @project(UI / Current)
-	√	Name @done (18-05-25 17:05) @project(UI / Current)
-	√	List on the right as World of Warcraft @done (18-05-25 17:05) @project(UI / Current)
-	√	Enabled after filling the form with 'DELETE' @done (18-05-25 17:05) @project(UI / Current)
-	√	Editable @done (18-05-25 17:05) @project(UI / Current)
-	√	Edit button @done (18-05-25 17:05) @project(UI / Current)
-	√	Disabled @done (18-05-25 17:05) @project(UI / Current)
-	√	Delete button @done (18-05-25 17:05) @project(UI / Current)
-	√	Clicking character shows a 'preview' of the character @done (18-05-25 17:05) @project(UI / Current)
-	√	Being able to edit your character in the menu @done (18-05-25 17:05) @project(UI / Current)
-	√	Update character @character @done (18-05-25 17:04) @project(Character / Misc)
-	√	Name @done (18-05-25 17:04) @project(Character / Misc)
-	√	Name @done (18-05-25 17:04) @project(Character / Misc)
-	√	Maximum characters (5) @character @done (18-05-25 09:00) @project(Character / Misc)
-	√	Delete character @character @done (18-05-25 09:00) @project(Character / Misc)
-	√	Move db to global import, not "from '../../../api/models' " but "from 'libs/db' " @done (18-05-16 15:12) @project(Other)
-	√	Remove all debugging, aka, 'console.log'....... @done (18-05-16 14:55) @project(Other)
-	√	Fix logout on live @done (18-05-12 17:27) @project(Bugs)
-	√	Fix complete logout after browser closing, character stuck in limbo. TEMP FIX @done (18-05-12 17:26) @project(Bugs)
-	√	Move utils to global import, not "from '../../../libs/utils' " but "from 'libs/utils' " @done (18-05-09 12:18) @project(Other)
-	√	Improve error handling @done (18-05-09 11:50) @project(Other)
-	√	Fix character login (not logging out/changing) @done (18-05-07 01:25) @project(Bugs)
-	√	Database @DB @done (18-05-06 18:15) @project(Main functions)
-	√	Create character @done (18-05-06 18:14) @project(Play)
-	√	Choose character (drop list) @done (18-05-06 18:14) @project(Play)
-	√	Patch Notes .md file @done (18-05-06 18:13) @project(Other)
-	√	timePlayed @done (18-05-06 12:43) @project(Database)
-	√	stats @done (18-05-06 12:43) @project(Database)
-	√	characterID P I @done (18-05-06 12:43) @project(Database)
-	√	talents @done (18-05-06 12:42) @project(Database)
-	√	production @done (18-05-06 12:42) @project(Database)
-	√	characterID P I @done (18-05-06 12:42) @project(Database)
-	√	position @done (18-05-06 12:41) @project(Database)
-	√	exploration @done (18-05-06 12:41) @project(Database)
-	√	characterID P I @done (18-05-06 12:41) @project(Database)
-	√	resources @done (18-05-06 12:40) @project(Database)
-	√	characterID P I @done (18-05-06 12:40) @project(Database)
-	√	atoms @done (18-05-06 12:40) @project(Database)
-	√	research @done (18-05-06 12:38) @project(Database)
-	√	fusion @done (18-05-06 12:38) @project(Database)
-	√	characterID P I @done (18-05-06 12:38) @project(Database)
-	√	unlocks @done (18-05-06 12:36) @project(Database)
-	√	research @done (18-05-06 12:36) @project(Database)
-	√	characterID P I @done (18-05-06 12:36) @project(Database)
-	√	Or make it like WoW @done (18-05-05 17:04) @project(UI / Re-design character create)
-	√	Move create character to a seperate instance @done (18-05-05 17:04) @project(UI / Re-design character create)
-	√	Show account information @done (18-05-05 15:14) @project(Account)
-	√	Create character @done (18-04-24 14:59) @project(Character)
-	√	account @done (18-04-24 13:41) @project(Database)
-	√	password hash @done (18-04-23 19:21) @project(Database)
-	√	accountLevel @done (18-04-23 19:21) @project(Database)
-	√	Hash @done (18-04-23 19:21) @project(Register)
-	√	Hash @done (18-04-23 19:21) @project(Login)
-	√	Login with wrong credentials "Unhandled rejection TypeError". Send error message on false login. @done (18-04-23 12:08) @project(Bugs)
-	√	spec @done (18-04-23 12:01) @project(Database)
-	√	loggedIn @done (18-04-23 12:01) @project(Database)
-	√	Refactor then entire config @done (18-04-13 13:36) @project(Other)
-	√	Load character @done (18-04-13 13:36) @project(Character)
-	√	@critical Bug fix character name failure @done (18-04-13 13:34) @project(Main functions)
-	√	Load character @done (18-04-09 17:28) @project(Load)
-	√	userID I @done (18-04-09 09:06) @project(Database)
-	√	updatedAt @done (18-04-09 09:06) @project(Database)
-	√	name @done (18-04-09 09:06) @project(Database)
-	√	id P AI @done (18-04-09 09:06) @project(Database)
-	√	createdAt @done (18-04-09 09:06) @project(Database)
-	√	character @done (18-04-09 09:06) @project(Database)
-	√	Load account @done (18-04-09 09:06) @project(Load)
-	√	Username @done (18-04-08 19:51) @project(Register)
-	√	SessionToken @done (18-04-08 19:51) @project(Register)
-	√	Password @done (18-04-08 19:51) @project(Register)
-	√	Email @done (18-04-08 19:51) @project(Register)
-	√	Link @done (18-04-07 23:25) @project(Theme system)
-	√	Header @done (18-04-07 23:25) @project(Theme system)
-	√	Theme manager @done (18-04-07 23:24) @project(Theme system)
-	√	usr I U @done (18-04-02 18:23) @project(Database)
-	√	updatedAt @done (18-04-02 18:23) @project(Database)
-	√	sessiontoken @done (18-04-02 18:23) @project(Database)
-	√	id P AI @done (18-04-02 18:23) @project(Database)
-	√	email I U @done (18-04-02 18:23) @project(Database)
-	√	createdAt @done (18-04-02 18:23) @project(Database)
-	√	Username @done (18-04-02 18:23) @project(Login)
-	√	Password @done (18-04-02 18:23) @project(Login)
-	√	Gently call disconnect on server @done (18-04-02 18:23) @project(Logout)
-	√	Authenticate @done (18-04-02 18:23) @project(Login)
-	√	Local @done (18-04-02 18:22) @project(Login)
+   ✘ Category: @cancelled(18-05-27 13:20)
+   ✘ Bugs @bugs @cancelled(18-05-27 13:20)
+   ✘ Login @login @cancelled(18-05-27 13:20)
+   ✘ Register @register @cancelled(18-05-27 13:20)
+   ✘ Account @account @cancelled(18-05-27 13:20)
+   ✘ Character @character @cancelled(18-05-27 13:20)
+   ✘ Theme @theme @cancelled(18-05-27 13:20)
+   ✘ UI @ui @cancelled(18-05-27 13:20)
+   ✘ Imrpovements @improvements @cancelled(18-05-27 13:20)
+   ✘ Server security @security @cancelled(18-05-27 13:20)
+   ✘ Misc: @cancelled(18-05-27 13:20) @project(Character.Load.Create)
+   ✘ View character @character @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Show after list selection @character @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Show @character @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Specialization @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Location @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Server @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Super Cluster @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Galaxy @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Cluster @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Solar system @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ X @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Y @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Options @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Delete @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Edit name @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Play @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Time played @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+ 	✔ Load specialization @character @done(18-05-27 13:02) @project(Character.Load)
+	✔ Specialization schema @character @done(18-05-27 13:02) @project(Character.Load.Create)
+  	✔ Github RSS feed (5/21/2018, 10:45:40 AM) @project(Post updates) @done(18-05-27 12:49)
+	✔ https://github.com/Weemee/woa/commits/dev.atom (5/21/2018, 10:45:37 AM) @project(Post updates) @done(18-05-27 12:49)
+	✔ Edit character (18-05-25 20:04) @project(Character / Misc) @done(18-05-27 12:49)
+	✔ Load character stats @character (18-05-25 20:03) @project(Character / Load) @done(18-05-27 12:49)
+	✔ Load character @character (18-05-25 20:03) @project(Character / Load) @done(18-05-27 12:49)
+	✔ Post updates: (18-05-25 17:05) @done(18-05-27 12:49)
+	✔ Sets you in play mode (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Play button (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Name (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Name (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ List on the right as World of Warcraft (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Enabled after filling the form with 'DELETE' (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Editable (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Edit button (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Disabled (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Delete button (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Clicking character shows a 'preview' of the character (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Being able to edit your character in the menu (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Update character @character (18-05-25 17:04) @project(Character / Misc) @done(18-05-27 12:49)
+	✔ Name (18-05-25 17:04) @project(Character / Misc) @done(18-05-27 12:49)
+	✔ Name (18-05-25 17:04) @project(Character / Misc) @done(18-05-27 12:49)
+	✔ Maximum characters (5) @character (18-05-25 09:00) @project(Character / Misc) @done(18-05-27 12:49)
+	✔ Delete character @character (18-05-25 09:00) @project(Character / Misc) @done(18-05-27 12:49)
+	✔ Move db to global import, not "from '../../../api/models' " but "from 'libs/db' " (18-05-16 15:12) @project(Other) @done(18-05-27 12:49)
+	✔ Remove all debugging, aka, 'console.log'....... (18-05-16 14:55) @project(Other) @done(18-05-27 12:49)
+	✔ Fix logout on live (18-05-12 17:27) @project(Bugs) @done(18-05-27 12:49)
+	✔ Fix complete logout after browser closing, character stuck in limbo. TEMP FIX (18-05-12 17:26) @project(Bugs) @done(18-05-27 12:49)
+	✔ Move utils to global import, not "from '../../../libs/utils' " but "from 'libs/utils' " (18-05-09 12:18) @project(Other) @done(18-05-27 12:49)
+	✔ Improve error handling (18-05-09 11:50) @project(Other) @done(18-05-27 12:49)
+	✔ Fix character login (not logging out/changing) (18-05-07 01:25) @project(Bugs) @done(18-05-27 12:49)
+	✔ Database @DB (18-05-06 18:15) @project(Main functions) @done(18-05-27 12:49)
+	✔ Create character (18-05-06 18:14) @project(Play) @done(18-05-27 12:49)
+	✔ Choose character (drop list) (18-05-06 18:14) @project(Play) @done(18-05-27 12:49)
+	✔ Patch Notes .md file (18-05-06 18:13) @project(Other) @done(18-05-27 12:49)
+	✔ timePlayed (18-05-06 12:43) @project(Database) @done(18-05-27 12:49)
+	✔ stats (18-05-06 12:43) @project(Database) @done(18-05-27 12:49)
+	✔ characterID P I (18-05-06 12:43) @project(Database) @done(18-05-27 12:49)
+	✔ talents (18-05-06 12:42) @project(Database) @done(18-05-27 12:49)
+	✔ production (18-05-06 12:42) @project(Database) @done(18-05-27 12:49)
+	✔ characterID P I (18-05-06 12:42) @project(Database) @done(18-05-27 12:49)
+	✔ position (18-05-06 12:41) @project(Database) @done(18-05-27 12:49)
+	✔ exploration (18-05-06 12:41) @project(Database) @done(18-05-27 12:49)
+	✔ characterID P I (18-05-06 12:41) @project(Database) @done(18-05-27 12:49)
+	✔ resources (18-05-06 12:40) @project(Database) @done(18-05-27 12:49)
+	✔ characterID P I (18-05-06 12:40) @project(Database) @done(18-05-27 12:49)
+	✔ atoms (18-05-06 12:40) @project(Database) @done(18-05-27 12:49)
+	✔ research (18-05-06 12:38) @project(Database) @done(18-05-27 12:49)
+	✔ fusion (18-05-06 12:38) @project(Database) @done(18-05-27 12:49)
+	✔ characterID P I (18-05-06 12:38) @project(Database) @done(18-05-27 12:49)
+	✔ unlocks (18-05-06 12:36) @project(Database) @done(18-05-27 12:49)
+	✔ research (18-05-06 12:36) @project(Database) @done(18-05-27 12:49)
+	✔ characterID P I (18-05-06 12:36) @project(Database) @done(18-05-27 12:49)
+	✔ Or make it like WoW (18-05-05 17:04) @project(UI / Re-design character create) @done(18-05-27 12:49)
+	✔ Move create character to a seperate instance (18-05-05 17:04) @project(UI / Re-design character create) @done(18-05-27 12:49)
+	✔ Show account information (18-05-05 15:14) @project(Account) @done(18-05-27 12:49)
+	✔ Create character (18-04-24 14:59) @project(Character) @done(18-05-27 12:49)
+	✔ account (18-04-24 13:41) @project(Database) @done(18-05-27 12:49)
+	✔ password hash (18-04-23 19:21) @project(Database) @done(18-05-27 12:49)
+	✔ accountLevel (18-04-23 19:21) @project(Database) @done(18-05-27 12:49)
+	✔ Hash (18-04-23 19:21) @project(Register) @done(18-05-27 12:49)
+	✔ Hash (18-04-23 19:21) @project(Login) @done(18-05-27 12:49)
+	✔ Login with wrong credentials "Unhandled rejection TypeError". Send error message on false login. (18-04-23 12:08) @project(Bugs) @done(18-05-27 12:49)
+	✔ spec (18-04-23 12:01) @project(Database) @done(18-05-27 12:49)
+	✔ loggedIn (18-04-23 12:01) @project(Database) @done(18-05-27 12:49)
+	✔ Refactor then entire config (18-04-13 13:36) @project(Other) @done(18-05-27 12:49)
+	✔ Load character (18-04-13 13:36) @project(Character) @done(18-05-27 12:49)
+	✔ @critical Bug fix character name failure (18-04-13 13:34) @project(Main functions) @done(18-05-27 12:49)
+	✔ Load character (18-04-09 17:28) @project(Load) @done(18-05-27 12:49)
+	✔ userID I (18-04-09 09:06) @project(Database) @done(18-05-27 12:49)
+	✔ updatedAt (18-04-09 09:06) @project(Database) @done(18-05-27 12:49)
+	✔ name (18-04-09 09:06) @project(Database) @done(18-05-27 12:49)
+	✔ id P AI (18-04-09 09:06) @project(Database) @done(18-05-27 12:49)
+	✔ createdAt (18-04-09 09:06) @project(Database) @done(18-05-27 12:49)
+	✔ character (18-04-09 09:06) @project(Database) @done(18-05-27 12:49)
+	✔ Load account (18-04-09 09:06) @project(Load) @done(18-05-27 12:49)
+	✔ Username (18-04-08 19:51) @project(Register) @done(18-05-27 12:49)
+	✔ SessionToken (18-04-08 19:51) @project(Register) @done(18-05-27 12:49)
+	✔ Password (18-04-08 19:51) @project(Register) @done(18-05-27 12:49)
+	✔ Email (18-04-08 19:51) @project(Register) @done(18-05-27 12:49)
+	✔ Link (18-04-07 23:25) @project(Theme system) @done(18-05-27 12:49)
+	✔ Header (18-04-07 23:25) @project(Theme system) @done(18-05-27 12:49)
+	✔ Theme manager (18-04-07 23:24) @project(Theme system) @done(18-05-27 12:49)
+	✔ usr I U (18-04-02 18:23) @project(Database) @done(18-05-27 12:49)
+	✔ updatedAt (18-04-02 18:23) @project(Database) @done(18-05-27 12:49)
+	✔ sessiontoken (18-04-02 18:23) @project(Database) @done(18-05-27 12:49)
+	✔ id P AI (18-04-02 18:23) @project(Database) @done(18-05-27 12:49)
+	✔ email I U (18-04-02 18:23) @project(Database) @done(18-05-27 12:49)
+	✔ createdAt (18-04-02 18:23) @project(Database) @done(18-05-27 12:49)
+	✔ Username (18-04-02 18:23) @project(Login) @done(18-05-27 12:49)
+	✔ Password (18-04-02 18:23) @project(Login) @done(18-05-27 12:49)
+	✔ Gently call disconnect on server (18-04-02 18:23) @project(Logout) @done(18-05-27 12:49)
+	✔ Authenticate (18-04-02 18:23) @project(Login) @done(18-05-27 12:49)
+	✔ Local (18-04-02 18:22) @project(Login) @done(18-05-27 12:49)

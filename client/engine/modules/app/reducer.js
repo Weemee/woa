@@ -3,12 +3,12 @@ import {
 	CONNECTION_SOCKET,
 	NOTIFICATION_CLEAR,
 	SET_LOADING,
-	CLEAR_LOADING,
 } from './types';
 
 import {
 	ACCOUNT_LOGOUT,
 	SET_NOTES,
+	CLEAR_LOADING,
 } from 'libs/constants';
 
 const defaultState = {
@@ -22,28 +22,41 @@ const defaultState = {
 export default function(state = defaultState, action) {
 	switch (action.type) {
 		case CONNECTION_STATUS:
-		return {
-			...state,
-			...action.payload,
-		};
+			return {
+				...state,
+				...action.payload,
+			};
 
 		case CONNECTION_SOCKET:
-		return {
-			...state,
-			socket: action.payload,
-		};
+			return {
+				...state,
+				socket: action.payload,
+			};
 
 		case SET_NOTES:
-		return {
-			...state,
-			notes: action.payload,
-		};
+			return {
+				...state,
+				notes: action.payload,
+				loading: null,
+			};
 
 		case NOTIFICATION_CLEAR:
-		return {
-			...state,
-			notes: null,
-		};
+			return {
+				...state,
+				notes: null,
+			};
+
+		case SET_LOADING:
+			return {
+				...state,
+				loading: action.payload,
+			};
+		
+		case CLEAR_LOADING:
+			return {
+				...state,
+				loading: null,
+			};
 		case ACCOUNT_LOGOUT:
 	}
 

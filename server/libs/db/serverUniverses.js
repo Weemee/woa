@@ -1,12 +1,23 @@
 import moment from 'moment';
-import uuid from 'uuid/v4';
-import bcrypt from 'bcrypt';
 
 module.exports = (sequelize, DataTypes) =>
 {
-	const Star = sequelize.define('stars',
+	const ServerSupercluster = sequelize.define('serverSuperclusters',
 	{
-		solarsystemID:
+		serverUniverseID:
+		{
+			type: DataTypes.INTEGER,
+		}
+	});
+
+	const ServerUniverse = sequelize.define('serverUniverses',
+	{
+		id:
+		{
+			type: DataTypes.INTEGER,
+			primaryKey: true,
+		},
+		serverMultiverseID:
 		{
 			type: DataTypes.INTEGER,
 		},
@@ -14,17 +25,20 @@ module.exports = (sequelize, DataTypes) =>
 		{
 			type: DataTypes.STRING,
 		},
-		mass:
+		gridSizeX:
 		{
 			type: DataTypes.INTEGER,
+			defaultValue: 10,
 		},
-		temperature:
+		gridSizeY:
 		{
 			type: DataTypes.INTEGER,
+			defaultValue: 10,
 		},
-		radius:
+		gridSizeZ:
 		{
 			type: DataTypes.INTEGER,
+			defaultValue: 10,
 		},
 		ownedBy:
 		{
@@ -54,5 +68,8 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	return Star;
+	ServerUniverse.hasMany(ServerSupercluster);
+	ServerSupercluster.belongsTo(ServerUniverse, {foreignKey: 'serverUniverseID', targetKey: 'id'});
+
+	return ServerUniverse;
 }

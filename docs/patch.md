@@ -2,6 +2,50 @@
 
 ## Earliest early-early alpha access
 
+***
+=================================================
+
+##### *Version 0.0.147*
+
+## General
+* Now visually displays your specialization when you're logged in with a character
+* Split and enhanced the 'loading screen'. Just a pleb filter for now
+* First time character login is now a thing, generating table rows as needed
+* Minor fixes here and there (I did too much split coding without commiting)
+
+## Client
+* Changed the file '../character/card' to 'previewCard' to separate it from in-game view of the character card. The new in-game display is called 'selectedCard'
+* Set loading is engaged on the client side
+* Now show 'stats'
+
+## Server
+* Specialization is fully added upon character creation
+* Clear loading is now sent from the server before the actual package
+* Checking if you have the following instances in the database
+	* Levels
+	* Location
+	* Research
+	* Resources
+	* Talents
+	* Unlocks
+* Adding 'levels' for now to the character object
+* Changed all database calls to match the new database name changes
+* Now fetches the 'stats' database as part of the 'character' object. Same thing will be added to talents, resources, etc
+
+## Bug fixes
+* Fixed a bug that caused the trigger inside '../character/card' to trigger while being logged in with a character
+
+## Misc/Dev/Git/Boring stuff
+* Updated TODO.todo to work inside vs code
+* Changed all database names to easier navigate through them. Some examples below: 
+	* characters => **characterObject**
+	* accounts => **accountObject**
+	* galaxies => **serverGalaxies**
+	* solarsystems => **serverSolarsystems**
+	* levels => **characterLevels**
+	* talents => **characterTalents**
+
+***
 =================================================
 
 ##### *Version 0.0.119*
@@ -43,9 +87,10 @@
 
 	Next update should have these implemented as a visual representation on the client.
 
-## Bugfixes
+## Bug fixes
 * Fixed an issue with fullscreen mode being called while not logged in with a character when pressing the 'enter' key
 
+***
 =================================================
 
 ##### *Version 0.0.101*
@@ -64,6 +109,7 @@
 * Implemented character limit of five (5)
 * Character can be successfully deleted in the database
 
+***
 =================================================
 
 ##### *Version 0.0.92*
@@ -72,7 +118,7 @@
 * No game changes made, missing gameplay
 
 ## General
-* Can now report a bug through the website
+* Can now report a bugs through the platform
 
 ## Client
 * Recieve props:
@@ -89,6 +135,7 @@
 * Removed local server data folders, everything in database now
 * Moved database module from 'engine/api/models' to 'libs/db'
 
+***
 =================================================
 
 ##### *Version 0.0.63*
@@ -105,4 +152,5 @@
 ## Server
 * Added encryption for sensitive information, like account passwords
 
+***
 =================================================

@@ -1,12 +1,10 @@
 import moment from 'moment';
-import uuid from 'uuid/v4';
-import bcrypt from 'bcrypt';
 
 module.exports = (sequelize, DataTypes) =>
 {
-	const Planet = sequelize.define('planets',
+	const ServerStar = sequelize.define('serverStars',
 	{
-		solarsystemID:
+		serverSolarsystemID:
 		{
 			type: DataTypes.INTEGER,
 		},
@@ -23,22 +21,6 @@ module.exports = (sequelize, DataTypes) =>
 			type: DataTypes.INTEGER,
 		},
 		radius:
-		{
-			type: DataTypes.INTEGER,
-		},
-		distanceToStar:
-		{
-			type: DataTypes.INTEGER,
-		},
-		type:
-		{
-			type: DataTypes.STRING,
-		},
-		selfRotation:
-		{
-			type: DataTypes.INTEGER,
-		},
-		starRotation:
 		{
 			type: DataTypes.INTEGER,
 		},
@@ -70,5 +52,5 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	return Planet;
+	return ServerStar;
 }

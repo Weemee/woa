@@ -157,6 +157,7 @@ export function onAuth(req, res, data, redirect) {
 		id: data.account.dataValues.id || null,
 		sessionToken: data.account.dataValues.sessionToken,
 		identity: data.identity.id || null,
+		lastCharPlayed: data.account.dataValues.lastCharPlayed,
 	}, req.app.get('config').protocol.signingSecret, {expiresIn: '1h'});
 
 	//Move this if statement to account action

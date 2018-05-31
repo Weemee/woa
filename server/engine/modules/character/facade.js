@@ -126,6 +126,30 @@ export default class CharacterFacade {
 					{
 						model: db.characterStats,
 						as: 'stats',
+					},
+					{
+						model: db.characterLevels,
+						as: 'levels',
+					},
+					{
+						model: db.characterLocation,
+						as: 'location',
+					},
+					{
+						model: db.characterResources,
+						as: 'resources',
+					},
+					{
+						model: db.characterResearch,
+						as: 'research',
+					},
+					{
+						model: db.characterTalents,
+						as: 'talents',
+					},
+					{
+						model: db.characterUnlocks,
+						as: 'unlocks',
 					}
 				]
 			}).then(async(result) =>
@@ -137,16 +161,36 @@ export default class CharacterFacade {
 				}
 			});
 
-			this.Server.socketFacade.dispatchToSocket(socket, {
-				type: CHARACTER_LIST,
-				payload: managedCharacters.map((obj) => {
-					//console.log(obj);
-					return {
-						name: obj.name,
-						stats: obj.stats,
-					};
-				}),
-			});
+			if(managedCharacters.length <= 0) {
+				console.log('Empty block array: ',managedCharacters);
+				this.Server.socketFacade.dispatchToSocket(socket, {
+					type: CHARACTER_LIST,
+					payload: managedCharacters.map((obj) => {
+						return {
+							emtpy: true,
+						};
+					}),
+				});
+			}
+			else {
+				this.Server.socketFacade.dispatchToSocket(socket, {
+					type: CHARACTER_LIST,
+					payload: managedCharacters.map((obj) => {
+
+						return {
+							charID: obj.id,
+							name: obj.name,
+							stats: obj.stats,
+							levels: obj.levels,
+							location: obj.location,
+							resources: obj.resources,
+							research: obj.research,
+							talents: obj.talents,
+							unlocks: obj.unlocks,
+						};
+					}),
+				});
+			}
 		} catch(err) {
 			this.Server.onError(err, socket);
 		}
@@ -165,6 +209,15 @@ export default class CharacterFacade {
 
 		if(!character.spec) {
 			console.log('You have no spec, generating...');
+		}
+
+		//Check stats
+		console.log('Generating stats...');
+		const stats = await this.databaseRowExist(character.id, 'characterStats');
+		if(!stats) {
+			console.log('- No row in stats, generating...');
+		} else {
+			console.log('- Found in stats, next...');
 		}
 
 		//Check levels
@@ -221,13 +274,30 @@ export default class CharacterFacade {
 			console.log('- Found in unlocks, next...');
 		}
 
-		character.firstLogin(levels, location, resources, research, talents, unlocks);
+		character.firstLogin(stats, levels, location, resources, research, talents, unlocks);
 		console.log(character);
 
 		await this.manage(character);
 	}
 
 	async databaseRowExist(charID, table) {
+		if(table === 'characterStats') {
+			const rowExist = await db.characterStats.findOne({
+				where:
+				{
+					charID:
+					{
+						[db.Op.like]: [charID]
+					},
+				}
+			}).catch(err => {
+				if (err) {
+					return '- Error in stats -';
+				}
+			});
+			return rowExist;
+		}
+
 		if(table === 'characterLevels') {
 			const rowExist = await db.characterLevels.findOne({
 				where:
@@ -431,6 +501,30 @@ export default class CharacterFacade {
 				{
 					model: db.characterStats,
 					as: 'stats',
+				},
+				{
+					model: db.characterLevels,
+					as: 'levels',
+				},
+				{
+					model: db.characterLocation,
+					as: 'location',
+				},
+				{
+					model: db.characterResources,
+					as: 'resources',
+				},
+				{
+					model: db.characterResearch,
+					as: 'research',
+				},
+				{
+					model: db.characterTalents,
+					as: 'talents',
+				},
+				{
+					model: db.characterUnlocks,
+					as: 'unlocks',
 				}
 			]
 		}).then (result => {
@@ -502,16 +596,17 @@ export default class CharacterFacade {
 	}
 
 	async delete(userID, characterName) {
-		const character = await this.databaseDelete(userID, characterName);
-		if(!character) 
+		const characterObject = await this.databaseDeleteCharacter(userID, characterName);
+		if(!characterObject) 
 		{
 			return false;
 		}
 
-		return true;
+		return characterObject;
 	}
 
-	async databaseDelete(userID, characterName) {
+
+	async databaseDeleteCharacter(userID, characterName) {
 		userID = parseInt(userID);
 		const checkDelete = await db.characterObject.findOne({
 			where:
@@ -529,31 +624,11 @@ export default class CharacterFacade {
 						[db.Op.like]: [characterName.toLowerCase()]
 					}
 				}]
-			}
+			},
 		}).then(result => {
-			const deleting = db.characterObject.destroy({
-				where:
-				{
-					[db.Op.and]: [
-					{
-						userID:
-						{
-							[db.Op.like]: [userID]
-						}
-					},
-					{
-						nameLowercase:
-						{
-							[db.Op.like]: [characterName.toLowerCase()]
-						}
-					}]
-				}
-			}).catch(err => {
-				if(err) {
-					return;
-				}
+			return result.destroy({
+				force: true,
 			});
-			return deleting;
 		}).catch(err => {
 			if(err) {
 				return;
@@ -571,9 +646,13 @@ export default class CharacterFacade {
 		}
 
 		const character = await this.databaseCreate(userID, characterName, characterSpec);
-
+		
 		if(!character) {
 			return;
+		}
+
+		if(character === 'reserved') {
+			return character;
 		}
 
 		const newCharacter = new Character(this.Server, character);
@@ -592,25 +671,95 @@ export default class CharacterFacade {
 				}
 			}
 		}).catch(err => {
-			if (err) {
+			if(err) {
 				return 'Error count characters.';
 			}
 		});
 
 		if(checkLimit < 5) {
-			const newCharacter = await db.characterObject.create({
-				userID: userID,
-				name: characterName,
-				spec: characterSpec,
+			const checkReserved = await db.accountReservedNames.findOne({
+				where:
+				{
+					name:
+					{
+						[db.Op.like]: [characterName]
+					}
+				}
 			}).catch(err => {
-				if (err) {
-					return err;
+				if(err) {
+					return 'Error reserved names.';
 				}
 			});
-			return newCharacter;
+
+			if(checkReserved) {
+				return 'reserved';
+			}
+			else {
+				const newCharacter = await db.characterObject.create({
+					userID: userID,
+					name: characterName,
+					spec: characterSpec,
+					stats: {
+						status: 'offline',
+					},
+					levels: {
+	
+					},
+					location: {
+	
+					},
+					resources: {
+	
+					},
+					research: {
+	
+					},
+					talents: {
+	
+					},
+					unlocks: {
+	
+					},
+				},
+				{
+					include: [
+						{
+							model: db.characterStats,
+							as: 'stats',
+						},
+						{
+							model: db.characterLevels,
+							as: 'levels',
+						},
+						{
+							model: db.characterLocation,
+							as: 'location',
+						},
+						{
+							model: db.characterResources,
+							as: 'resources',
+						},
+						{
+							model: db.characterResearch,
+							as: 'research',
+						},
+						{
+							model: db.characterTalents,
+							as: 'talents',
+						},
+						{
+							model: db.characterUnlocks,
+							as: 'unlocks',
+						},
+					],
+				}).catch(err => {
+					if(err) {
+						return err;
+					}
+				});
+				return newCharacter;
+			}
 		}
-		
-		return;
 	}
 
 	async saveAll() {

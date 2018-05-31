@@ -6,28 +6,6 @@ export default class Character {
 
 		this.charID = uuid();
 
-		console.log(character);
-		//this.stats = character.dataValues.stats.dataValues;
-		this.levels = {};
-		this.location = {};
-		this.resources = {};
-		this.research = {};
-		this.talents = {};
-		this.unlocks = {};
-		/*
-		Object.assign(this, {
-			...character,
-			levels: {
-				...this.stripFetched(levels),
-			},
-			...this.stripFetched(location),
-			...this.stripFetched(resources),
-			...this.stripFetched(research),
-			...this.stripFetched(talents),
-			...this.stripFetched(unlocks),
-		});
-		*/
-
 		Object.assign(this, {
 			...character.dataValues,
 		});
@@ -51,12 +29,19 @@ export default class Character {
 			userID: this.userID,
 			name: this.name,
 			spec: this.spec,
-			//Error is here
 			stats: this.stats,
+			levels: this.levels,
+			location: this.location,
+			resources: this.resources,
+			research: this.research,
+			talents: this.talents,
+			unlocks: this.unlocks,
 		};
 	}
 
-	firstLogin(levels, location, resources, research, talents, unlocks) {
+	firstLogin(stats, levels, location, resources, research, talents, unlocks) {
+		this.stats = this.stripFetched(stats);
+
 		this.levels = this.stripFetched(levels);
 
 		this.location = this.stripFetched(location);
@@ -68,6 +53,8 @@ export default class Character {
 		this.talents = this.stripFetched(talents);
 
 		this.unlocks = this.stripFetched(unlocks);
+
+		this.stats.firstLogin = false;
 	}
 
 	getSessionID() {

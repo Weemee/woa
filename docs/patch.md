@@ -5,6 +5,36 @@
 ***
 =================================================
 
+##### *Version 0.0.159*
+
+## General
+* 
+
+## Client
+* Successfully recieves all character information, stats, levels, etc
+* Character handling screen has been refactored
+	* Most of the things are now in modules, instead of a huge chunk in one file
+* You can now 'create', 'edit', 'play' and 'delete' characters freely. The client updates and checks all states
+
+<h5>Bugs</h5>
+
+* Fixed an issue with the character screen not updating after deleting characters
+
+
+## Server
+* Fetching all needed character information, while also checking if that information exists as a table row. This fetch is done with one database request with inner-joins through sequelize (which I finally have started to learn and understand, huge refactoring is on the todo list)
+* Sending all character information to the client as one character object, which should be easy to modify within the object itself
+* Character is now successfully deleted 
+* Resolved sending an empty 'character list' to the client
+* Functionality of reserving character names is now in place
+* Character creation now creates all needed tables (as of now) while also deleting them
+
+## Misc/Dev/Git/Boring stuff
+* More database updates
+
+***
+=================================================
+
 ##### *Version 0.0.147*
 
 ## General

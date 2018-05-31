@@ -42,6 +42,11 @@ module.exports = (sequelize, DataTypes) =>
 			type: DataTypes.INTEGER,
 			defaultValue: 0,
 		},
+		lastCharPlayed:
+		{
+			type: DataTypes.INTEGER,
+			defaultValue: null,
+		},
 		createdAt:
 		{
 			type: DataTypes.DATE,

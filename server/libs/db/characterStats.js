@@ -7,9 +7,11 @@ export default (sequelize, DataTypes) => {
 		},
 		firstLogin: {
 			type: DataTypes.BOOLEAN,
+			defaultValue: true,
 		},
 		status: {
 			type: DataTypes.STRING,
+			defaultValue: 'online',
 		},
 		createdAt: {
 			type: DataTypes.DATE,

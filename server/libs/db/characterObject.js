@@ -43,6 +43,36 @@ export default (sequelize, DataTypes) => {
 			as: 'stats',
 			foreignKey: 'charID',
 		});
+
+		CharacterObject.hasOne(model.characterLevels, {
+			as: 'levels',
+			foreignKey: 'charID',
+		});
+
+		CharacterObject.hasOne(model.characterLocation, {
+			as: 'location',
+			foreignKey: 'charID',
+		});
+
+		CharacterObject.hasOne(model.characterResources, {
+			as: 'resources',
+			foreignKey: 'charID',
+		});
+
+		CharacterObject.hasOne(model.characterResearch, {
+			as: 'research',
+			foreignKey: 'charID',
+		});
+
+		CharacterObject.hasOne(model.characterTalents, {
+			as: 'talents',
+			foreignKey: 'charID',
+		});
+
+		CharacterObject.hasOne(model.characterUnlocks, {
+			as: 'unlocks',
+			foreignKey: 'charID',
+		});
 	};
 	
 	return CharacterObject;

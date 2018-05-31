@@ -10,6 +10,7 @@ module.exports = {
 	],
 
 	devServer: {
+		host: '192.168.1.33',
 		port: 8193,
 		historyApiFallback: true,
 		contentBase: './',
@@ -22,7 +23,7 @@ module.exports = {
 	},
 
 	mode: 'development',
-	devtool: '#inline-source-map',
+	devtool: 'cheap-module-eval-source-map',
 
 	optimization: {
 		splitChunks: {

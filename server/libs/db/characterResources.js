@@ -10,13 +10,13 @@ module.exports = (sequelize, DataTypes) =>
 		},
 		hydrogen:
 		{
-			type: DataTypes.INTEGER,
-			defaultValue: 0,
+			type: DataTypes.JSON,
+			defaultValue: {},
 		},
 		helium:
 		{
-			type: DataTypes.INTEGER,
-			defaultValue: 0,
+			type: DataTypes.JSON,
+			defaultValue: {},
 		},
 		createdAt:
 		{

@@ -11,6 +11,7 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 
 	try{
 		const newCharacter = await Server.characterFacade.create(socket.account.userID, name, spec);
+		console.log(newCharacter);
 		if(!newCharacter) {
 			return Server.socketFacade.dispatchToSocket(socket, {
 				type: SET_NOTES,
@@ -20,11 +21,22 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 				},
 			});
 		}
-		else if(newCharacter === 'Only letters allowed!') {
+
+		if(newCharacter === 'Only letters allowed!') {
 			return Server.socketFacade.dispatchToSocket(socket, {
 				type: SET_NOTES,
 				payload: {
 					message: newCharacter,
+					type: 'error',
+				},
+			});
+		}
+
+		if(newCharacter === 'reserved') {
+			return Server.socketFacade.dispatchToSocket(socket, {
+				type: SET_NOTES,
+				payload: {
+					message: 'That name is reserved, sorry.',
 					type: 'error',
 				},
 			});
@@ -62,10 +74,10 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 async function inputSelectCharacter(socket, character, input, params, inputObject, Server) {
 	const characterToLoad = params[0];
 	await Server.socketFacade.logoutOutSession(socket, socket.account.userID);
-	console.log('\nCharacter to load: ', characterToLoad);
 
 	try {
-		if(characterToLoad) {
+		if(characterToLoad.stats.firstLogin) {
+			console.log('\nFirst login: ', characterToLoad.stats.firstLogin, '\n');
 			await Server.characterFacade.firstLogin(characterToLoad);
 		}
 		else {
@@ -95,7 +107,7 @@ async function inputDeleteCharacter(socket, character, input, params, inputObjec
 	const characterToDelete = params[0];
 	
 	try {
-		console.log('Delete character ', characterToDelete.name, '!');
+		console.log('Delete character ', characterToDelete.id, '!');
 		const deleteCharacter = await Server.characterFacade.delete(socket.account.userID, characterToDelete.name);
 
 		if(!deleteCharacter) {
@@ -107,17 +119,17 @@ async function inputDeleteCharacter(socket, character, input, params, inputObjec
 				},
 			});
 		}
-		else {
-			Server.characterFacade.getCharacterList(socket);
-			return Server.socketFacade.dispatchToSocket(socket, {
-				type: SET_NOTES,
-				payload: {
-					message: `Successfully deleted ${characterToDelete.name}!`,
-					type: 'success',
-				},
-			});
-		}
-	} catch (err) {
+		
+		const checkList = await Server.characterFacade.getCharacterList(socket);
+		console.log('The list: ', checkList);
+		Server.socketFacade.dispatchToSocket(socket, {
+			type: SET_NOTES,
+			payload: {
+				message: `Successfully deleted ${characterToDelete.name}!`,
+				type: 'success',
+			},
+		});
+	} catch(err) {
 		Server.onError(err, socket);
 	}
 }

@@ -10,13 +10,13 @@ module.exports = (sequelize, DataTypes) =>
 		},
 		production:
 		{
-			type: DataTypes.INTEGER,
-			defaultValue: 0,
+			type: DataTypes.JSON,
+			defaultValue: {},
 		},
 		exploration:
 		{
-			type: DataTypes.INTEGER,
-			defaultValue: 0,
+			type: DataTypes.JSON,
+			defaultValue: {},
 		},
 		createdAt:
 		{

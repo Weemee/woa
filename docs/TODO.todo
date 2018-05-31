@@ -4,6 +4,14 @@ Bugs:
 		☐ What: Sometimes gets 'typeof' (string) for 'userID' instead of (integer)
 		☐ Solution: Make sure the 'typeof' (integer) is being sent as 'userID', not 'typeof' (string)
 
+Active:
+	✔ Fix character create @done(18-05-30 19:52)
+	✔ Fix character edit @done(18-05-30 19:53)
+	✔ Fix character delete @done(18-05-30 20:21)
+	✔ Fix 'lastPlayed' bug, causing issues with loading @done(18-05-30 21:09)
+	✔ Continue create tables @done(18-05-31 19:58)
+	☐ @critical Update account for 'lastPlayed'
+
 Login:
 	☐ @low Methods
 		☐ Twitch

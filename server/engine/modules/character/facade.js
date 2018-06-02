@@ -578,6 +578,24 @@ export default class CharacterFacade {
 				}]
 			}
 		}).then(result => {
+			const checkReserved = db.accountReservedNames.findOne({
+				where:
+				{
+					name:
+					{
+						[db.Op.like]: [characterName]
+					}
+				}
+			}).catch(err => {
+				if(err) {
+					return 'Error reserved names.';
+				}
+			});
+
+			if(checkReserved) {
+				return 'reserved';
+			}
+
 			return result.update({
 				name: newName,
 				nameLowerCase: newName.toLowerCase(),
@@ -709,7 +727,7 @@ export default class CharacterFacade {
 	
 					},
 					resources: {
-	
+						
 					},
 					research: {
 	

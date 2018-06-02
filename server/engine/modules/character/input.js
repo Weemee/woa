@@ -160,6 +160,16 @@ async function inputEditCharacter(socket, character, input, params, inputObject,
 				},
 			});
 		}
+
+		if(editCharacter === 'reserved') {
+			return Server.socketFacade.dispatchToSocket(socket, {
+				type: SET_NOTES,
+				payload: {
+					message: 'That name is reserved, sorry.',
+					type: 'error',
+				},
+			});
+		}
 		else {
 			Server.characterFacade.getCharacterList(socket);
 			return Server.socketFacade.dispatchToSocket(socket, {

@@ -8,19 +8,21 @@
 
 ##### Temp patch notes
 
-##### *Version 0.0.64*
+***
+=================================================
+
+##### *Version 0.0.159*
 
 ## General
 * Temp
 
 ## Client
 * Temp
+	* <h5>Bugs</h5>
 
 ## Server
 * Temp
+	* <h5>Bugs</h5>
 
-## Bugs
-* Temp
-
-## Hotfixes
+## Misc/Dev/Git/Boring stuff
 * Temp

@@ -5,6 +5,34 @@
 ***
 =================================================
 
+##### *Version 0.0.168*
+
+## General
+* Temp
+
+## Client
+* Now visually displays 'the universe' after you login with your character
+* The HUD, GUI, UI, whatever you want to call it, is now laying on top of 'the universe'
+* Added a grid layout with a toggle button
+	* The grid layout is intended to support custom layout for the user, which will be saved in the database
+* Added a bottom menu for interface containers
+* Added multiple interface containers for testing
+* Full navigation for all character items
+	* <h5>Bugs</h5>
+
+
+## Server
+* Reserved names now apply to 'edit character'
+	* <h5>Bugs</h5>
+
+
+
+## Misc/Dev/Git/Boring stuff
+* Temp
+
+***
+=================================================
+
 ##### *Version 0.0.159*
 
 ## General

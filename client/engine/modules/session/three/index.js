@@ -13,19 +13,24 @@ class TestThree extends Component {
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			width: 0,
+			height: 0,
+			fullscreen: false,
+		}
+
 		this.mount = React.createRef('mount');
 		this.start = this.start.bind(this);
 		this.stop = this.stop.bind(this);
 		this.animate = this.animate.bind(this);
 	}
 
-	componentWillMount() {
-		document.addEventListener('keydown', this.onKeyPress.bind(this));
-	}
-
 	componentDidMount() {
+		this.addListeners();
+
 		const width = this.mount.clientWidth;
-		const height = this.mount.clientHeight;
+		const height = (this.mount.clientWidth * 0.5625);
+		
 
 		const gridRadius = 128;
 		const gridRadials = gridRadius / 4;
@@ -112,7 +117,38 @@ class TestThree extends Component {
 		this.start();
 	}
 
+	updateDimensions() {
+		if(window.innerWidth < 500) {
+			this.setState({
+				width: 500,
+				height: 500
+			});
+		}
+		else {
+			if(this.mount.webkitExistFullscreen) {
+				this.setState({
+					width: window.innerWidth,
+					height: window.innerHeight,
+				});
+				this.renderer.setSize(this.state.width, Math.round(this.state.width * 0.5625));
+			}
+			else {
+				this.setState({
+					width: this.mount.clientWidth,
+					height: this.mount.clientHeight,
+				});
+				this.renderer.setSize(this.state.width, Math.round(this.state.width * 0.5625));
+			}
+		}
+	}
+
+	addListeners() {
+    	window.addEventListener('resize', this.updateDimensions.bind(this));
+		document.addEventListener('keydown', this.onKeyPress.bind(this));
+	}
+
 	componentWillUnmount() {
+		window.removeEventListener('resize', this.updateDimensions.bind(this));
 		document.removeEventListener('keydown', this.onKeyPress.bind(this));
 		this.stop();
 		this.mount.removeChild(this.renderer.domElement);
@@ -122,25 +158,27 @@ class TestThree extends Component {
 		if(!this.props.character) {
 			return;	
 		}
-		
-		if (e.keyCode == 13) {
-			this.toggleFullscreen();
+		if(!this.mount.webkitExistFullscreen)
+		{
+			if (e.keyCode == 13) {
+				this.toggleFullscreen();
+			}
 		}
 	}
 
 	toggleFullscreen() {
-		if (!this.mount.webkitFullscreenElement) {
+		if(!this.mount.webkitFullscreenElement) {
 			this.mount.webkitRequestFullscreen();
 		}
 		else {
-			if (this.mount.webkitExistFullscreen) {
+			if(this.mount.webkitExistFullscreen) {
 				this.mount.webkitExistFullscreen();
 			}
 		}
 	}
 
 	start() {
-		if (!this.frameId) {
+		if(!this.frameId) {
 			this.frameId = requestAnimationFrame(this.animate);
 		}
 	}
@@ -168,7 +206,7 @@ class TestThree extends Component {
 	render() {
 		return (
 			<div id="sessionCanvas" ref={(mount) => { this.mount = mount }} />
-		)
+		);
 	}
 }
 

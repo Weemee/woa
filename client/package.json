@@ -31,6 +31,8 @@
 		"orbit-controls-es6": "^1.0.12",
 		"react": "^16.3.2",
 		"react-contextmenu": "^2.9.2",
+		"react-dnd": "^3.0.2",
+		"react-dnd-html5-backend": "^3.0.2",
 		"react-dom": "^16.3.2",
 		"react-icons": "^2.2.7",
 		"react-redux": "^5.0.7",

@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) =>
 		},
 	},
 	{
-		freezeTableName: true
+		freezeTableName: true,
 	});
 
 	//External hooks

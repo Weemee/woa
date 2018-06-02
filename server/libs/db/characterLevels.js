@@ -11,27 +11,52 @@ module.exports = (sequelize, DataTypes) =>
 		exploration:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: {
+				currentLevel: 0,
+				currentXP: 0,
+				maxLevel: 100,
+				xpToNextLevel: 100,
+			},
 		},
 		science:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: {
+				currentLevel: 0,
+				currentXP: 0,
+				maxLevel: 100,
+				xpToNextLevel: 100,
+			},
 		},
 		engineering:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: {
+				currentLevel: 0,
+				currentXP: 0,
+				maxLevel: 100,
+				xpToNextLevel: 100,
+			},
 		},
 		collection:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: {
+				currentLevel: 0,
+				currentXP: 0,
+				maxLevel: 100,
+				xpToNextLevel: 100,
+			},
 		},
 		automation:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: {
+				currentLevel: 0,
+				currentXP: 0,
+				maxLevel: 100,
+				xpToNextLevel: 100,
+			},
 		},
 		createdAt:
 		{

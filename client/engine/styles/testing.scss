@@ -1,10 +1,78 @@
 #sessionCanvas {
 	position: absolute;
-	width: 1280px;
-	height: 720px;
-	//visibility: hidden;
+	width: 100%;
+	height: 100%;
 }
 
 #sessionCanvas:-webkit-full-screen {
-	visibility: visible;
+	width: 100% !important;
+	height: 100% !important;
+}
+
+#main {
+	position: absolute;
+	height: 100% !important;
+	width: 100% !important;
+	overflow: hidden;
+}
+
+#footer {
+	position: absolute;
+	height: 40px;
+	bottom: 0px;
+	right: 0px;
+	z-index: 99;
+}
+
+#wrapper {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+#contentWrapper {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 40px;
+	left: 40px;
+}
+
+#session {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+#sessionCanvas {
+	position: absolute;
+	height: 100% !important;
+	width: 100% !important;
+}
+
+#3DGraphics {
+	position: absolute;
+	height: 100% !important;
+	width: 100% !important;
+}
+
+.userInterface {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+}
+
+#bottomBar {
+	position: relative;
+	width: 285px;
+	margin: auto;
+}
+
+.toggleGridBtn {
+	position: fixed;
+	left: 0px;
+	top: 0px;
 }

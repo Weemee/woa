@@ -9,12 +9,16 @@ import {newEvent} from './'
 import {gameLogout, newInput} from './actions';
 import {socketSend} from '../app/actions';
 
-import {Container, Row, Col, Input, Button, Form} from 'reactstrap';
+import {Container, Navbar, Nav, NavItem, Row, Col, Input, Button, Form} from 'reactstrap';
 import Character from './character';
 import CharacterUI from './character/ui';
 import SelectedCard from './character/selectedCard';
 
 import TestThree from './three';
+import Interface from './interface';
+import ConfigUI from './interface/config'
+
+import {MdAddCircleOutline} from 'react-icons/lib/md';
 
 class Session extends React.Component {
 	constructor(props) {
@@ -22,10 +26,18 @@ class Session extends React.Component {
 
 		this.state = {
 			sidebar: 'players',
+			editGrid: false,
+			left: false,
+			top: false,
+			right: false,
+			middle: false,
+			bottomRight: false,
+			bottomLeft: false,
 		};
 
 		this.isActiveTab = this.isActiveTab.bind(this);
 		this.sendAction = this.sendAction.bind(this);
+		this.toggleGrid = this.toggleGrid.bind(this);
 	}
 
 	componentWillMount() {
@@ -68,35 +80,49 @@ class Session extends React.Component {
 		this.props.socketSend(action);
 	}
 
+	toggleGrid() {
+		this.setState({
+			editGrid: !this.state.editGrid,
+		});
+	}
+
 	renderUI() {
 		if(!this.props.character) {
 			return <Character />;
 		}
 
 		return (
-			<div className="UI">
-				<Container>
-					<Row>
-						<Col className="left">
-							<SelectedCard character={this.props.character} />
-							<ServerMap />
-							<div style={{textAlign: 'center'}}>
-								{this.props.connection.lastEvent}<br/>
-								{!this.props.connection.isConnected}
-								<div mode="indeterminate" />
-							</div>
-						</Col>
+			<React.Fragment>
+				{
+					this.state.editGrid &&
+					<div>
+						<ConfigUI />
+						<div className="toggleGridBtn">
+							<a href="#" onClick={this.toggleGrid} className="btn btn-primary"><MdAddCircleOutline /> Grid</a>
+						</div>
+					</div>
+				}
+				{
+					!this.state.editGrid &&
+					<div>
+						<div className="toggleGridBtn">
+							<a href="#" onClick={this.toggleGrid} className="btn btn-primary"><MdAddCircleOutline /> Grid</a>
+						</div>
+						<Interface />
+					</div>
+				}
+			</React.Fragment>
+		);
+	}
 
-						<Col sm="9" className="middle">
-							<CharacterUI />
-						</Col>
-					</Row>
-					<Row>
-						<Col>
-							<TestThree />
-						</Col>
-					</Row>
-				</Container>
+	render3DGraphics() {
+		if(!this.props.character) {
+			return;
+		}
+
+		return (
+			<div>
+				{<TestThree />}
 			</div>
 		);
 	}
@@ -105,6 +131,7 @@ class Session extends React.Component {
 		return (
 			<React.Fragment>
 				<div id="session">
+					{this.render3DGraphics()}
 					{this.renderUI()}
 				</div>
 			</React.Fragment>

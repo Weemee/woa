@@ -30,7 +30,7 @@ class Page extends React.Component {
 
 	render() {
 		return (
-			<Container className={`theme-${this.props.selectedTheme}`}>
+			<div id="contentWrapper" className={`theme-${this.props.selectedTheme}`}>
 				<Row>
 					<Col className=".col-6">
 						<div style={{width:'250px', height:'250px'}} onMouseMove={(e) => this.mouseMove(e)}>
@@ -69,7 +69,7 @@ class Page extends React.Component {
 						</div>
 					</Col>
 				</Row>
-			</Container>
+			</div>
 		);
 	}
 }

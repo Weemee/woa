@@ -11,37 +11,72 @@ module.exports = (sequelize, DataTypes) =>
 		multiverse:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: {
+				name: 'ALPHA',
+				x: 0,
+				y: 0,
+				z: 0,
+			},
 		},
 		universe:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: {
+				name: 'BETA',
+				x: 0,
+				y: 0,
+				z: 0,
+			},
 		},
 		supercluster:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: {
+				name: 'GAMMA',
+				x: 0,
+				y: 0,
+				z: 0,
+			},
 		},
 		localcluster:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: {
+				name: 'DELTA',
+				x: 0,
+				y: 0,
+				z: 0,
+			},
 		},
 		galaxy:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: {
+				name: 'EPSILON',
+				x: 0,
+				y: 0,
+				z: 0,
+			},
 		},
 		interstellar:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: {
+				name: 'ZETA',
+				x: 0,
+				y: 0,
+				z: 0,
+			},
 		},
 		solarsystem:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: {
+				name: 'ETA',
+				x: 0,
+				y: 0,
+				z: 0,
+			},
 		},
 		createdAt:
 		{

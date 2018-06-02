@@ -82,9 +82,12 @@ class App extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<Header/>
+				{
+					!this.props.character &&
+					<Header/>
+				}
 				<main className={`theme-${this.props.selectedTheme}`} id="main" onContextMenu={this.disableContext}>
-					<Container>
+					<div id="wrapper">
 						<Switch>
 							<Route exact path="/" render={() => this.renderSessionRoute(<Page/>)} />
 							<Route path="/authentication" render={() => this.renderSessionRoute(<AuthenticationContainer/>)} />
@@ -92,9 +95,11 @@ class App extends React.Component {
 							<Route path="/account" render={() => this.renderSessionRoute(<AccountContainer/>)} />
 							<Route component={PageNotFound} />
 						</Switch>
-					</Container>
-					<a href={this.state.issueURL} target="_blank" className="btn btn-primary" id="bug"><MdBugReport />Report bug</a>
+					</div>
 				</main>
+				<div id="footer">
+					<a href={this.state.issueURL} target="_blank" className="btn btn-primary" id="bug"><MdBugReport />Report bug</a>
+				</div>
 				<Loader />
 			</React.Fragment>
 		);

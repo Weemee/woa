@@ -3,6 +3,7 @@ Bugs:
 		☐ Where (file, function(s), callback[boolean]): CharacterFacade, {manage, remove, save}, yes
 		☐ What: Sometimes gets 'typeof' (string) for 'userID' instead of (integer)
 		☐ Solution: Make sure the 'typeof' (integer) is being sent as 'userID', not 'typeof' (string)
+	☐ Players online delayed / not synced in visual client
 
 Active:
 	✔ Fix character create @done(18-05-30 19:52)
@@ -10,7 +11,9 @@ Active:
 	✔ Fix character delete @done(18-05-30 20:21)
 	✔ Fix 'lastPlayed' bug, causing issues with loading @done(18-05-30 21:09)
 	✔ Continue create tables @done(18-05-31 19:58)
-	☐ @critical Update account for 'lastPlayed'
+	✔ Reserve names @done(18-05-31 20:01)
+	✔ Edit character can still steal reserved name @done(18-06-01 12:10)
+	☐ @high Update account for 'lastPlayed'
 
 Login:
 	☐ @low Methods
@@ -39,7 +42,7 @@ Account:
 
 Database: 
 	☐ @high Proper error logging
-	☐ @critical Refactor modules to ES6
+	☐ @high Refactor modules to ES6
 
 Character:
 	Refactor:

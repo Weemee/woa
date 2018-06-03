@@ -6,9 +6,22 @@ export default class Character {
 
 		this.charID = uuid();
 
+		this.timers = [];
+
 		Object.assign(this, {
 			...character.dataValues,
 		});
+
+		if(this.userID) {
+			this.initTimers();
+		}
+	}
+
+	initTimers() {
+		/*this.timers.push({
+			name: 'cleanUp',
+			timer: setInterval('penis', 1000),
+		});*/
 	}
 
 	stripFetched(object) {
@@ -37,6 +50,10 @@ export default class Character {
 			talents: this.talents,
 			unlocks: this.unlocks,
 		};
+	}
+
+	generate() {
+		this.resources.hydrogen.owned++;
 	}
 
 	firstLogin(stats, levels, location, resources, research, talents, unlocks) {

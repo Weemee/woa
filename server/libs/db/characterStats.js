@@ -28,5 +28,9 @@ export default (sequelize, DataTypes) => {
 		characterStats.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 	});
 
+	CharacterStats.beforeUpdate(async(characterStats, options) => {
+		characterStats.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
+	});
+
 	return CharacterStats;
 }

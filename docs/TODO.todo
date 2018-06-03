@@ -4,17 +4,8 @@ Bugs:
 		☐ What: Sometimes gets 'typeof' (string) for 'userID' instead of (integer)
 		☐ Solution: Make sure the 'typeof' (integer) is being sent as 'userID', not 'typeof' (string)
 	☐ Players online delayed / not synced in visual client
-
 Active:
-	✔ Fix character create @done(18-05-30 19:52)
-	✔ Fix character edit @done(18-05-30 19:53)
-	✔ Fix character delete @done(18-05-30 20:21)
-	✔ Fix 'lastPlayed' bug, causing issues with loading @done(18-05-30 21:09)
-	✔ Continue create tables @done(18-05-31 19:58)
-	✔ Reserve names @done(18-05-31 20:01)
-	✔ Edit character can still steal reserved name @done(18-06-01 12:10)
 	☐ @high Update account for 'lastPlayed'
-
 Login:
 	☐ @low Methods
 		☐ Twitch
@@ -26,7 +17,6 @@ Login:
 		☐ Local game
 			☐ Can not use trial progress, flush everything
 	☐ @low Otp
-
 Account:
 	☐ Define methods
 	☐ Link methods
@@ -39,15 +29,10 @@ Account:
 		☐ Email sent with link
 	Functions:
 		☐ Update account
-
 Database: 
 	☐ @high Proper error logging
 	☐ @high Refactor modules to ES6
-
 Character:
-	Refactor:
-		Load: 
-			☐ Use inner join?
 	Check:
 		☐ If the character is logging in for the first time
 			☐ Loading bar
@@ -58,22 +43,6 @@ Character:
 				☐ Talents
 				☐ Location
 				☐ Stats
-	Load:
-		☐ Load resources
-		☐ Load unlocks
-		☐ Load research
-		☐ Load talents
-	Create:
-		☐ Create character stats
-	Preview:
-		☐ Specialization
-		☐ Level
-		☐ Location
-		☐ Resources
-	Save:
-		☐ Logout
-		☐ Disconnect
-
 Theme system:
 	☐ Theme elements
 		☐ Main
@@ -83,22 +52,6 @@ Theme system:
 		☐ Text
 			☐ Hover
 			☐ Click
-
-UI:
-	☐ Add the HUD
-		☐ Stuff in HUD
-	Re-design character create:
-		☐ Droplist for character select
-			☐ Put it into a theme
-		☐ Show needed information
-			☐ Make it show in the middle
-		☐ Structure character
-		☐ Make "Play" appear on the top
-		☐ Make "Delete" in the corner
-	Re-design header:
-		☐ Make it look like the mock-up
-		☐ Create the dropdown fields for login/register
-
 Improvements:
 	☐ @high Change the entire layout for logged in character
 		☐ Loading screen
@@ -107,7 +60,6 @@ Improvements:
 	☐ @medium Re-structure 'character/index.js', split 'create', 'preview' and 'editing' into seperate files
 	☐ @low Re-structure/re-build themes
 	☐ @low Re-structure loading to be handled server side (call when loading and loading done) and client only renders
-
 Security:
 	https://expressjs.com/en/advanced/developing-template-engines.html
 	☐ Express security
@@ -119,13 +71,41 @@ Security:
 		☐ Other
 			☐ Rate-limiting, loopback.io, express-limiter, Strongloop
 			☐ CSRF, csurf
-
 Other:
 	☐ Improve logging
 	☐ @high Comment everything
-
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+   ✔ Add the HUD @done(18-06-03 11:19) @project(UI)
+   ✔ Stuff in HUD @done(18-06-03 11:19) @project(UI)
+   ✔ Droplist for character select @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Put it into a theme @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Show needed information @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Make it show in the middle @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Structure character @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Make "Play" appear on the top @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Make "Delete" in the corner @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Make it look like the mock-up @done(18-06-03 11:19) @project(UI.Re-design header)
+   ✔ Create the dropdown fields for login/register @done(18-06-03 11:19) @project(UI.Re-design header)
+   ✔ Use inner join? @done(18-06-03 11:18) @project(Character.Load)
+   ✔ Load resources @done(18-06-03 11:18) @project(Character.Load)
+   ✔ Load unlocks @done(18-06-03 11:18) @project(Character.Load)
+   ✔ Load research @done(18-06-03 11:18) @project(Character.Load)
+   ✔ Load talents @done(18-06-03 11:18) @project(Character.Load)
+   ✔ Create character stats @done(18-06-03 11:18) @project(Character.Load.Create)
+   ✔ Specialization @done(18-06-03 11:18) @project(Character.Load.Create.Preview)
+   ✔ Level @done(18-06-03 11:18) @project(Character.Load.Create.Preview)
+   ✔ Location @done(18-06-03 11:18) @project(Character.Load.Create.Preview)
+   ✔ Resources @done(18-06-03 11:18) @project(Character.Load.Create.Preview)
+   ✔ Logout @done(18-06-03 11:18) @project(Character.Save)
+   ✔ Disconnect @done(18-06-03 11:18) @project(Character.Save)
+   ✔ Fix character delete @done(18-05-30 20:21) @project(Active)
+   ✔ Fix 'lastPlayed' bug, causing issues with loading @done(18-05-30 21:09) @project(Active)
+   ✔ Continue create tables @done(18-05-31 19:58) @project(Active)
+   ✔ Reserve names @done(18-05-31 20:01) @project(Active)
+   ✔ Edit character can still steal reserved name @done(18-06-01 12:10) @project(Active)
+   ✔ Fix character create @done(18-05-30 19:52) @project(Active)
+   ✔ Fix character edit @done(18-05-30 19:53) @project(Active)
    ✘ Category: @cancelled(18-05-27 13:20)
    ✘ Bugs @bugs @cancelled(18-05-27 13:20)
    ✘ Login @login @cancelled(18-05-27 13:20)

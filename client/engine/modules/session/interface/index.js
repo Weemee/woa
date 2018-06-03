@@ -71,37 +71,37 @@ class Interface extends React.Component {
 			<React.Fragment>
 				{
 					this.state.left &&
-					<div style={{position: 'absolute', width: '15%', height: '30%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(255, 0, 0, 1.00)', top: '40%', left: '0'}}>
+					<div style={{position: 'absolute', width: '15%', height: '30%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', top: '40%', left: '0'}}>
 						<Resources />
 					</div>
 				}
 				{
 					this.state.top &&
-					<div style={{position: 'absolute', width: '40%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(255, 0, 0, 1.00)', marginLeft: '30%'}}>
+					<div style={{position: 'absolute', width: '40%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', marginLeft: '30%'}}>
 						<Location />
 					</div>
 				}
 				{
 					this.state.right &&
-					<div style={{position: 'absolute', width: '15%', height: '30%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(255, 0, 0, 1.00)', top: '40%', right: '0'}}>
+					<div style={{position: 'absolute', width: '15%', height: '30%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', top: '40%', right: '0'}}>
 						<Unlocks />
 					</div>
 				}
 				{
 					this.state.middle &&
-					<div style={{position: 'absolute', width: '20%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(255, 0, 0, 1.00)', marginTop: '20%', marginLeft: '40%'}}>
+					<div style={{position: 'absolute', width: '20%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', marginTop: '20%', marginLeft: '40%'}}>
 						<Levels />
 					</div>
 				}
 				{
 					this.state.bottomRight &&
-					<div style={{position: 'absolute', width: '20%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(255, 0, 0, 1.00)', bottom: '0', right: '0'}}>
+					<div style={{position: 'absolute', width: '20%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', bottom: '0', right: '0'}}>
 						<Research />
 					</div>
 				}
 				{
 					this.state.bottomLeft &&
-					<div style={{position: 'absolute', width: '20%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(255, 0, 0, 1.00)', bottom: '0', left: '0'}}>
+					<div style={{position: 'absolute', width: '20%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', bottom: '0', left: '0'}}>
 						<Stats />
 					</div>
 				}

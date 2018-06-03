@@ -51,13 +51,14 @@ export default class CharacterFacade {
 		if(!character) {
 			return;
 		}
-
+		character.generate();
 		const characterData = character.exportToClient();
 
 		this.Server.socketFacade.dispatchToUser(userID, {
 			type: CHARACTER_UPDATE,
 			payload: property ? {[property]: characterData[property]} : characterData,
 		});
+		console.log('Updated character: ', userID);
 	}
 
 	updateAllClients(property = null) {
@@ -411,6 +412,7 @@ export default class CharacterFacade {
 		}
 
 		this.managedCharacters.push(character);
+		this.Server.timerFacade.addLoop(character);
 		this.dispatchUpdateCharacterList(character.userID);
 
 		const socket = this.Server.socketFacade.get(character.userID);
@@ -439,24 +441,21 @@ export default class CharacterFacade {
 			return;
 		}
 
-		//const successfullLogout = await this.logoutCharacter(character.id);
+		try {
+			await this.save(character.userID);
+		} catch (err) {
+			this.Server.onError(err);
+		}
 
-		//if (successfullLogout) {
-			try {
-				await this.save(character.userID);
-			} catch (err) {
-				this.Server.onError(err);
-			}
+		this.Server.socketFacade.dispatchToRoom(character.getSessionID(), {
+			type: CHARACTER_LEFT_SERVER,
+			payload: character.userID,
+		});
 
-			this.Server.socketFacade.dispatchToRoom(character.getSessionID(), {
-				type: CHARACTER_LEFT_SERVER,
-				payload: character.userID,
-			});
+		this.managedCharacters = this.managedCharacters.filter((obj) => obj.userID !== userID);
+		this.Server.timerFacade.removeLoop(character);
 
-			this.managedCharacters = this.managedCharacters.filter((obj) => obj.userID !== userID);
-
-			this.dispatchRemoveFromCharacterList(userID);
-		//}
+		this.dispatchRemoveFromCharacterList(userID);
 	}
 
 	getOnline() {
@@ -813,10 +812,43 @@ export default class CharacterFacade {
 	}
 
 	async databaseSave(character) {
-		const dbSaveChar = {
-			userID: character.userID,
-			name: character.name,
-		};
+		const dbSaveChar = db.characterObject.update({
+		},
+		{
+			where:
+			{
+				userID:
+				{
+					[db.Op.like]: [character.userID],
+				},
+			},
+		}).catch (err => {
+			return err;
+		});
+
+		if(!dbSaveChar) {
+			return;
+		}
+		/*
+		const dbSaveStats = db.characterStats.update({
+			status: 'penis',
+			firstLogin: character.stats.firstLogin,
+		},
+		{
+			where:
+			{
+				charID:
+				{
+					[db.Op.like]: [character.id],
+				},
+			},
+		}).catch (err => {
+			return err;
+		});
+
+		if(!dbSaveStats) {
+			return;
+		}*/
 
 		return dbSaveChar;
 	}

@@ -31,11 +31,15 @@ export default (sequelize, DataTypes) => {
 		freezeTableName: true,
 	});
 
-	CharacterObject.beforeCreate(async function (characterObject, options) {
+	CharacterObject.beforeCreate(async(characterObject, options) => {
 		characterObject.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 		if (characterObject.name) {
 			characterObject.nameLowerCase = characterObject.name.toLowerCase();
 		}
+	});
+
+	CharacterObject.beforeUpdate(async(characterObject, options) => {
+		characterObject.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 	});
 
 	CharacterObject.associate = (model) => {

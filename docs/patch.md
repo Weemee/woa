@@ -5,6 +5,26 @@
 ***
 =================================================
 
+##### *Version 0.0.170*
+
+## General
+* Temp
+
+## Client
+* Temp
+	* <h5>Bugs</h5>
+
+## Server
+* Auto save now actually saves the character
+* Auto save timer changed to every 15s, up from 10s
+	* <h5>Bugs</h5>
+
+## Misc/Dev/Git/Boring stuff
+* Temp
+
+***
+=================================================
+
 ##### *Version 0.0.168*
 
 ## General

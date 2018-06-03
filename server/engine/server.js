@@ -6,6 +6,7 @@ import CharacterFacade from './modules/character/facade';
 import UserFacade from './modules/account/facade';
 import InputFacade from './modules/input/facade';
 import ServerMapFacade from './modules/serverMap/facade';
+import TimerFacade from './modules/timer/facade';
 
 import {newEvent} from './actions';
 
@@ -29,6 +30,7 @@ class Server {
 		this.characterFacade = new CharacterFacade(this);
 		this.inputFacade = new InputFacade(this);
 		this.serverMapFacade = new ServerMapFacade(this);
+		this.timerFacade = new TimerFacade(this);
 
 		if (autoIni) {
 			this.init();

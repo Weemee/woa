@@ -6,6 +6,24 @@ Bugs:
 	☐ Players online delayed / not synced in visual client
 Active:
 	☐ @high Update account for 'lastPlayed'
+	☐ @high Feedback button
+		☐ Opens a new window with different forms
+			☐ Navigation bar with options
+			☐ A feedback is sent depending on the form
+			☐ It is stored in the database
+			☐ Based on account level/permission
+	☐ @high Account levels/permissions
+		☐ Different options for different levels
+		☐ Shows feedback and admin stuff
+	☐ @high Admin level visuals
+		☐ An entirely new interface for admins
+		☐ Options to alter game mechanics 
+		☐ Options to balance the game
+	☐ @high Build and structure the rousource panel
+		☐ Look at ideas.txt
+	☐ @high Finish building the theme system
+		☐ Put it in the database
+
 Login:
 	☐ @low Methods
 		☐ Twitch
@@ -43,6 +61,7 @@ Character:
 				☐ Talents
 				☐ Location
 				☐ Stats
+		☐ @critical Save everything
 Theme system:
 	☐ Theme elements
 		☐ Main
@@ -76,6 +95,9 @@ Other:
 	☐ @high Comment everything
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+   ✔ Choose what to generate @done(18-06-03 18:33) @project(Character.Check.Generate resources)
+   ✔ Can not go over maximum @done(18-06-03 18:33) @project(Character.Check.Generate resources)
+   ✔ Add action state @done(18-06-03 18:33) @project(Character.Check)
    ✔ Add the HUD @done(18-06-03 11:19) @project(UI)
    ✔ Stuff in HUD @done(18-06-03 11:19) @project(UI)
    ✔ Droplist for character select @done(18-06-03 11:19) @project(UI.Re-design character create)

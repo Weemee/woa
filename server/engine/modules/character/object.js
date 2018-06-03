@@ -1,4 +1,6 @@
 import uuid from 'uuid/v4';
+import triggers from './triggers';
+import upgrades from './upgrades';
 
 export default class Character {
 	constructor(Server, character) {
@@ -7,6 +9,10 @@ export default class Character {
 		this.charID = uuid();
 
 		this.timers = [];
+
+		this.triggers = triggers;
+
+		this.upgrades = upgrades;
 
 		Object.assign(this, {
 			...character.dataValues,
@@ -18,10 +24,7 @@ export default class Character {
 	}
 
 	initTimers() {
-		/*this.timers.push({
-			name: 'cleanUp',
-			timer: setInterval('penis', 1000),
-		});*/
+		this.Server.timerFacade.addLoop(this);
 	}
 
 	stripFetched(object) {
@@ -49,11 +52,79 @@ export default class Character {
 			research: this.research,
 			talents: this.talents,
 			unlocks: this.unlocks,
+			actions: this.actions,
 		};
 	}
 
-	generate() {
-		this.resources.hydrogen.owned++;
+	setGenerating(resource) {
+		console.log('Set generating:', resource);
+		this.actions.generating = resource;
+	}
+
+	checkUpdates() {
+		if(this.actions.generating !== 'slacking') {
+			this.generate(this.actions.generating);
+			console.log('You now have:', this.resources[this.actions.generating].owned, this.actions.generating + '!');
+		}
+
+		this.checkTriggers();
+	}
+
+	generate(resource) {
+		if(this.resources[resource].owned < this.resources[resource].max)
+		{
+			this.resources[resource].owned += 10;
+		}
+	}
+
+	checkTriggers(force = false) {
+		for(const item in this.triggers) {
+			const trigger = this.triggers[item];
+			if(force) {
+				if((trigger.bool) && (typeof trigger.once === 'undefined')) {
+					this.unlockUpgrade(trigger.exec);
+				}
+				continue;
+			}
+			
+			if(!trigger.bool && this.triggerMet(this.triggers[item].trigger)) {
+				this.unlockUpgrade(trigger.exec);
+				trigger.bool = !trigger.bool;
+				console.log('Unlocked:', item);
+			}
+		}
+	}
+
+	triggerMet(obj) {
+		console.log(obj.resources);
+		if(obj.resources) {
+			for(const res in obj.resources) {
+				console.log(obj.resources[res]);
+				if(this.resources[res].owned < obj.resources[res]) {
+					console.log('Not enough generated!');
+					return false;
+				} else {
+					console.log('You have enough', res);
+				}
+			}
+		}
+		return true;
+	}
+
+	unlockUpgrade(unlock) {
+		let upgrade = this.upgrades[unlock];
+
+		for(const item in this.upgrades) {
+			upgrade = this.upgrades[item];
+			if(upgrade.allowed - upgrade.done >= 1) {
+				upgrade.locked = false;
+			}
+			if(upgrade.locked) {
+				continue;
+			}
+
+			upgrade.locked = false;
+		}
 	}
 
 	firstLogin(stats, levels, location, resources, research, talents, unlocks) {

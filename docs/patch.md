@@ -5,22 +5,37 @@
 ***
 =================================================
 
-##### *Version 0.0.170*
+##### *Version 0.0.303*
 
 ## General
-* Temp
+* Can now generate Hydrogen and Helium as resources (not saving)
+* Now has triggers based on resource levels
 
 ## Client
-* Temp
+* Various support for upcoming functions, examples:
+	* Account levels (devs, admins, mods, tester, etc)
+	* UI editing
+	* Theme building
+	* Live feedback suggestions to devs and admins
+* Now recieves all elements in the periodic table as a resource (118) of them
 	* <h5>Bugs</h5>
 
 ## Server
 * Auto save now actually saves the character
 * Auto save timer changed to every 15s, up from 10s
+* Game loop added
+* Does a check every 1000ms, checking:
+	* Resource generation/gathering/collection
+	* Trigger requirements. When meeting the requirement, you access the following:
+		* Unlocks
+		* Upgrades
+		* Research
+	* More to come
+* Database support for the 118 elements
 	* <h5>Bugs</h5>
 
 ## Misc/Dev/Git/Boring stuff
-* Temp
+* All 118 elements are now in the database
 
 ***
 =================================================

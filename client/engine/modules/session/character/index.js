@@ -133,7 +133,7 @@ class Character extends React.Component {
 	}
 
 	selectCharacter(name) {
-		this.props.setLoading('Loading penis...');
+		//this.props.setLoading('Loading penis...');
 		this.props.newInput(`selectcharacter ${name}`);
 	}
 

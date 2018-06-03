@@ -51,14 +51,13 @@ export default class CharacterFacade {
 		if(!character) {
 			return;
 		}
-		character.generate();
+
 		const characterData = character.exportToClient();
 
 		this.Server.socketFacade.dispatchToUser(userID, {
 			type: CHARACTER_UPDATE,
 			payload: property ? {[property]: characterData[property]} : characterData,
 		});
-		console.log('Updated character: ', userID);
 	}
 
 	updateAllClients(property = null) {
@@ -151,6 +150,10 @@ export default class CharacterFacade {
 					{
 						model: db.characterUnlocks,
 						as: 'unlocks',
+					},
+					{
+						model: db.characterActions,
+						as: 'actions',
 					}
 				]
 			}).then(async(result) =>
@@ -161,7 +164,7 @@ export default class CharacterFacade {
 					return err;
 				}
 			});
-
+			
 			if(managedCharacters.length <= 0) {
 				console.log('Empty block array: ',managedCharacters);
 				this.Server.socketFacade.dispatchToSocket(socket, {
@@ -188,6 +191,7 @@ export default class CharacterFacade {
 							research: obj.research,
 							talents: obj.talents,
 							unlocks: obj.unlocks,
+							actions: obj.actions,
 						};
 					}),
 				});
@@ -276,7 +280,6 @@ export default class CharacterFacade {
 		}
 
 		character.firstLogin(stats, levels, location, resources, research, talents, unlocks);
-		console.log(character);
 
 		await this.manage(character);
 	}
@@ -412,7 +415,7 @@ export default class CharacterFacade {
 		}
 
 		this.managedCharacters.push(character);
-		this.Server.timerFacade.addLoop(character);
+
 		this.dispatchUpdateCharacterList(character.userID);
 
 		const socket = this.Server.socketFacade.get(character.userID);
@@ -524,6 +527,10 @@ export default class CharacterFacade {
 				{
 					model: db.characterUnlocks,
 					as: 'unlocks',
+				},
+				{
+					model: db.characterActions,
+					as: 'actions',
 				}
 			]
 		}).then (result => {
@@ -737,6 +744,9 @@ export default class CharacterFacade {
 					unlocks: {
 	
 					},
+					actions: {
+
+					},
 				},
 				{
 					include: [
@@ -767,6 +777,10 @@ export default class CharacterFacade {
 						{
 							model: db.characterUnlocks,
 							as: 'unlocks',
+						},
+						{
+							model: db.characterActions,
+							as: 'actions',
 						},
 					],
 				}).catch(err => {

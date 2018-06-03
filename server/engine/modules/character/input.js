@@ -185,7 +185,13 @@ async function inputEditCharacter(socket, character, input, params, inputObject,
 	}
 }
 
-module.exports = [
+function inputGenerateResource(socket, character, input, params, inputObject, Server) {
+	const resource = params[0];
+	console.log(resource);
+	character.setGenerating(resource);
+}
+
+export default [
 	{
 		input: 'selectcharacter',
 		aliases: [],
@@ -245,5 +251,18 @@ module.exports = [
 		onServerInput: false,
 		description: 'Edit character',
 		method: inputEditCharacter,
+	},
+	{
+		input: 'generateresource',
+		aliases: [],
+		params: [
+			{
+				resource: 'Resource',
+				rules: 'required',
+			}
+		],
+		onServerInput: false,
+		description: 'Set resource to generate',
+		method: inputGenerateResource,
 	},
 ];

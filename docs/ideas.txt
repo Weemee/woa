@@ -1,0 +1,3 @@
+Use https://www.ptable.com/?lang=en as a reference
+
+In order to gather an element, click it and then 'gather'.

@@ -13,25 +13,32 @@ export default class TimerFacade {
 
 	addLoop(character) {
 		this.managedTimers.push({
-			id: character.userID,
-			timer: setInterval(() => {this.Server.characterFacade.updateClient(character.userID);}, 1000),
+			char: character,
+			timer: setInterval(() => {
+				character.checkUpdates();
+				this.Server.characterFacade.updateClient(character.userID);
+			}, 1000),
 		});
-		console.log(this.managedTimers);
 
 		console.log('Added game loop for character: ', character.userID);
 	}
 
 	removeLoop(character) {
 		this.managedTimers = this.managedTimers.filter((obj) => {
-			console.log('Before: ', obj.timer);
-			if(obj.id === character.userID) {
+			if(obj.char.userID === character.userID) {
 				clearInterval(obj.timer);
-				obj.id !== character.userID;
+				obj.char.userID !== character.userID;
 			}
-			console.log('After: ', obj.timer);
 		});
 		console.log('Removed game loop for character: ', character.userID);
-		console.log(this.managedTimers);
+	}
+
+	addCooldown() {
+
+	}
+
+	removeCooldown() {
+
 	}
 
 	garbageCollection() {

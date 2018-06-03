@@ -77,6 +77,11 @@ export default (sequelize, DataTypes) => {
 			as: 'unlocks',
 			foreignKey: 'charID',
 		});
+
+		CharacterObject.hasOne(model.characterActions, {
+			as: 'actions',
+			foreignKey: 'charID',
+		});
 	};
 	
 	return CharacterObject;

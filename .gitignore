@@ -1,3 +1,4 @@
 *.vscode
 Design/
-*.todo
+Docs/TODO.todo
+Docs/ideas.txt

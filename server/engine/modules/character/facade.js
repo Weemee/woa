@@ -804,17 +804,17 @@ export default class CharacterFacade {
 	}
 
 	async save(userID) {
-		if (!userID) {
+		if(!userID) {
 			throw new Error('No userID for save()');
 		}
 
-		if (typeof userID != 'number') {
+		if(typeof userID != 'number') {
 			userID = parseInt(userID);
 		}
 
 		const character = this.get(userID);
 
-		if (!character) {
+		if(!character) {
 			throw new Error(`No character found online, matching userID ${userID}`);
 		}
 
@@ -826,45 +826,24 @@ export default class CharacterFacade {
 	}
 
 	async databaseSave(character) {
-		const dbSaveChar = db.characterObject.update({
-		},
-		{
-			where:
-			{
-				userID:
+		Object.keys(character).map(async (key, index) => {
+			const database = 'character' + key.charAt(0).toUpperCase() + key.slice(1);
+			if(db[database]) {
+				await db[database].update(
+					character[key].dataValues,
 				{
-					[db.Op.like]: [character.userID],
-				},
-			},
-		}).catch (err => {
-			return err;
+					where:
+					{
+						charID:
+						{
+							[db.Op.like]: [character.id]
+						}
+					}
+				}).catch (err => {
+					return err;
+				});
+			}
 		});
-
-		if(!dbSaveChar) {
-			return;
-		}
-		/*
-		const dbSaveStats = db.characterStats.update({
-			status: 'penis',
-			firstLogin: character.stats.firstLogin,
-		},
-		{
-			where:
-			{
-				charID:
-				{
-					[db.Op.like]: [character.id],
-				},
-			},
-		}).catch (err => {
-			return err;
-		});
-
-		if(!dbSaveStats) {
-			return;
-		}*/
-
-		return dbSaveChar;
 	}
 
 	getServerPlayerList(map, x = null, y = null, z = null, dispatch = false) {

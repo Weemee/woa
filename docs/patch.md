@@ -5,11 +5,13 @@
 ***
 =================================================
 
-##### *Version 0.0.303*
+##### *Version 0.0.308*
 
 ## General
 * Can now generate Hydrogen and Helium as resources (not saving)
 * Now has triggers based on resource levels
+* Now supports 'account level', to determine admins, plebs, etc
+* Admin support has been added
 
 ## Client
 * Various support for upcoming functions, examples:
@@ -18,6 +20,9 @@
 	* Theme building
 	* Live feedback suggestions to devs and admins
 * Now recieves all elements in the periodic table as a resource (118) of them
+* Added a feedback button next to the 'bug' button
+	* You will be able to send direct feedback in here, with a navigation bar on the top for subject
+* Themes are now fully functional and has been re-factored, supporting a more smooth solution (and a basic way for a modular scss configuration, based on database tables)
 	* <h5>Bugs</h5>
 
 ## Server

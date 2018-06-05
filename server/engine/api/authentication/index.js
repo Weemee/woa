@@ -158,6 +158,7 @@ export function onAuth(req, res, data, redirect) {
 		sessionToken: data.account.dataValues.sessionToken,
 		identity: data.identity.id || null,
 		lastCharPlayed: data.account.dataValues.lastCharPlayed,
+		accountLevel: data.account.dataValues.accountLevel,
 	}, req.app.get('config').protocol.signingSecret, {expiresIn: '1h'});
 
 	//Move this if statement to account action
@@ -181,11 +182,11 @@ export function onAuth(req, res, data, redirect) {
 
 //Move this to opt facade
 function randomKey(len){
-  var buf = []
+  let buf = []
     , chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
     , charlen = chars.length;
 
-  for (var i = 0; i < len; ++i) {
+  for (let i = 0; i < len; ++i) {
     buf.push(chars[getRandomInt(0, charlen - 1)]);
   }
 

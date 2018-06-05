@@ -1,0 +1,255 @@
+$themes:(
+  	light:(
+		//Basic
+		backgroundColor: #c9c9c9,
+		textColor: #408bbd,
+		buttonTextColor: #408bbd,
+		buttonTextTransform: none,
+		buttonTextHoverColor: #61b0e7,
+		buttonColor: #fff,
+		buttonBorder: 1px solid #408bbd,
+		//Header
+		headerBackgroundColor: #dadada,
+	),
+
+  	dark:(
+		//Basic
+		backgroundColor: #222,
+		textColor: #ddd,
+		buttonTextColor: #aaa,
+		buttonTextTransform: none,
+		buttonTextHoverColor: #ddd,
+		buttonColor: #333,
+		buttonBorder: 1px solid #333,
+		//Header
+		headerBackgroundColor: #a9a9a9,
+		headerButtonTextColor: #a3c3e3,
+	),
+
+	cyan:(
+		//Basic
+		backgroundColor: #222,
+		textColor: #ddd,
+		buttonTextColor: #aaa,
+		buttonTextTransform: uppercase,
+		buttonTextHoverColor: #ddd,
+		buttonColor: #333,
+		buttonBorder: 1px solid #333,
+		//Header
+		headerBackgroundColor: #a9a9a9,
+		headerButtonTextColor: #a3c3e3,
+	),
+
+	teal:(
+		//Basic
+		backgroundColor: #222,
+		textColor: #ddd,
+		buttonTextColor: #aaa,
+		buttonTextTransform: uppercase,
+		buttonTextHoverColor: #ddd,
+		buttonColor: #333,
+		buttonBorder: 1px solid #333,
+		//Header
+		headerBackgroundColor: #a9a9a9,
+		headerButtonTextColor: #a3c3e3,
+	),
+
+	green:(
+		//Basic
+		backgroundColor: #222,
+		textColor: #ddd,
+		buttonTextColor: #aaa,
+		buttonTextTransform: uppercase,
+		buttonTextHoverColor: #ddd,
+		buttonColor: #333,
+		buttonBorder: 1px solid #333,
+		//Header
+		headerBackgroundColor: #a9a9a9,
+		headerButtonTextColor: #a3c3e3,
+	),
+
+	yellow:(
+		//Basic
+		backgroundColor: #222,
+		textColor: #ddd,
+		buttonTextColor: #aaa,
+		buttonTextTransform: uppercase,
+		buttonTextHoverColor: #ddd,
+		buttonColor: #333,
+		buttonBorder: 1px solid #333,
+		//Header
+		headerBackgroundColor: #a9a9a9,
+		headerButtonTextColor: #a3c3e3,
+	),
+
+	orange:(
+		//Basic
+		backgroundColor: #222,
+		textColor: #ddd,
+		buttonTextColor: #aaa,
+		buttonTextTransform: uppercase,
+		buttonTextHoverColor: #ddd,
+		buttonColor: #333,
+		buttonBorder: 1px solid #333,
+		//Header
+		headerBackgroundColor: #a9a9a9,
+		headerButtonTextColor: #a3c3e3,
+	),
+
+	red:(
+		//Basic
+		backgroundColor: #222,
+		textColor: #ddd,
+		buttonTextColor: #aaa,
+		buttonTextTransform: uppercase,
+		buttonTextHoverColor: #ddd,
+		buttonColor: #333,
+		buttonBorder: 1px solid #333,
+		//Header
+		headerBackgroundColor: #a9a9a9,
+		headerButtonTextColor: #a3c3e3,
+	),
+
+	pink:(
+		//Basic
+		backgroundColor: #222,
+		textColor: #ddd,
+		buttonTextColor: #aaa,
+		buttonTextTransform: uppercase,
+		buttonTextHoverColor: #ddd,
+		buttonColor: #333,
+		buttonBorder: 1px solid #333,
+		//Header
+		headerBackgroundColor: #a9a9a9,
+		headerButtonTextColor: #a3c3e3,
+	),
+
+	purple:(
+		//Basic
+		backgroundColor: #222,
+		textColor: #ddd,
+		buttonTextColor: #aaa,
+		buttonTextTransform: uppercase,
+		buttonTextHoverColor: #ddd,
+		buttonColor: #333,
+		buttonBorder: 1px solid #333,
+		//Header
+		headerBackgroundColor: #a9a9a9,
+		headerButtonTextColor: #a3c3e3,
+	),
+
+	indigo:(
+		//Basic
+		backgroundColor: #222,
+		textColor: #ddd,
+		buttonTextColor: #aaa,
+		buttonTextTransform: uppercase,
+		buttonTextHoverColor: #ddd,
+		buttonColor: #333,
+		buttonBorder: 1px solid #333,
+		//Header
+		headerBackgroundColor: #a9a9a9,
+		headerButtonTextColor: #a3c3e3,
+	),
+
+	blue:(
+		//Basic
+		backgroundColor: #031b42,
+		textColor: #ddd,
+		buttonTextColor: #aaa,
+		buttonTextTransform: uppercase,
+		buttonTextHoverColor: #ddd,
+		buttonColor: #333,
+		buttonBorder: 1px solid #333,
+		//Header
+		headerBackgroundColor: #a9a9a9,
+		headerButtonTextColor: #a3c3e3,
+	),
+);
+
+@mixin themed($themes) {
+	@each $theme, $map in $themes {
+	  	.theme-#{$theme} & {
+		 	$theme-map: () !global;
+		 	@each $key, $submap in $map {
+				$value: map-get(map-get($themes, $theme), '#{$key}');
+				$theme-map: map-merge($theme-map, ($key: $value)) !global;
+			}
+		 	@content;
+		 	$theme-map: null !global;
+	  	}
+	}
+}
+ 
+@function themeIt($key) {
+	@return map-get($theme-map, $key);
+}
+
+#rootContent {
+	overflow: hidden;
+}
+
+.themeHeader {
+	@include themed($themes) {
+		color: themeIt('textColor');
+		background-color: get('colors.derp');
+	}
+
+	.themeTitle {
+		font-family: monospace;
+		font-size: 26px;
+	}
+
+	.themeButton {
+		max-width: 12em;
+		cursor: pointer;
+		border-radius: 5px;
+		padding: 8px 16px;
+		display: inline-block;
+		transition: color 0.1s, border-color 0.1s, background-color 0.1s;
+	 
+		@include themed($themes) {
+			border: themeIt('buttonBorder');
+			color: themeIt('headerButtonTextColor');
+			border-color: themeIt('buttonTextColor');
+			background-color: themeIt('buttonColor');
+			text-transform: themeIt('buttonTextTransform');
+	
+			&:hover {
+			  color: themeIt('buttonTextHoverColor'); 
+			  border-color: themeIt('buttonTextHoverColor');
+			  background-color: themeIt('buttonHoverColor');
+			}
+		}
+	}
+}
+
+.themeContainer {
+	@include themed($themes) {
+		color: themeIt('textColor');
+		background-color: themeIt('backgroundColor');
+	}
+
+	.themeButton {
+		max-width: 20em;
+		cursor: pointer;
+		border-radius: 5px;
+		padding: 15px 32px;
+		display: inline-block;
+		transition: color 0.1s, border-color 0.1s, background-color 0.1s;
+	 
+		@include themed($themes) {
+			border: themeIt('buttonBorder');
+			color: themeIt('buttonTextColor'); 
+			border-color: themeIt('buttonTextColor');
+			background-color: themeIt('buttonColor');
+			text-transform: themeIt('buttonTextTransform');
+	
+			&:hover {
+			  color: themeIt('buttonTextHoverColor'); 
+			  border-color: themeIt('buttonTextHoverColor');
+			  background-color: themeIt('buttonHoverColor');
+			}
+		}
+	}
+}

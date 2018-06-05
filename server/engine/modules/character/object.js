@@ -64,10 +64,11 @@ export default class Character {
 	checkUpdates() {
 		if(this.actions.generating !== 'slacking') {
 			this.generate(this.actions.generating);
-			console.log('You now have:', this.resources[this.actions.generating].owned, this.actions.generating + '!');
 		}
 
 		this.checkTriggers();
+		//this.stats.firstLogin = true;
+		this.stats.status = 'Liza test' + Math.random(1000);
 	}
 
 	generate(resource) {
@@ -128,19 +129,19 @@ export default class Character {
 	}
 
 	firstLogin(stats, levels, location, resources, research, talents, unlocks) {
-		this.stats = this.stripFetched(stats);
+		//this.stats = this.stripFetched(stats);
 
-		this.levels = this.stripFetched(levels);
+		//this.levels = this.stripFetched(levels);
 
-		this.location = this.stripFetched(location);
+		//this.location = this.stripFetched(location);
 
-		this.resources = this.stripFetched(resources);
+		//this.resources = this.stripFetched(resources);
 
-		this.research = this.stripFetched(research);
+		//this.research = this.stripFetched(research);
 
-		this.talents = this.stripFetched(talents);
+		//this.talents = this.stripFetched(talents);
 
-		this.unlocks = this.stripFetched(unlocks);
+		//this.unlocks = this.stripFetched(unlocks);
 
 		this.stats.firstLogin = false;
 	}

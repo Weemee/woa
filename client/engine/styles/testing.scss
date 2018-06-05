@@ -9,17 +9,10 @@
 	height: 100% !important;
 }
 
-#main {
-	position: absolute;
-	height: 100% !important;
-	width: 100% !important;
-	overflow: hidden;
-}
-
 #footer {
-	position: absolute;
+	position: fixed;
 	height: 40px;
-	bottom: 0px;
+	bottom: 20px;
 	right: 0px;
 	z-index: 99;
 }
@@ -33,10 +26,9 @@
 
 #contentWrapper {
 	position: absolute;
-	height: 100%;
+	height: calc(100% - 65px);
 	width: 100%;
-	top: 40px;
-	left: 40px;
+	overflow: hidden;
 }
 
 #session {

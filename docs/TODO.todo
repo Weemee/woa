@@ -4,25 +4,27 @@ Bugs:
 		☐ What: Sometimes gets 'typeof' (string) for 'userID' instead of (integer)
 		☐ Solution: Make sure the 'typeof' (integer) is being sent as 'userID', not 'typeof' (string)
 	☐ Players online delayed / not synced in visual client
+	☐ Key input broken on client (fullscreen mode)
 Active:
 	☐ @high Update account for 'lastPlayed'
-	☐ @high Feedback button
-		☐ Opens a new window with different forms
+	✔ @high Feedback button @done(18-06-04 20:47)
+		✔ Opens a new window with different forms @done(18-06-04 20:47)
 			☐ Navigation bar with options
 			☐ A feedback is sent depending on the form
 			☐ It is stored in the database
 			☐ Based on account level/permission
-	☐ @high Account levels/permissions
+	✔ @high Account levels/permissions @done(18-06-04 20:56)
 		☐ Different options for different levels
 		☐ Shows feedback and admin stuff
-	☐ @high Admin level visuals
+	✔ @high Admin level visuals @done(18-06-04 21:04)
 		☐ An entirely new interface for admins
-		☐ Options to alter game mechanics 
+		✔ Options to alter game mechanics @done(18-06-04 20:47)
 		☐ Options to balance the game
 	☐ @high Build and structure the rousource panel
 		☐ Look at ideas.txt
-	☐ @high Finish building the theme system
+	✔ @high Finish building the theme system @done(18-06-04 19:56)
 		☐ Put it in the database
+		☐ Make sure all elements are attached to the theme system
 
 Login:
 	☐ @low Methods
@@ -61,7 +63,7 @@ Character:
 				☐ Talents
 				☐ Location
 				☐ Stats
-		☐ @critical Save everything
+		✔ @critical Save everything @done(18-06-05 16:20)
 Theme system:
 	☐ Theme elements
 		☐ Main

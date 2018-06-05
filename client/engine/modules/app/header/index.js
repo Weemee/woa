@@ -26,16 +26,16 @@ class Header extends React.Component {
 		if (this.props.loggedIn) {
 			return (
 				<React.Fragment>
-					<NavLink className="nav-link" to="/session">Play Game</NavLink>
-					<NavLink className="nav-link" to="/account">Account</NavLink>
-					<a className="nav-link" href="#" onClick={this.logout.bind(this)}>Logout</a>
+					<NavLink className="themeButton" to="/session">Play Game</NavLink>
+					<NavLink className="themeButton" to="/account">Account</NavLink>
+					<a className="themeButton" href="#" onClick={this.logout.bind(this)}>Logout</a>
 				</React.Fragment>
 			);
 		} else {
 			return (
 				<React.Fragment>
-					<NavLink className="nav-link" exact to="/authentication">Login</NavLink>
-					<NavLink className="nav-link" to="/authentication/register">Sign up</NavLink>
+					<NavLink className="themeButton" exact to="/authentication">Login</NavLink>
+					<NavLink className="themeButton" to="/authentication/register">Sign up</NavLink>
 				</React.Fragment>
 			);
 		}
@@ -55,9 +55,10 @@ class Header extends React.Component {
 
 	render() {
 		return (
-			<Navbar className={`theme-${this.props.selectedTheme} header-${this.props.selectedTheme}`} expand="md" id="header" onContextMenu={this.disableContext}>
+			<Navbar className="themeHeader" expand="md" onContextMenu={this.disableContext}>
 				<Container>
-				<NavbarBrand href="#" onClick={() => this.props.history.push('/')}>Penis</NavbarBrand>
+				<NavbarBrand className="themeTitle" href="#" onClick={() => this.props.history.push('/')}>Penis</NavbarBrand>
+
 				<NavbarToggler onClick={this.toggle.bind(this)} className="mr-2" />
 					<Collapse isOpen={!this.state.isOpen} navbar>
 						<Nav className="mr-auto" navbar>

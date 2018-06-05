@@ -11,8 +11,9 @@ import AuthenticationContainer from '../authentication';
 import AccountContainer from '../account';
 import SessionContainer from '../session';
 import Header from './header';
+import Feedback from './feedback';
 
-import {Container} from 'reactstrap';
+import {Modal, ModalHeader, ModalBody} from 'reactstrap';
 import {MdBugReport} from 'react-icons/lib/md';
 import Loader from '../ui/loader';
 
@@ -22,7 +23,12 @@ class App extends React.Component {
 
 		this.state = {
 			visible: false,
+			modalFeedback: false,
+			modalAdmin: false,
 		};
+
+		this.giveFeedback = this.giveFeedback.bind(this);
+		this.adminArea = this.adminArea.bind(this);
 	}
 
 	componentWillMount() {
@@ -41,6 +47,18 @@ class App extends React.Component {
 		if(this.props.loggedIn && !this.props.isConnected && nextProps.isConnected) {
 			this.props.history.push('/authentication');
 		}
+	}
+
+	giveFeedback() {
+		this.setState({
+			modalFeedback: !this.state.modalFeedback,
+		});
+	}
+
+	adminArea() {
+		this.setState({
+			modalAdmin: !this.state.modalAdmin,
+		});
 	}
 
 	renderSessionRoute(component) {
@@ -79,26 +97,53 @@ class App extends React.Component {
 		return false;
 	}
 
+	renderModals() {
+		return (
+			<React.Fragment>
+				<Modal isOpen={this.state.modalFeedback} toggle={this.giveFeedback} size="lg">
+               <ModalHeader toggle={this.giveFeedback}>Feedback</ModalHeader>
+               <ModalBody>
+                   <Feedback />
+               </ModalBody>
+            </Modal>
+			</React.Fragment>
+		);
+	}
+
 	render() {
 		return (
 			<React.Fragment>
+				{this.renderModals()}
 				{
 					!this.props.character &&
-					<Header/>
-				}
-				<main className={`theme-${this.props.selectedTheme}`} id="main" onContextMenu={this.disableContext}>
-					<div id="wrapper">
-						<Switch>
-							<Route exact path="/" render={() => this.renderSessionRoute(<Page/>)} />
-							<Route path="/authentication" render={() => this.renderSessionRoute(<AuthenticationContainer/>)} />
-							<Route path="/session" render={() => this.renderSessionRoute(<SessionContainer/>)} />
-							<Route path="/account" render={() => this.renderSessionRoute(<AccountContainer/>)} />
-							<Route component={PageNotFound} />
-						</Switch>
+					<div id="header" className={`theme-${this.props.selectedTheme}`}>
+						<Header/>
 					</div>
+				}
+				<main id="rootContent" className={`theme-${this.props.selectedTheme}`} onContextMenu={this.disableContext}>
+						<div className="themeContainer">
+							<Switch>
+								<Route exact path="/" render={() => this.renderSessionRoute(<Page/>)} />
+								<Route path="/authentication" render={() => this.renderSessionRoute(<AuthenticationContainer/>)} />
+								<Route path="/session" render={() => this.renderSessionRoute(<SessionContainer/>)} />
+								<Route path="/account" render={() => this.renderSessionRoute(<AccountContainer/>)} />
+								<Route component={PageNotFound} />
+							</Switch>
+						</div>
 				</main>
-				<div id="footer">
-					<a href={this.state.issueURL} target="_blank" className="btn btn-primary" id="bug"><MdBugReport />Report bug</a>
+				<div id="footer" className={`theme-${this.props.selectedTheme}`}>
+					<div className="themeContainer">
+						{
+							this.props.account &&
+							this.props.account.accountLevel === 3 &&
+							<a href="#" onClick={this.adminArea} className="themeButton" id="feedback"><MdBugReport />Admin</a>
+						}
+						{
+							this.props.loggedIn &&
+							<a href="#" onClick={this.giveFeedback} className="themeButton" id="feedback"><MdBugReport />Feedback</a>
+						}
+						<a href={this.state.issueURL} target="_blank" className="themeButton" id="bug"><MdBugReport />Report bug</a>
+					</div>
 				</div>
 				<Loader />
 			</React.Fragment>
@@ -116,6 +161,7 @@ function mapStateToProps(state) {
 	return {
 		isConnected: state.app.connected,
 		loggedIn: state.account.loggedIn || false,
+		account: state.account.account,
 		character: state.character.selected,
 		selectedTheme: state.theme.name,
 	};

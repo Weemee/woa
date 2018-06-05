@@ -5,7 +5,7 @@ import {
 } from './types';
 
 const defaultState = {
-	name: 'blue',
+	name: 'dark',
 };
 
 export default function(state = defaultState, action) {

@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import {Container, Row, Col} from 'reactstrap';
 
 import {setMousePos} from '../utils/actions';
-import {setTheme} from '../theme/actions';
+import {setTheme} from '../themes/actions';
 
 import {ContextMenu, MenuItem, ContextMenuTrigger} from 'react-contextmenu';
 
@@ -30,40 +30,40 @@ class Page extends React.Component {
 
 	render() {
 		return (
-			<div id="contentWrapper" className={`theme-${this.props.selectedTheme}`}>
-				<Row>
+			<div id="contentWrapper" className="themeContainer">
+				<Row style={{marginLeft: '20px', marginTop: '20px'}}>
 					<Col className=".col-6">
 						<div style={{width:'250px', height:'250px'}} onMouseMove={(e) => this.mouseMove(e)}>
 							Move here and your MouseX: {this.props.pos.x} and MouseY: {this.props.pos.y} will show!
 						</div>
 					</Col>
 				</Row>
-				<Row>
-					<button type="button" className="btn btn-blue" onClick={() => this.changeTheme('blue')}>Blue</button>
-					<button type="button" className="btn btn-indigo" onClick={() => this.changeTheme('indigo')}>Indigo</button>
-					<button type="button" className="btn btn-purple" onClick={() => this.changeTheme('purple')}>Purple</button>
-					<button type="button" className="btn btn-pink" onClick={() => this.changeTheme('pink')}>Pink</button>
-					<button type="button" className="btn btn-red" onClick={() => this.changeTheme('red')}>Red</button>
-					<button type="button" className="btn btn-orange" onClick={() => this.changeTheme('orange')}>Orange</button>
-					<button type="button" className="btn btn-yellow" onClick={() => this.changeTheme('yellow')}>Yellow</button>
-					<button type="button" className="btn btn-green" onClick={() => this.changeTheme('green')}>Green</button>
-					<button type="button" className="btn btn-teal" onClick={() => this.changeTheme('teal')}>Teal</button>
-					<button type="button" className="btn btn-cyan" onClick={() => this.changeTheme('cyan')}>Cyan</button>
-					<button type="button" className="btn btn-dark" onClick={() => this.changeTheme('dark')}>Dark</button>
-					<button type="button" className="btn btn-light" onClick={() => this.changeTheme('light')}>Light</button>
+				<Row style={{marginLeft: '20px', marginTop: '20px'}}>
+					<button type="button" className="themeButton" onClick={() => this.changeTheme('blue')}>Blue</button>
+					<button type="button" className="themeButton" onClick={() => this.changeTheme('indigo')}>Indigo</button>
+					<button type="button" className="themeButton" onClick={() => this.changeTheme('purple')}>Purple</button>
+					<button type="button" className="themeButton" onClick={() => this.changeTheme('pink')}>Pink</button>
+					<button type="button" className="themeButton" onClick={() => this.changeTheme('red')}>Red</button>
+					<button type="button" className="themeButton" onClick={() => this.changeTheme('orange')}>Orange</button>
+					<button type="button" className="themeButton" onClick={() => this.changeTheme('yellow')}>Yellow</button>
+					<button type="button" className="themeButton" onClick={() => this.changeTheme('green')}>Green</button>
+					<button type="button" className="themeButton" onClick={() => this.changeTheme('teal')}>Teal</button>
+					<button type="button" className="themeButton" onClick={() => this.changeTheme('cyan')}>Cyan</button>
+					<button type="button" className="themeButton" onClick={() => this.changeTheme('dark')}>Dark</button>
+					<button type="button" className="themeButton" onClick={() => this.changeTheme('light')}>Light</button>
 				</Row>
-				<Row>
+				<Row style={{marginLeft: '20px', marginTop: '20px'}}>
 					<Col>
 						<div>
 							<ContextMenuTrigger id="lizaPenis">
-								<button type="button" className={`btn btn-${this.props.selectedTheme}`}>ContextMenuTrigger</button>
+								<button type="button" className="themeButton">ContextMenuTrigger</button>
 							</ContextMenuTrigger>
 							<ContextMenu className="contextMenuItems" id="lizaPenis">
 								<MenuItem data={{penis: 'Derp'}} onClick={this.handleClick}>
-									<button type="button" className={`btn btn-${this.props.selectedTheme}`}>Derp</button>
+									<button type="button" className="themeButton">Derp</button>
 								</MenuItem>
 								<MenuItem className="contextMenuItem" data={{penis: 'Herp'}} onClick={this.handleClick}>
-									<button type="button" className={`btn btn-${this.props.selectedTheme}`}>Herp</button>
+									<button type="button" className="themeButton">Herp</button>
 								</MenuItem>
 							</ContextMenu>
 						</div>

@@ -977,5 +977,9 @@ module.exports = (sequelize, DataTypes) =>
 		characterResources.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 	});
 
+	CharacterResources.beforeUpdate(async(characterResources, options) => {
+		characterResources.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
+	});
+
 	return CharacterResources;
 }

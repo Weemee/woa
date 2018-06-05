@@ -12,6 +12,7 @@
 * Now has triggers based on resource levels
 * Now supports 'account level', to determine admins, plebs, etc
 * Admin support has been added
+* Test
 
 ## Client
 * Various support for upcoming functions, examples:

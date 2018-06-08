@@ -1,3 +1,7 @@
+import {
+	GET_THEME_LIST,
+} from 'libs/constants';
+
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -40,10 +44,15 @@ class Session extends React.Component {
 		this.toggleGrid = this.toggleGrid.bind(this);
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		if(!this.props.loggedIn) {
 			return this.props.history.push('/authentication');
 		}
+
+		this.props.socketSend({
+			type: GET_THEME_LIST,
+			payload: null,
+		});
 
 		document.addEventListener('keydown', this.onKeyPress.bind(this));
 	}
@@ -54,6 +63,7 @@ class Session extends React.Component {
 		document.removeEventListener('keydown', this.onKeyPress.bind(this));
 	}
 
+	//Change all these to static getDerivedStateFromProps()
 	componentDidUpdate(prevProps) {
 		if(!this.props.character) {
 			return;
@@ -98,7 +108,7 @@ class Session extends React.Component {
 					<div>
 						<ConfigUI />
 						<div className="toggleGridBtn">
-							<a href="#" onClick={this.toggleGrid} className="btn btn-primary"><MdAddCircleOutline /> Grid</a>
+							<a href="#" onClick={this.toggleGrid} className="themeButton"><MdAddCircleOutline /> Grid</a>
 						</div>
 					</div>
 				}
@@ -106,7 +116,7 @@ class Session extends React.Component {
 					!this.state.editGrid &&
 					<div>
 						<div className="toggleGridBtn">
-							<a href="#" onClick={this.toggleGrid} className="btn btn-primary"><MdAddCircleOutline /> Grid</a>
+							<a href="#" onClick={this.toggleGrid} className="themeButton"><MdAddCircleOutline /> Grid</a>
 						</div>
 						<Interface />
 					</div>
@@ -130,7 +140,7 @@ class Session extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<div id="session">
+				<div id="session" className="themeContainer">
 					{this.render3DGraphics()}
 					{this.renderUI()}
 				</div>

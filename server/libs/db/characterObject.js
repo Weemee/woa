@@ -63,8 +63,8 @@ export default (sequelize, DataTypes) => {
 			foreignKey: 'charID',
 		});
 
-		CharacterObject.hasOne(model.characterResearch, {
-			as: 'research',
+		CharacterObject.hasOne(model.characterModifiers, {
+			as: 'modifiers',
 			foreignKey: 'charID',
 		});
 
@@ -73,13 +73,28 @@ export default (sequelize, DataTypes) => {
 			foreignKey: 'charID',
 		});
 
-		CharacterObject.hasOne(model.characterUnlocks, {
-			as: 'unlocks',
+		CharacterObject.hasOne(model.characterActions, {
+			as: 'actions',
 			foreignKey: 'charID',
 		});
 
-		CharacterObject.hasOne(model.characterActions, {
-			as: 'actions',
+		CharacterObject.hasOne(model.characterUnlockedBuildings, {
+			as: 'unlockedBuildings',
+			foreignKey: 'charID',
+		});
+
+		CharacterObject.hasOne(model.characterUnlockedElements, {
+			as: 'unlockedElements',
+			foreignKey: 'charID',
+		});
+
+		CharacterObject.hasOne(model.characterUnlockedFunctions, {
+			as: 'unlockedFunctions',
+			foreignKey: 'charID',
+		});
+
+		CharacterObject.hasOne(model.characterUnlockedResearch, {
+			as: 'unlockedResearch',
 			foreignKey: 'charID',
 		});
 	};

@@ -14,6 +14,7 @@ const middleware = routerMiddleware(history);
 import reducers from './reducers';
 import App from './modules/app';
 import sagas from './sagas';
+import ErrorBoundary from './errors';
 
 //CSS
 import './styles/merged.scss';
@@ -41,7 +42,9 @@ sagaMiddleware.run(sagas);
 ReactDOM.render(
 	<Provider store={store}>
 		<ConnectedRouter history={history}>
-			<App/>
+			<ErrorBoundary>
+				<App/>
+			</ErrorBoundary>
 		</ConnectedRouter>
 	</Provider>,
 document.querySelector('#root')

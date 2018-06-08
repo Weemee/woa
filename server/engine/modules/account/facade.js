@@ -8,7 +8,6 @@ import {
 } from 'libs/constants';
 
 import db from 'libs/db';
-const Op = db.Sequelize.Op;
 
 export default class UserFacade {
 	constructor(Server) {
@@ -26,6 +25,52 @@ export default class UserFacade {
 		}
 
 		return null;
+	}
+
+	setLastCharPlayed(userID, charID) {
+		console.log('\nAccountID: ', userID, ' & charID: ', charID, '\n');
+
+		const updated = db.accountObject.update({
+			lastCharPlayed: charID,
+		},
+		{
+			where:
+			{
+				id:
+				{
+					[db.Op.like]: [userID],
+				}
+			}
+		}).catch(err => {
+			if(err) {
+				return err;
+			}
+		});
+
+		return updated;
+	}
+
+	removeLastCharPlayed(userID) {
+		console.log('\nAccountID: ', userID, '\n');
+
+		const updated = db.accountObject.update({
+			lastCharPlayed: null,
+		},
+		{
+			where:
+			{
+				id:
+				{
+					[db.Op.like]: [userID],
+				}
+			}
+		}).catch(err => {
+			if(err) {
+				return err;
+			}
+		});
+
+		return updated;
 	}
 
 	async authenticate(socket, action) {

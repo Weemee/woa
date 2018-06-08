@@ -8,7 +8,7 @@ import CharacterReducer from './modules/session/character/reducer';
 import SessionReducer from './modules/session/reducer';
 import ServerReducer from './modules/session/server/reducer';
 import UtilsReducer from './modules/utils/reducer';
-import ThemesReducer from './modules/themes/reducer';
+import ThemeReducer from './modules/session/themes/reducer';
 import PlayerReducer from './modules/session/players/reducer';
 
 const rootReducer = combineReducers({
@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
 	session: SessionReducer,
 	server: ServerReducer,
 	utils: UtilsReducer,
-	theme: ThemesReducer,
+	theme: ThemeReducer,
 	router: routerReducer,
 });
 

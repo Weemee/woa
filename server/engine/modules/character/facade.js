@@ -136,25 +136,9 @@ export default class CharacterFacade {
 						as: 'location',
 					},
 					{
-						model: db.characterResources,
-						as: 'resources',
-					},
-					{
-						model: db.characterResearch,
-						as: 'research',
-					},
-					{
 						model: db.characterTalents,
 						as: 'talents',
 					},
-					{
-						model: db.characterUnlocks,
-						as: 'unlocks',
-					},
-					{
-						model: db.characterActions,
-						as: 'actions',
-					}
 				]
 			}).then(async(result) =>
 			{
@@ -187,11 +171,7 @@ export default class CharacterFacade {
 							stats: obj.stats,
 							levels: obj.levels,
 							location: obj.location,
-							resources: obj.resources,
-							research: obj.research,
 							talents: obj.talents,
-							unlocks: obj.unlocks,
-							actions: obj.actions,
 						};
 					}),
 				});
@@ -210,211 +190,27 @@ export default class CharacterFacade {
 	}
 
 	async firstLogin(character) {
-		console.log('This character is new! Generating penises... ID: ', character.id,'\n');
-
-		if(!character.spec) {
-			console.log('You have no spec, generating...');
-		}
-
-		//Check stats
-		console.log('Generating stats...');
-		const stats = await this.databaseRowExist(character.id, 'characterStats');
-		if(!stats) {
-			console.log('- No row in stats, generating...');
-		} else {
-			console.log('- Found in stats, next...');
-		}
-
-		//Check levels
-		console.log('Generating levels...');
-		const levels = await this.databaseRowExist(character.id, 'characterLevels');
-		if(!levels) {
-			console.log('- No row in levels, generating...');
-		} else {
-			console.log('- Found in levels, next...');
-		}
-
-		//Check location
-		console.log('Generating location...');
-		const location = await this.databaseRowExist(character.id, 'characterLocation');
-		if(!location) {
-			console.log('- No row in location, generating...');
-		} else {
-			console.log('- Found in location, next...');
-		}
-
-		//Check resources
-		console.log('Generating resources...');
-		const resources = await this.databaseRowExist(character.id, 'characterResources');
-		if(!resources) {
-			console.log('- No row in resources, generating...');
-		} else {
-			console.log('- Found in resources, next...');
-		}
-
-		//Check research
-		console.log('Generating research...');
-		const research = await this.databaseRowExist(character.id, 'characterResearch');
-		if(!research) {
-			console.log('- No row in research, generating...');
-		} else {
-			console.log('- Found in research, next...');
-		}
-
-		//Check talents
-		console.log('Generating talents...');
-		const talents = await this.databaseRowExist(character.id, 'characterTalents');
-		if(!talents) {
-			console.log('- No row in talents, generating...');
-		} else {
-			console.log('- Found in talents, next...');
-		}
-
-		//Check unlocks
-		console.log('Generating unlocks...');
-		const unlocks = await this.databaseRowExist(character.id, 'characterUnlocks');
-		if(!unlocks) {
-			console.log('- No row in unlocks, generating...');
-		} else {
-			console.log('- Found in unlocks, next...');
-		}
-
-		character.firstLogin(stats, levels, location, resources, research, talents, unlocks);
+		character.firstLogin();
 
 		await this.manage(character);
 	}
 
 	async databaseRowExist(charID, table) {
-		if(table === 'characterStats') {
-			const rowExist = await db.characterStats.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in stats -';
-				}
-			});
-			return rowExist;
-		}
-
-		if(table === 'characterLevels') {
-			const rowExist = await db.characterLevels.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in levels -';
-				}
-			});
-			return rowExist;
-		}
-
-		if(table === 'characterLocation') {
-			const rowExist = await db.characterLocation.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in location -';
-				}
-			});
-			return rowExist;
-		}
-
-		if(table === 'characterResources') {
-			const rowExist = await db.characterResources.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in resources -';
-				}
-			});
-			return rowExist;
-		}
-
-		if(table === 'characterResearch') {
-			const rowExist = await db.characterResearch.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in research -';
-				}
-			});
-			return rowExist;
-		}
-
-		if(table === 'characterTalents') {
-			const rowExist = await db.characterTalents.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in talents -';
-				}
-			});
-			return rowExist;
-		}
-
-		if(table === 'characterUnlocks') {
-			const rowExist = await db.characterUnlocks.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in unlocks -';
-				}
-			});
-			return rowExist;
-		}
+		
 	}
 
 	async manage(character, isNew = false) {
 		const wasLoggedIn = this.Server.socketFacade.clearTimer(character);
 		const existingCharacter = this.managedCharacters.find((obj) => obj.userID === character.userID);
-		const isLoggedIn = character.loggedIn;
 
 		if (wasLoggedIn && existingCharacter) {
 			await this.remove(character.userID);
 		}
 
 		this.managedCharacters.push(character);
+		character.pauseResume();
+		const test = await this.Server.userFacade.setLastCharPlayed(character.userID, character.id);
+		console.log(test);
 
 		this.dispatchUpdateCharacterList(character.userID);
 
@@ -517,22 +313,34 @@ export default class CharacterFacade {
 					as: 'resources',
 				},
 				{
-					model: db.characterResearch,
-					as: 'research',
+					model: db.characterModifiers,
+					as: 'modifiers',
 				},
 				{
 					model: db.characterTalents,
 					as: 'talents',
 				},
 				{
-					model: db.characterUnlocks,
-					as: 'unlocks',
-				},
-				{
 					model: db.characterActions,
 					as: 'actions',
-				}
-			]
+				},
+				{
+					model: db.characterUnlockedBuildings,
+					as: 'unlockedBuildings',
+				},
+				{
+					model: db.characterUnlockedElements,
+					as: 'unlockedElements',
+				},
+				{
+					model: db.characterUnlockedFunctions,
+					as: 'unlockedFunctions',
+				},
+				{
+					model: db.characterUnlockedResearch,
+					as: 'unlockedResearch',
+				},
+			],
 		}).then (result => {
 
 			return result;
@@ -620,11 +428,15 @@ export default class CharacterFacade {
 	}
 
 	async delete(userID, characterName) {
+		console.log('ID: ', userID, ' & name: ', characterName);
 		const characterObject = await this.databaseDeleteCharacter(userID, characterName);
 		if(!characterObject) 
 		{
 			return false;
 		}
+
+		const test = await this.Server.userFacade.removeLastCharPlayed(userID);
+		console.log(test);
 
 		return characterObject;
 	}
@@ -735,17 +547,26 @@ export default class CharacterFacade {
 					resources: {
 						
 					},
-					research: {
+					modifiers: {
 	
 					},
 					talents: {
 	
 					},
-					unlocks: {
-	
-					},
 					actions: {
 
+					},
+					unlockedBuildings: {
+	
+					},
+					unlockedElements: {
+	
+					},
+					unlockedFunctions: {
+	
+					},
+					unlockedResearch: {
+	
 					},
 				},
 				{
@@ -767,24 +588,37 @@ export default class CharacterFacade {
 							as: 'resources',
 						},
 						{
-							model: db.characterResearch,
-							as: 'research',
+							model: db.characterModifiers,
+							as: 'modifiers',
 						},
 						{
 							model: db.characterTalents,
 							as: 'talents',
 						},
 						{
-							model: db.characterUnlocks,
-							as: 'unlocks',
-						},
-						{
 							model: db.characterActions,
 							as: 'actions',
+						},
+						{
+							model: db.characterUnlockedBuildings,
+							as: 'unlockedBuildings',
+						},
+						{
+							model: db.characterUnlockedElements,
+							as: 'unlockedElements',
+						},
+						{
+							model: db.characterUnlockedFunctions,
+							as: 'unlockedFunctions',
+						},
+						{
+							model: db.characterUnlockedResearch,
+							as: 'unlockedResearch',
 						},
 					],
 				}).catch(err => {
 					if(err) {
+						console.log(err);
 						return err;
 					}
 				});
@@ -828,9 +662,9 @@ export default class CharacterFacade {
 	async databaseSave(character) {
 		Object.keys(character).map(async (key, index) => {
 			const database = 'character' + key.charAt(0).toUpperCase() + key.slice(1);
-			if(db[database]) {
+			if(db[database]) {		
 				await db[database].update(
-					character[key].dataValues,
+				character[key].dataValues,
 				{
 					where:
 					{
@@ -840,6 +674,7 @@ export default class CharacterFacade {
 						}
 					}
 				}).catch (err => {
+					console.log(err);
 					return err;
 				});
 			}

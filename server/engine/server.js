@@ -7,6 +7,7 @@ import UserFacade from './modules/account/facade';
 import InputFacade from './modules/input/facade';
 import ServerMapFacade from './modules/serverMap/facade';
 import TimerFacade from './modules/timer/facade';
+import ThemeFacade from './modules/theme/facade';
 
 import {newEvent} from './actions';
 
@@ -21,7 +22,7 @@ class Server {
 		}
 
 		this.log = log;
-		this.version = '';
+		this.version = config.server.version;
 
 		this.timers = [];
 
@@ -31,6 +32,7 @@ class Server {
 		this.inputFacade = new InputFacade(this);
 		this.serverMapFacade = new ServerMapFacade(this);
 		this.timerFacade = new TimerFacade(this);
+		this.themeFacade = new ThemeFacade(this);
 
 		if (autoIni) {
 			this.init();
@@ -44,6 +46,7 @@ class Server {
 		await this.inputFacade.init();
 		await this.characterFacade.init();
 		await this.serverMapFacade.init();
+		await this.themeFacade.init();
 
 		this.setupServerTimers();
 

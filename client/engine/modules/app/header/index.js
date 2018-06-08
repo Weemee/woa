@@ -4,8 +4,9 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 import {authLogout} from '../../authentication/actions';
+import {newInput} from '../../session/actions';
 
-import {Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav} from 'reactstrap';
+import {Container, Collapse, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, FormGroup, Input, Navbar, NavbarToggler, NavbarBrand, Nav} from 'reactstrap';
 
 class Header extends React.Component {
 	constructor(props) {
@@ -13,8 +14,14 @@ class Header extends React.Component {
 
 		this.state = {
 			issueURL: 'https://github.com/Weemee/woa/issues/new',
-			isOpen: false,
+			themeSelect: '',
+			open: {
+				nav: false,
+				theme: false,
+			}
 		};
+
+		this.toggleTheme = this.toggleTheme.bind(this);
 	}
 
 	logout() {
@@ -44,8 +51,22 @@ class Header extends React.Component {
 
 	toggle() {
 		this.setState({
-			isOpen: !this.state.isOpen,
+			open: {
+				nav: !this.state.open.nav,
+			}
 		});
+	}
+
+	toggleTheme() {
+		this.setState({
+			open: {
+				theme: !this.state.open.theme,
+			}
+		});
+	}
+
+	changeTheme(theme) {
+		this.props.newInput(`changetheme ${theme}`);
 	}
 
 	disableContext(event) {
@@ -58,21 +79,24 @@ class Header extends React.Component {
 			<Navbar className="themeHeader" expand="md" onContextMenu={this.disableContext}>
 				<Container>
 				<NavbarBrand className="themeTitle" href="#" onClick={() => this.props.history.push('/')}>Penis</NavbarBrand>
+				{
+					this.props.loggedIn &&
+					<Dropdown isOpen={this.state.open.theme} toggle={this.toggleTheme}>
+						<DropdownToggle caret>
+							Theme
+						</DropdownToggle>
+						<DropdownMenu>
+							{
+								Object.keys(this.props.themes).map((themeID) => {
+									return <DropdownItem key={themeID} onClick={() => this.changeTheme(this.props.themes[themeID].name)}>{this.props.themes[themeID].name}</DropdownItem>
+								})
+							}
+						</DropdownMenu>
+					</Dropdown>
+				}
 
 				<NavbarToggler onClick={this.toggle.bind(this)} className="mr-2" />
-					<Collapse isOpen={!this.state.isOpen} navbar>
-						<Nav className="mr-auto" navbar>
-						{
-							this.props.pages && this.props.pages.length > 0 &&
-							this.props.pages.map((page, index) => {
-								if (!page.meta.showInNav) {
-									return null;
-								}
-
-								return <NavLink className="nav-link" key={index} exact to={'/' + page.meta.path}>{page.meta.title}</NavLink>;
-							})
-						}
-						</Nav>
+					<Collapse isOpen={!this.state.open.nav} navbar>
 						<Nav className="ml-auto" navbar>
 							{this.renderNavAuth()}
 						</Nav>
@@ -89,12 +113,16 @@ function mapStateToProps(state) {
 		isConnected: state.app.connected,
 		loggedIn: state.account.loggedIn,
 		socket: state.app.socket,
-		selectedTheme: state.theme.name,
+		themes: state.theme.list,
+		account: state.account.account,
 	};
 }
 
 function mapDispatchToProps(dispatch) {
-	return bindActionCreators({authLogout}, dispatch);
+	return bindActionCreators({
+		authLogout,
+		newInput,
+	}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

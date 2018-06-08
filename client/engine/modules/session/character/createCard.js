@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardBody, CardTitle, FormGroup, Input, Button, Progress} from 'reactstrap';
+import {Card, CardBody, CardTitle, FormGroup, Input, Button} from 'reactstrap';
 
 class CreateCard extends React.Component {
 	constructor(props) {
@@ -29,7 +29,7 @@ class CreateCard extends React.Component {
 		const specs = [
 			{
 				name: 'Arithmetic',
-				description: 'is a very smart person when it comes to numbers! 01+11=100 (or 4 if you prefer), easy!',
+				description: 'is a very smart person when it comes to numbers! 10+11=101 (or 5 if you prefer), easy!',
 			},
 			{
 				name: 'Capitalist',
@@ -63,7 +63,7 @@ class CreateCard extends React.Component {
 
 		return (
 			<div>
-				<Card>
+				<Card className="themeContainer">
 					<CardBody>
 						<CardTitle>Create character {this.state.name && <b>'{this.state.name}'</b>}</CardTitle>
 						<FormGroup>
@@ -80,7 +80,7 @@ class CreateCard extends React.Component {
 						</FormGroup>
 						<FormGroup>
 							<Input
-								type='select'
+								type="select"
 								onChange={(e) => {
 									this.setState({
 										serverSelect: e.target.value,
@@ -98,7 +98,7 @@ class CreateCard extends React.Component {
 						</FormGroup>
 						<FormGroup>
 							<Input
-								type='select'
+								type="select"
 								onChange={(e) => {
 									this.setState({
 										specialization: e.target.value,
@@ -125,7 +125,7 @@ class CreateCard extends React.Component {
 							this.state.name &&
 							this.state.serverSelect &&
 							this.state.specialization &&
-							<Button color='blue' block={true} onClick={() => this.props.onClick(this.return(specs[this.state.specialization].name))}>Create character</Button>
+							<Button className="themeButton" block={true} onClick={() => this.props.onClick(this.return(specs[this.state.specialization].name))}>Create character</Button>
 						}
 					</CardBody>
 				</Card>

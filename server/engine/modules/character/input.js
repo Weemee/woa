@@ -11,7 +11,6 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 
 	try{
 		const newCharacter = await Server.characterFacade.create(socket.account.userID, name, spec);
-		console.log(newCharacter);
 		if(!newCharacter) {
 			return Server.socketFacade.dispatchToSocket(socket, {
 				type: SET_NOTES,
@@ -105,6 +104,7 @@ async function inputSelectCharacter(socket, character, input, params, inputObjec
 
 async function inputDeleteCharacter(socket, character, input, params, inputObject, Server) {
 	const characterToDelete = params[0];
+	console.log(characterToDelete);
 	
 	try {
 		console.log('Delete character ', characterToDelete.id, '!');

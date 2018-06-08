@@ -15,8 +15,10 @@ export default class TimerFacade {
 		this.managedTimers.push({
 			char: character,
 			timer: setInterval(() => {
-				character.checkUpdates();
-				this.Server.characterFacade.updateClient(character.userID);
+				if(!character.paused) {
+					character.checkUpdates();
+					this.Server.characterFacade.updateClient(character.userID);
+				}
 			}, 1000),
 		});
 

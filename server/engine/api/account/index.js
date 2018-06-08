@@ -46,6 +46,8 @@ export async function getAccount(req, res) {
 				createdAt: req.account.createdAt,
 				hasPassword: req.account.password,
 				keyToken: req.account.keyToken,
+				lastCharPlayed: req.account.lastCharPlayed,
+				theme: req.account.theme,
 				identities,
 			},
 		});

@@ -102,7 +102,10 @@ class Character extends React.Component {
 					}
 					else {
 						const lastPlayed = props.characterList.find((obj) => obj.charID === props.account.lastCharPlayed);
-						console.log('The one: ', lastPlayed.name);
+						console.log('Last played character: ', lastPlayed);
+						if(!lastPlayed) {
+							return null;
+						}
 						return {
 							case: {
 								type: 'preview',
@@ -201,7 +204,7 @@ class Character extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<Container>
+				<Container className="themeContainer">
 					<Row>
 						<Col xs="6" sm="9">
 							<Notes />
@@ -244,11 +247,11 @@ class Character extends React.Component {
 								}
 								{
 									this.state.case.type !== 'create' &&
-									<Button color='blue' block={true} onClick={() => this.toggle('create')}>New character</Button>
+									<button className="themeButton" color='blue' block='true' onClick={() => this.toggle('create')}>New character</button>
 								}
 								{
 									this.state.case.type === 'create' &&
-									<Button color='red' block={true} onClick={() => this.toggle(this.state.case.last)}>Back</Button>
+									<button className="themeButton" color='red' block='true' onClick={() => this.toggle(this.state.case.last)}>Back</button>
 								}
 
 							</Col>

@@ -1,9 +1,7 @@
-import fs from 'fs';
 import http from 'http';
 
 import dotenv from 'dotenv';
 import express from 'express';
-import Promise from 'bluebird';
 
 import API from './api';
 import db from 'libs/db';

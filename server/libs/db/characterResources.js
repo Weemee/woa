@@ -56,14 +56,6 @@ module.exports = (sequelize, DataTypes) =>
 				owned: 0
 			},
 		},
-		carbon:
-		{
-			type: DataTypes.JSON,
-			defaultValue: {
-				max: 100,
-				owned: 0
-			},
-		},
 		nitrogen:
 		{
 			type: DataTypes.JSON,

@@ -159,7 +159,8 @@ export function onAuth(req, res, data, redirect) {
 		identity: data.identity.id || null,
 		lastCharPlayed: data.account.dataValues.lastCharPlayed,
 		accountLevel: data.account.dataValues.accountLevel,
-	}, req.app.get('config').protocol.signingSecret, {expiresIn: '1h'});
+		theme: data.account.dataValues.theme,
+	}, req.app.get('config').protocol.signingSecret, {expiresIn: '24h'});
 
 	//Move this if statement to account action
 	if(!data.account.dataValues.keyToken) {

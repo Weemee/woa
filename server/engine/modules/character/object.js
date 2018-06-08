@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4';
 import triggers from './triggers';
-import upgrades from './upgrades';
+import unlocks from './unlocks';
 
 export default class Character {
 	constructor(Server, character) {
@@ -10,9 +10,12 @@ export default class Character {
 
 		this.timers = [];
 
-		this.triggers = triggers;
+		this.paused = true;
 
-		this.upgrades = upgrades;
+		this.buildings = this.stripFetched(this.unlockedBuildings),
+		this.elements = this.stripFetched(this.unlockedElements),
+		this.functions = this.stripFetched(this.unlockedFunctions),
+		this.research = this.stripFetched(this.unlockedResearch),
 
 		Object.assign(this, {
 			...character.dataValues,
@@ -45,14 +48,18 @@ export default class Character {
 			userID: this.userID,
 			name: this.name,
 			spec: this.spec,
-			stats: this.stats,
-			levels: this.levels,
-			location: this.location,
-			resources: this.resources,
-			research: this.research,
-			talents: this.talents,
-			unlocks: this.unlocks,
-			actions: this.actions,
+			stats: this.stripFetched(this.stats),
+			levels: this.stripFetched(this.levels),
+			location: this.stripFetched(this.location),
+			resources: this.stripFetched(this.resources),
+			talents: this.stripFetched(this.talents),
+			actions: this.stripFetched(this.actions),
+			unlocked: {
+				buildings: this.stripFetched(this.unlockedBuildings),
+				elements: this.stripFetched(this.unlockedElements),
+				functions: this.stripFetched(this.unlockedFunctions),
+				research: this.stripFetched(this.unlockedResearch),
+			},
 		};
 	}
 
@@ -67,8 +74,6 @@ export default class Character {
 		}
 
 		this.checkTriggers();
-		//this.stats.firstLogin = true;
-		this.stats.status = 'Liza test' + Math.random(1000);
 	}
 
 	generate(resource) {
@@ -78,26 +83,32 @@ export default class Character {
 		}
 	}
 
+	pauseResume() {
+		this.paused = !this.paused;
+	}
+
 	checkTriggers(force = false) {
-		for(const item in this.triggers) {
-			const trigger = this.triggers[item];
-			if(force) {
-				if((trigger.bool) && (typeof trigger.once === 'undefined')) {
-					this.unlockUpgrade(trigger.exec);
+		console.log('New: \n');
+		for(const cat in triggers) {
+			for(const item in triggers[cat]) {
+				const trigger = triggers[cat][item];
+				if(force) {
+					if((trigger.bool) && (typeof trigger.once === 'undefined')) {
+						this.unlockedFeature(trigger[item]);
+					}
+					continue;
 				}
-				continue;
-			}
-			
-			if(!trigger.bool && this.triggerMet(this.triggers[item].trigger)) {
-				this.unlockUpgrade(trigger.exec);
-				trigger.bool = !trigger.bool;
-				console.log('Unlocked:', item);
+
+				if(!trigger.bool && this.triggerMet(triggers[cat][item].trigger)/* && !this.unlocked['unlocked' + cat.charAt(0).toUpperCase() + cat.slice(1)][item]*/) {
+					this.unlockedFeature(trigger[item]);
+					trigger.bool = !trigger.bool;
+					console.log('Unlocked:', item);
+				}
 			}
 		}
 	}
 
 	triggerMet(obj) {
-		console.log(obj.resources);
 		if(obj.resources) {
 			for(const res in obj.resources) {
 				console.log(obj.resources[res]);
@@ -112,37 +123,25 @@ export default class Character {
 		return true;
 	}
 
-	unlockUpgrade(unlock) {
-		let upgrade = this.upgrades[unlock];
+	unlockedFeature(unlock) {
+		console.log(unlock);
+		let unlocked = unlocks[unlock];
 
-		for(const item in this.upgrades) {
-			upgrade = this.upgrades[item];
-			if(upgrade.allowed - upgrade.done >= 1) {
-				upgrade.locked = false;
+		for(const item in unlocks) {
+			unlocked = unlocks[item];
+			if(unlocked.allowed - unlocked.done >= 1) {
+				unlocked.locked = false;
 			}
-			if(upgrade.locked) {
+			if(unlocked.locked) {
 				continue;
 			}
 
-			upgrade.locked = false;
+			unlocked.locked = false;
 		}
 	}
 
-	firstLogin(stats, levels, location, resources, research, talents, unlocks) {
+	firstLogin() {
 		//this.stats = this.stripFetched(stats);
-
-		//this.levels = this.stripFetched(levels);
-
-		//this.location = this.stripFetched(location);
-
-		//this.resources = this.stripFetched(resources);
-
-		//this.research = this.stripFetched(research);
-
-		//this.talents = this.stripFetched(talents);
-
-		//this.unlocks = this.stripFetched(unlocks);
-
 		this.stats.firstLogin = false;
 	}
 

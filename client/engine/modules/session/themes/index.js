@@ -1,3 +1,5 @@
+//Testing for the modular scss system
+
 module.exports = {
 	base: '16px',
 	colors: {

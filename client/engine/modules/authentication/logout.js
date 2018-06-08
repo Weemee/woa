@@ -8,7 +8,7 @@ class AuthLogout extends React.Component {
 
 	render() {
 		return (
-			<Card className="card-small">
+			<Card className="themeContainer">
 				<CardHeader>Penis logged out :(</CardHeader>
 				<CardBody>
 					<p>We'll miss your penis...</p>

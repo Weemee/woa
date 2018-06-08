@@ -14,10 +14,10 @@ class Unlocks extends React.Component {
 					Unlocked features
 				</div>
 				<div>
-					Research: {!this.props.unlocks.research && 'false'}
+					Research: {!this.props.unlocked.research.fusion && 'false'}
 				</div>
 				<div>
-					Exploration: {!this.props.unlocks.exploration && 'false'}
+					Exploration: {!this.props.unlocked.buildings.storage && 'false'}
 				</div>
 			</React.Fragment>
 		);
@@ -32,7 +32,7 @@ function mapActionsToProps(dispatch) {
 
 function mapStateToProps(state) {
 	return {
-		unlocks: state.character.selected.unlocks,
+		unlocked: state.character.selected.unlocked,
 	};
 }
 

@@ -1,4 +1,3 @@
-import fs from 'fs';
 import {
 	SERVER_LIST,
 	GET_SERVER_LIST,

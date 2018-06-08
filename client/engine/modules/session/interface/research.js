@@ -13,11 +13,9 @@ class Research extends React.Component {
 				<div>
 					Researched
 				</div>
+				{/* AUTOMATE THIS */}
 				<div>
 					Fusion: {!this.props.research.fusion && 'false'}
-				</div>
-				<div>
-					Production: {!this.props.research.production && 'false'}
 				</div>
 			</React.Fragment>
 		);
@@ -32,7 +30,7 @@ function mapActionsToProps(dispatch) {
 
 function mapStateToProps(state) {
 	return {
-		research: state.character.selected.research,
+		research: state.character.selected.unlocked.research,
 	};
 }
 

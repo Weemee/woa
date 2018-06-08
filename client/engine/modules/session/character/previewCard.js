@@ -22,15 +22,15 @@ class PreviewCard extends React.Component {
 	render() {
 		return (
 			<div>
-				<Card>
+				<Card className="themeContainer">
 					<CardBody>
 						{
 							this.props.character &&
 							<CardTitle>{this.props.character.name}</CardTitle>
 						}
-						<Button color='dark' onClick={() => this.props.onClick(this.return(this.props.character.name, 'edit'))}>Edit</Button>
+						<Button className="themeButton" onClick={() => this.props.onClick(this.return(this.props.character.name, 'edit'))}>Edit</Button>
 						<br />
-						<Button color='blue' onClick={() => this.props.onClick(this.return(this.props.character.name, 'play'))}>Play character</Button>
+						<Button className="themeButton" onClick={() => this.props.onClick(this.return(this.props.character.name, 'play'))}>Play character</Button>
 						<div>
 							<br />
 							Type in 'DELETE' in the input field to activate the button
@@ -50,7 +50,7 @@ class PreviewCard extends React.Component {
 						</FormGroup>
 						{
 							this.state.delete === 'DELETE' &&
-							<Button color='red' onClick={() => this.props.onClick(this.return(this.props.character.name, 'delete'))}>Delete character</Button>
+							<Button className="themeButton" onClick={() => this.props.onClick(this.return(this.props.character.name, 'delete'))}>Delete character</Button>
 						}
 					</CardBody>
 				</Card>

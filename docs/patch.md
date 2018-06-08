@@ -5,7 +5,7 @@
 ***
 =================================================
 
-##### *Version 0.0.308*
+##### *Version 0.0.312*
 
 ## General
 * Can now generate Hydrogen and Helium as resources (not saving)
@@ -38,6 +38,7 @@
 		* Research
 	* More to come
 * Database support for the 118 elements
+* Dynamically saves the databases related to the character
 	* <h5>Bugs</h5>
 
 ## Misc/Dev/Git/Boring stuff

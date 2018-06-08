@@ -93,7 +93,7 @@ class AuthenticationLogin extends React.Component {
 
 	render() {
 		return (
-			<Card className="card-small">
+			<Card className="themeContainer">
 				<CardHeader>Login</CardHeader>
 				{
 					this.props.strategies.length > 0 &&
@@ -128,7 +128,7 @@ class AuthenticationLogin extends React.Component {
 							value={this.state.password}
 							/>
 						</FormGroup>
-						<Button onClick={this.authenticate} color="primary">Login</Button>
+						<Button className="themeButton" onClick={this.authenticate}>Login</Button>
 						<hr />
 					</Form>
 				</CardBody>

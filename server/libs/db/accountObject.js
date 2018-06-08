@@ -47,6 +47,11 @@ module.exports = (sequelize, DataTypes) =>
 			type: DataTypes.INTEGER,
 			defaultValue: null,
 		},
+		theme:
+		{
+			type: DataTypes.STRING,
+			defaultValue: 'dark',
+		},
 		createdAt:
 		{
 			type: DataTypes.DATE,

@@ -4,7 +4,9 @@ import {
 } from 'libs/constants';
 
 const defaultState = {
-	selected: 'blue',
+	selected: {
+		name: 'blue',
+	},
 	list: [],
 };
 

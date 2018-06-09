@@ -3,7 +3,7 @@ import uuid from 'uuid/v4';
 import bcrypt from 'bcrypt';
 import config from 'config/security';
 
-module.exports = (sequelize, DataTypes) =>
+export default (sequelize, DataTypes) =>
 {
 	const AccountObject = sequelize.define('accountObject',
 	{

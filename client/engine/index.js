@@ -19,8 +19,6 @@ import ErrorBoundary from './errors';
 //CSS
 import './styles/merged.scss';
 
-//@test
-
 const sagaMiddleware = createSagaMiddleware();
 let store;
 

@@ -1,6 +1,4 @@
-import moment from 'moment';
-
-module.exports = (sequelize, DataTypes) =>
+export default (sequelize, DataTypes) =>
 {
 	const ServerPlanet = sequelize.define('serverPlanets',
 	{

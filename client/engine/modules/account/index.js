@@ -21,7 +21,7 @@ class Account extends React.Component {
 		if (!this.props.loggedIn) {
 			return this.props.history.push('/authentication');
 		}
-
+		
 		this.props.getStrategies();
 		this.props.getAccountDetails(this.props.account.id, this.props.authToken);
 	}

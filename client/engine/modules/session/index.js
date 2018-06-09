@@ -108,7 +108,7 @@ class Session extends React.Component {
 					<div>
 						<ConfigUI />
 						<div className="toggleGridBtn">
-							<a href="#" onClick={this.toggleGrid} className="themeButton"><MdAddCircleOutline /> Grid</a>
+							<a href="penis" onClick={this.toggleGrid} className="themeButton"><MdAddCircleOutline /> Grid</a>
 						</div>
 					</div>
 				}

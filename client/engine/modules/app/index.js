@@ -238,7 +238,7 @@ function mapStateToProps(state) {
 		loggedIn: state.account.loggedIn || false,
 		account: state.account.account,
 		character: state.character.selected,
-		selectedTheme: state.theme.selected,
+		selectedTheme: state.theme.selected.name,
 	};
 }
 

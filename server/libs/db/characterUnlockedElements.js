@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-module.exports = (sequelize, DataTypes) =>
+export default (sequelize, DataTypes) =>
 {
 	const CharacterUnlockedElements = sequelize.define('characterUnlockedElements',
 	{

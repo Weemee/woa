@@ -8,6 +8,27 @@
 ##### *Version 0.0.387*
 
 ## General
+* Temp
+
+## Client
+* Temp
+
+* <h4>Bugs</h4>
+
+## Server
+* Temp
+
+* <h4>Bugs</h4>
+
+## Misc/Dev/Git/Boring stuff
+* Refactored all database modules to ES6 while also cleaning them up
+
+***
+=================================================
+
+##### *Version 0.0.387*
+
+## General
 * Can now generate Hydrogen and Helium as resources (not saving)
 * Now has triggers based on resource levels
 * Now supports 'account level', to determine admins, plebs, etc

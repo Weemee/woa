@@ -2,15 +2,15 @@ import {
 	SET_THEME,
 } from 'libs/constants';
 
-function inputChangeTheme(socket, theme, input, params, inputObject, Server) {
+async function inputChangeTheme(socket, theme, input, params, inputObject, Server) {
 	const themeToLoad = params[0];
 
 	try {
-		Server.themeFacade.saveTheme(socket, themeToLoad);
+		const newTheme = await Server.themeFacade.saveTheme(socket, themeToLoad);
 
 		Server.socketFacade.dispatchToSocket(socket, {
 			type: SET_THEME,
-			payload: themeToLoad,
+			payload: newTheme.exportToClient(),
 		});
 	} catch (err) {
 		Server.onError(err, socket);

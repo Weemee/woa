@@ -48,9 +48,10 @@ export default function(state = defualtState, action) {
 				players,
 			};
 
-		case CHARACTER_REMOTE_LOGOUT:
 		case CHARACTER_LOGOUT:
 			return defualtState;
+		
+		case CHARACTER_REMOTE_LOGOUT:
 	}
 
 	return state;

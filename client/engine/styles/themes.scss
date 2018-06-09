@@ -250,10 +250,6 @@ $themes:(
 			  border-color: themeIt('buttonTextHoverColor');
 			  background-color: themeIt('buttonHoverColor');
 			}
-
-			&:disabled {
-				color: themeIt('buttonColor');
-			}
 		}
 	}
 }

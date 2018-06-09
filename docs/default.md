@@ -18,11 +18,13 @@
 
 ## Client
 * Temp
-	* <h5>Bugs</h5>
+
+* <h4>Bugs</h4>
 
 ## Server
 * Temp
-	* <h5>Bugs</h5>
+
+* <h4>Bugs</h4>
 
 ## Misc/Dev/Git/Boring stuff
 * Temp

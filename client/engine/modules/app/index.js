@@ -212,9 +212,9 @@ class App extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
+				{this.renderModals()}
 				{
 					!this.state.designerMode &&
-					this.renderModals() &&
 					this.renderPage()
 				}
 				{

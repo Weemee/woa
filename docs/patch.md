@@ -5,14 +5,14 @@
 ***
 =================================================
 
-##### *Version 0.0.312*
+##### *Version 0.0.387*
 
 ## General
 * Can now generate Hydrogen and Helium as resources (not saving)
 * Now has triggers based on resource levels
 * Now supports 'account level', to determine admins, plebs, etc
 * Admin support has been added
-* Test
+* Design mode has been added
 
 ## Client
 * Various support for upcoming functions, examples:
@@ -24,7 +24,8 @@
 * Added a feedback button next to the 'bug' button
 	* You will be able to send direct feedback in here, with a navigation bar on the top for subject
 * Themes are now fully functional and has been re-factored, supporting a more smooth solution (and a basic way for a modular scss configuration, based on database tables)
-	* <h5>Bugs</h5>
+
+* <h4>Bugs</h4>
 
 ## Server
 * Auto save now actually saves the character
@@ -39,10 +40,16 @@
 	* More to come
 * Database support for the 118 elements
 * Dynamically saves the databases related to the character
-	* <h5>Bugs</h5>
+* Now stores the themes in the database
+* Loads all the themes in the database
+* Fetches theme from account
+* Saves theme to account
+
+* <h4>Bugs</h4>
 
 ## Misc/Dev/Git/Boring stuff
 * All 118 elements are now in the database
+* Moved everything from github to gitlab (F Microsoft with them ruining everything). Might swap back in-case Microsoft does not fuck things up this time, I'll keep an eye out. Until then, I move my OPEN SOURCE somewhere else
 
 ***
 =================================================

@@ -13,6 +13,11 @@ export default (sequelize, DataTypes) =>
 			type: DataTypes.JSON,
 			defaultValue: {},
 		},
+		colours:
+		{
+			type: DataTypes.JSON,
+			defaultValue: {},
+		},
 		createdAt:
 		{
 			type: DataTypes.DATE,

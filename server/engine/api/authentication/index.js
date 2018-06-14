@@ -160,6 +160,7 @@ export function onAuth(req, res, data, redirect) {
 		lastCharPlayed: data.account.dataValues.lastCharPlayed,
 		accountLevel: data.account.dataValues.accountLevel,
 		theme: data.account.dataValues.theme,
+		language: data.account.dataValues.language,
 	}, req.app.get('config').protocol.signingSecret, {expiresIn: '24h'});
 
 	//Move this if statement to account action

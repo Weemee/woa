@@ -1,0 +1,2 @@
+export const GET_DESIGNER = 'GET_DESIGNER';
+export const SET_DESIGNER = 'SET_DESIGNER';

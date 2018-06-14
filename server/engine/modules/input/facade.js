@@ -203,6 +203,20 @@ export default class InputFacade {
 							}
 						break;
 
+						case 'building':
+							if(!rule[1]) {
+								//Check if building exists
+								temp = 'penis';
+								if(!temp) {
+									return 'I smell penis';
+								}
+							} else {
+								if(rule[1] === 'name') {
+									//Fetch the building by name
+								}
+							}
+						break;
+
 						case 'player':
 					};
 

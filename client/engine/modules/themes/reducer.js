@@ -3,11 +3,17 @@ import {
 	SET_THEME,
 } from 'libs/constants';
 
+import {
+	SET_DESIGNER,
+	GET_DESIGNER,
+} from './types';
+
 const defaultState = {
 	selected: {
 		name: 'blue',
 	},
 	list: [],
+	designer: [],
 };
 
 export default function(state = defaultState, action) {
@@ -20,8 +26,20 @@ export default function(state = defaultState, action) {
 
 		case SET_THEME:
 			return {
+				...state,
 				selected: action.payload,
-				list: state.list
+				designer: action.payload,
+		};
+
+		case SET_DESIGNER:
+			return {
+				...state,
+				designer: action.payload,
+		};
+
+		case GET_DESIGNER:
+			return {
+				designer: state.designer,
 		};
 	}
 

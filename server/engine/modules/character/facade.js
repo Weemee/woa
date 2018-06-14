@@ -208,6 +208,7 @@ export default class CharacterFacade {
 		}
 
 		this.managedCharacters.push(character);
+		this.Server.timerFacade.addLoop(character);
 		character.pauseResume();
 		const test = await this.Server.userFacade.setLastCharPlayed(character.userID, character.id);
 		console.log(test);
@@ -637,7 +638,7 @@ export default class CharacterFacade {
 		}));
 	}
 
-	async save(userID) {
+	async save(userID, disconnect = false) {
 		if(!userID) {
 			throw new Error('No userID for save()');
 		}
@@ -650,6 +651,14 @@ export default class CharacterFacade {
 
 		if(!character) {
 			throw new Error(`No character found online, matching userID ${userID}`);
+		}
+
+		if(disconnect) {
+			console.log('\nCharacter disconnecting, pausing updates...');
+			const pausing = await character.pauseResume();
+			if(pausing) {
+				console.log('\tUpdates paused!');
+			}
 		}
 
 		this.Server.log.info(`Saving characters ${userID}`);

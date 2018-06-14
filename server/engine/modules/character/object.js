@@ -27,7 +27,7 @@ export default class Character {
 	}
 
 	initTimers() {
-		this.Server.timerFacade.addLoop(this);
+		//this.Server.timerFacade.addLoop(this);
 	}
 
 	stripFetched(object) {
@@ -74,35 +74,62 @@ export default class Character {
 		}
 
 		this.checkTriggers();
+		this.checkBuildings();
+		this.checkResearch();
 	}
 
 	generate(resource) {
 		if(this.resources[resource].owned < this.resources[resource].max)
 		{
-			this.resources[resource].owned += 10;
+			this.resources[resource].owned += 1;
 		}
 	}
 
 	pauseResume() {
 		this.paused = !this.paused;
+		return this.paused;
+	}
+
+	checkBuildings() {
+		console.log(this.actions.buildingQueue);
+		this.checkLastBuilding();
+	}
+
+	checkLastBuilding() {
+
+	}
+
+	addToBuildingsQueue(buildingObj) {
+
+	}
+
+	removeFromBuildingsQueue(buildingObj) {
+
+	}
+
+	getQueueIndexFromBuildings(buildingID) {
+
+	}
+
+	checkResearch() {
+		console.log(this.actions.researching);
 	}
 
 	checkTriggers(force = false) {
-		console.log('New: \n');
 		for(const cat in triggers) {
 			for(const item in triggers[cat]) {
 				const trigger = triggers[cat][item];
 				if(force) {
 					if((trigger.bool) && (typeof trigger.once === 'undefined')) {
-						this.unlockedFeature(trigger[item]);
+						this.unlockedFeature(item);
 					}
 					continue;
 				}
 
-				if(!trigger.bool && this.triggerMet(triggers[cat][item].trigger)/* && !this.unlocked['unlocked' + cat.charAt(0).toUpperCase() + cat.slice(1)][item]*/) {
-					this.unlockedFeature(trigger[item]);
+				if(!trigger.bool && this.triggerMet(trigger.trigger) && !this.alreadyUnlocked(cat, item)) {
+					this.unlockedFeature(cat, item);
 					trigger.bool = !trigger.bool;
-					console.log('Unlocked:', item);
+					console.log('Unlocked:', item, '', trigger.bool);
 				}
 			}
 		}
@@ -111,37 +138,27 @@ export default class Character {
 	triggerMet(obj) {
 		if(obj.resources) {
 			for(const res in obj.resources) {
-				console.log(obj.resources[res]);
 				if(this.resources[res].owned < obj.resources[res]) {
-					console.log('Not enough generated!');
 					return false;
-				} else {
-					console.log('You have enough', res);
 				}
 			}
 		}
 		return true;
 	}
 
-	unlockedFeature(unlock) {
-		console.log(unlock);
-		let unlocked = unlocks[unlock];
+	canAfford() {
 
-		for(const item in unlocks) {
-			unlocked = unlocks[item];
-			if(unlocked.allowed - unlocked.done >= 1) {
-				unlocked.locked = false;
-			}
-			if(unlocked.locked) {
-				continue;
-			}
+	}
 
-			unlocked.locked = false;
-		}
+	alreadyUnlocked(cat, item) {
+		return this['unlocked' + cat.charAt(0).toUpperCase() + cat.slice(1)][item]
+	}
+
+	unlockedFeature(cat, item) {
+		this['unlocked' + cat.charAt(0).toUpperCase() + cat.slice(1)][item] = true;
 	}
 
 	firstLogin() {
-		//this.stats = this.stripFetched(stats);
 		this.stats.firstLogin = false;
 	}
 

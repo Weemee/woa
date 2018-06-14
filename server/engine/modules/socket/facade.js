@@ -114,7 +114,7 @@ export default class SocketFacade extends EventEmitter
 					return;
 				}
 
-				await this.Server.characterFacade.save(account.userID);
+				await this.Server.characterFacade.save(account.userID, true);
 			} catch (err) {
 				this.Server.onError(err);
 			}

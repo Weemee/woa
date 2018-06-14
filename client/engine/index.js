@@ -5,7 +5,6 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
 import createHistory from 'history/createBrowserHistory';
-import {Route} from 'react-router';
 import {ConnectedRouter, routerMiddleware} from 'react-router-redux';
 
 const history = createHistory();
@@ -40,10 +39,10 @@ sagaMiddleware.run(sagas);
 ReactDOM.render(
 	<Provider store={store}>
 		<ConnectedRouter history={history}>
-			<ErrorBoundary>
-				<App/>
-			</ErrorBoundary>
-		</ConnectedRouter>
+				<ErrorBoundary>
+					<App/>
+				</ErrorBoundary>
+		</ConnectedRouter>	
 	</Provider>,
 document.querySelector('#root')
 );

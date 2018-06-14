@@ -22,8 +22,8 @@ export default class ServerMapFacade {
 	}
 
 	init() {
-		this.Server.log.info('ServerMapFacade::constructor loaded');
 		this.loadAllServerMaps();
+		this.Server.log.info('ServerMapFacade::constructor loaded');
 	}
 
 	async loadAllServerMaps() {

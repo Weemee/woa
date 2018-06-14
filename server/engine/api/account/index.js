@@ -48,6 +48,7 @@ export async function getAccount(req, res) {
 				keyToken: req.account.keyToken,
 				lastCharPlayed: req.account.lastCharPlayed,
 				theme: req.account.theme,
+				language: req.account.language,
 				identities,
 			},
 		});

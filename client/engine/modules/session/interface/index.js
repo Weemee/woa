@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 import {Modal, ModalHeader, ModalBody, Navbar, Nav, NavItem, Row, Col} from 'reactstrap';
 
 import {MdAddCircleOutline, MdAccessible, Md3dRotation, MdAirlineSeatFlatAngled, MdAvTimer, MdBatteryChargingFull} from 'react-icons/lib/md';
@@ -110,24 +111,42 @@ class Interface extends React.Component {
 					<div id="bottomBar">
 						<Navbar>
 							<Nav>
+							{
+								this.props.character.unlocked.elements.hydrogen &&
 								<NavItem>
 									<a href="#" onClick={() => this.toggleContainer('left')} className="btn btn-primary"><MdAddCircleOutline /></a>
 								</NavItem>
+							}
+							{
+								this.props.character.unlocked.functions.location &&
 								<NavItem>
 									<a href="#" onClick={() => this.toggleContainer('top')} className="btn btn-primary"><MdAccessible /></a>
 								</NavItem>
+							}
+							{
+								this.props.character.unlocked.functions.location &&
 								<NavItem>
 									<a href="#" onClick={() => this.toggleContainer('right')} className="btn btn-primary"><Md3dRotation /></a>
 								</NavItem>
+							}
+							{
+								this.props.character.unlocked.functions.talents &&
 								<NavItem>
 									<a href="#" onClick={() => this.toggleContainer('middle')} className="btn btn-primary"><MdAirlineSeatFlatAngled /></a>
 								</NavItem>
+							}
+							{
+								this.props.character.unlocked.functions.research &&
 								<NavItem>
 									<a href="#" onClick={() => this.toggleContainer('bottomRight')} className="btn btn-primary"><MdAvTimer /></a>
 								</NavItem>
+							}
+							{
+								this.props.character.unlocked.elements.hydrogen &&
 								<NavItem>
 									<a href="#" onClick={() => this.toggleContainer('bottomLeft')} className="btn btn-primary"><MdBatteryChargingFull /></a>
 								</NavItem>
+							}
 							</Nav>
 						</Navbar>
 					</div>
@@ -137,4 +156,16 @@ class Interface extends React.Component {
 	}
 }
 
-export default Interface;
+function mapActionsToProps(dispatch) {
+	return bindActionCreators({
+		
+	}, dispatch);
+}
+
+function mapStateToProps(state) {
+	return {
+		character: state.character.selected,
+	};
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(Interface);

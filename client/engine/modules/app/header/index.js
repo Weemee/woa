@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux';
 
 import {authLogout} from '../../authentication/actions';
 import {newInput} from '../../session/actions';
+import {setLanguage} from '../../localization/actions';
 
 import {Container, Collapse, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, FormGroup, Input, Navbar, NavbarToggler, NavbarBrand, Nav} from 'reactstrap';
 
@@ -18,10 +19,12 @@ class Header extends React.Component {
 			open: {
 				nav: false,
 				theme: false,
-			}
+				lang: false,
+			},
 		};
 
 		this.toggleTheme = this.toggleTheme.bind(this);
+		this.toggleLang = this.toggleLang.bind(this);
 	}
 
 	logout() {
@@ -29,25 +32,35 @@ class Header extends React.Component {
 		this.props.authLogout();
 	}
 
+	getString(string) {
+		if(this.props.locale.messages[string])
+		{	
+			return this.props.locale.messages[string];
+		}
+	}
+
 	renderNavAuth() {
 		if (this.props.loggedIn) {
 			return (
 				<React.Fragment>
-					<NavLink className="themeButton" to="/session">Play Game</NavLink>
-					<NavLink className="themeButton" to="/account">Account</NavLink>
-					<a className="themeButton" href="#" onClick={this.logout.bind(this)}>Logout</a>
+					<NavLink className="themeButton" to="/session">{this.getString('strings.playGame')}</NavLink>
+					<NavLink className="themeButton" to="/account">{this.getString('strings.account')}</NavLink>
+					<a className="themeButton" href="#" onClick={this.logout.bind(this)}>
+						{this.getString('strings.logout')}
+					</a>
 				</React.Fragment>
 			);
 		} else {
 			return (
 				<React.Fragment>
-					<NavLink className="themeButton" exact to="/authentication">Login</NavLink>
+					<NavLink className="themeButton" exact to="/authentication">
+						{this.getString('strings.login')}
+					</NavLink>
 					<NavLink className="themeButton" to="/authentication/register">Sign up</NavLink>
 				</React.Fragment>
 			);
 		}
 	}
-
 
 	toggle() {
 		this.setState({
@@ -65,8 +78,21 @@ class Header extends React.Component {
 		});
 	}
 
+	toggleLang() {
+		this.setState({
+			open: {
+				lang: !this.state.open.lang,
+			}
+		});
+	}
+
 	changeTheme(theme) {
 		this.props.newInput(`changetheme ${theme}`);
+	}
+
+	changeLang(lang) {
+		console.log(lang);
+		this.props.setLanguage(lang);
 	}
 
 	disableContext(event) {
@@ -94,6 +120,19 @@ class Header extends React.Component {
 						</DropdownMenu>
 					</Dropdown>
 				}
+				{
+					this.props.loggedIn &&
+					<Dropdown isOpen={this.state.open.lang} toggle={this.toggleLang}>
+						<DropdownToggle caret>
+							Language
+						</DropdownToggle>
+						<DropdownMenu>
+							<DropdownItem key="en-UK" onClick={() => this.changeLang('en-UK')}>English</DropdownItem>
+							<DropdownItem key="sv-SE" onClick={() => this.changeLang('sv-SE')}>Svenska</DropdownItem>
+							<DropdownItem key="de-DE" onClick={() => this.changeLang('de-DE')}>Deutsch</DropdownItem>
+						</DropdownMenu>
+					</Dropdown>
+				}
 
 				<NavbarToggler onClick={this.toggle.bind(this)} className="mr-2" />
 					<Collapse isOpen={!this.state.open.nav} navbar>
@@ -114,6 +153,7 @@ function mapStateToProps(state) {
 		loggedIn: state.account.loggedIn,
 		socket: state.app.socket,
 		themes: state.theme.list,
+		locale: state.locale,
 		account: state.account.account,
 	};
 }
@@ -122,6 +162,7 @@ function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
 		authLogout,
 		newInput,
+		setLanguage,
 	}, dispatch);
 }
 

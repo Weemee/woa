@@ -13,6 +13,21 @@ export default (sequelize, DataTypes) =>
 			type: DataTypes.BOOLEAN,
 			defaultValue: 0,
 		},
+		location:
+		{
+			type: DataTypes.BOOLEAN,
+			defaultValue: 0,
+		},
+		talents:
+		{
+			type: DataTypes.BOOLEAN,
+			defaultValue: 0,
+		},
+		research:
+		{
+			type: DataTypes.BOOLEAN,
+			defaultValue: 0,
+		},
 		createdAt:
 		{
 			type: DataTypes.DATE,

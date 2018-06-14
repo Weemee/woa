@@ -1,4 +1,6 @@
 import http from 'http';
+import https from 'https';
+import fs from 'fs';
 
 import dotenv from 'dotenv';
 import express from 'express';
@@ -8,6 +10,7 @@ import db from 'libs/db';
 import Logger from './modules/log';
 
 import {buildConfig} from 'libs/config';
+import { Server } from './server';
 const dotEnvLoaded = dotenv.config();
 
 if(dotEnvLoaded.error) {
@@ -15,8 +18,6 @@ if(dotEnvLoaded.error) {
 }
 
 let config = buildConfig();
-
-const Server = require('./server').Server;
 const app = express();
 
 db.sequelize.authenticate().then(
@@ -25,8 +26,25 @@ db.sequelize.authenticate().then(
 		let webServer;
 		let webServerAPI;
 
-		webServer = http.createServer(app);
-		webServerAPI = http.createServer(app);
+		/*if(config.security.certificate.key) {
+			webServer = https.createServer({
+				key: fs.readFileSync(config.security.certificate.key, 'utf8'),
+            cert: fs.readFileSync(config.security.certificate.cert, 'utf8'),
+            ca: [
+            	fs.readFileSync(config.security.certificate.ca, 'utf8'),
+				],
+			}, app);
+			webServerAPI = https.createServer({
+				key: fs.readFileSync(config.security.certificate.key, 'utf8'),
+            cert: fs.readFileSync(config.security.certificate.cert, 'utf8'),
+            ca: [
+            	fs.readFileSync(config.security.certificate.ca, 'utf8'),
+				],
+			}, app);			
+		} else {*/
+			webServer = http.createServer(app);
+			webServerAPI = http.createServer(app);
+		//}
 
 		const log = new Logger(
 		{
@@ -45,6 +63,7 @@ db.sequelize.authenticate().then(
 		process.on('SIGTERM', async function()
 		{
 			await gameServer.shutdown();
+			await restServer.shutdown();
 			process.exit();
 		});
 		console.log('Connection has been established successfully.');

@@ -10,7 +10,7 @@ class Resources extends React.Component {
 		super(props);
 
 		this.state = {
-			generating: this.props.actions.generating,
+			generating: this.props.character.actions.generating,
 		};
 
 		this.generateResource = this.generateResource.bind(this);
@@ -30,8 +30,10 @@ class Resources extends React.Component {
 				<div>
 					Resources
 				</div>
+				{
+					this.props.character.unlocked.elements.hydrogen &&
 				<div>
-					Hydrogen: {this.props.resources.hydrogen.owned}/{this.props.resources.hydrogen.max}
+						Hydrogen: {this.props.character.resources.hydrogen.owned}/{this.props.character.resources.hydrogen.max}
 					{
 						this.state.generating === 'hydrogen' ? (
 							<Button color='blue' onClick={() => this.generateResource('slacking')}>Stop</Button>
@@ -40,8 +42,11 @@ class Resources extends React.Component {
 						)
 					}
 				</div>
+				}
+				{
+					this.props.character.unlocked.elements.helium &&
 				<div>
-					Helium: {this.props.resources.helium.owned}/{this.props.resources.helium.max}
+						Helium: {this.props.character.resources.helium.owned}/{this.props.character.resources.helium.max}
 					{
 						this.state.generating === 'helium' ? (
 							<Button color='blue' onClick={() => this.generateResource('slacking')}>Stop</Button>
@@ -50,6 +55,7 @@ class Resources extends React.Component {
 						)
 					}
 				</div>
+				}
 			</React.Fragment>
 		);
 	}
@@ -63,8 +69,7 @@ function mapActionsToProps(dispatch) {
 
 function mapStateToProps(state) {
 	return {
-		resources: state.character.selected.resources,
-		actions: state.character.selected.actions,
+		character: state.character.selected,
 	};
 }
 

@@ -14,10 +14,10 @@ class Unlocks extends React.Component {
 					Unlocked features
 				</div>
 				<div>
-					Research: {!this.props.unlocked.research.fusion && 'false'}
+					Research: {!this.props.unlocked.research.fusion ? ('false') : ('true')}
 				</div>
 				<div>
-					Exploration: {!this.props.unlocked.buildings.storage && 'false'}
+					Exploration: {!this.props.unlocked.buildings.storage ? ('false') : ('true')}
 				</div>
 			</React.Fragment>
 		);

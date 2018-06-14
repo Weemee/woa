@@ -21,7 +21,7 @@ export default (sequelize, DataTypes) =>
 		researching:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: [],
 		},
 		createdAt:
 		{

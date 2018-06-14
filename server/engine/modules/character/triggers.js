@@ -5,8 +5,7 @@ export default {
 			msg: 'Temp',
 			trigger: {
 				resources: {
-					hydrogen: 15,
-					helium: 0,
+					hydrogen: 5,
 				},
 			},
 		},
@@ -36,6 +35,36 @@ export default {
 		},
 	},
 	functions: {
+		location: {
+			bool: false,
+			msg: 'Temp',
+			trigger: {
+				resources: {
+					hydrogen: 200,
+					helium: 120,
+				},
+			},
+		},
+		talents: {
+			bool: false,
+			msg: 'Temp',
+			trigger: {
+				resources: {
+					hydrogen: 20,
+					helium: 20,
+				},
+			},
+		},
+		research: {
+			bool: false,
+			msg: 'Temp',
+			trigger: {
+				resources: {
+					hydrogen: 5,
+					helium: 5,
+				},
+			},
+		},
 		fuel: {
 			bool: false,
 			msg: 'Temp',

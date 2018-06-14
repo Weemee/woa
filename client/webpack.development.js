@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const sassVars = require(__dirname + '/engine/modules/session/themes');
+//const sassVars = require(__dirname + '/engine/modules/session/themes');
 const sass = require('node-sass');
 const sassUtils = require('node-sass-utils')(sass);
 
@@ -100,7 +100,7 @@ module.exports = {
 					},
 					{
 						loader: 'sass-loader',
-						options: {
+						/*options: {
 							functions: {
 								'get($keys)': function(keys) {
 									keys = keys.getValue().split('.');
@@ -122,7 +122,7 @@ module.exports = {
 									return result;
 								}							
 							},
-						},
+						},*/
 					},
 				],
 			},

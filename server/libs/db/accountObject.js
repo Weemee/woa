@@ -52,6 +52,11 @@ export default (sequelize, DataTypes) =>
 			type: DataTypes.STRING,
 			defaultValue: 'dark',
 		},
+		language:
+		{
+			type: DataTypes.STRING,
+			defaultValue: 'en-UK',
+		},
 		createdAt:
 		{
 			type: DataTypes.DATE,

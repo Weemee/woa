@@ -1,0 +1,48 @@
+[
+	{
+		"ID": "reactorV1",
+		"name": "Reactor v.1",
+		"description": "Generates up to {maxKWH} kW/h.",
+		"type": "crafting",
+		"subtype": "building",
+		"stats": {
+			"unique": true,
+			"cost": {
+				"hydrogen": 25,
+				"helium": 30
+			},
+			"time": 30,
+			"upgradeable": true,
+			"maxKWH": 500,
+			"upgrades": {
+				"v.1": {
+					"costExp": 1.14,
+					"maxKWHExp": 1.5
+				}
+			}
+		}
+	},
+	{
+		"ID": "reactorV2",
+		"name": "Reactor v.2",
+		"description": "Generates up to {maxKWH} kW/h.",
+		"type": "crafting",
+		"subtype": "building",
+		"stats": {
+			"unique": true,
+			"cost": {
+				"hydrogen": 250,
+				"helium": 300
+			},
+			"time": 60,
+			"upgradeable": true,
+			"maxKWH": 1000,
+			"upgrades": {
+				"v.1": {
+					"costExp": 1.18,
+					"maxKWHExp": 1.75
+				}
+			}
+		}
+	}
+]

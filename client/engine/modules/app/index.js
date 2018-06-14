@@ -16,6 +16,10 @@ import Feedback from './feedback';
 import {Modal, ModalHeader, ModalBody} from 'reactstrap';
 import {MdBugReport, MdBrush, MdFeedback, MdVerifiedUser} from 'react-icons/lib/md';
 import Loader from '../ui/loader';
+import {SketchPicker} from 'react-color';
+
+import {Alpha} from 'react-color/lib/components/common';
+import {setDesigner} from '../themes/actions';
 
 class App extends React.Component {
 	constructor(props) {
@@ -26,18 +30,22 @@ class App extends React.Component {
 			modalFeedback: false,
 			modalAdmin: false,
 			designerMode: false,
+			designer: {
+				name: 'designer',
+				button: {
+					backgroundColor: '',
+				}
+			}
 		};
 
 		this.giveFeedback = this.giveFeedback.bind(this);
 		this.adminArea = this.adminArea.bind(this);
 		this.designerMode = this.designerMode.bind(this);
-	}
-
-	componentWillMount() {
-		this.getIssueURL();
+		this.handleChangeComplete = this.handleChangeComplete.bind(this);
 	}
 
 	componentDidMount() {
+		this.getIssueURL();
 		this.props.socketConnect();
 	}
 
@@ -105,49 +113,31 @@ class App extends React.Component {
 		return false;
 	}
 
+	handleChangeComplete(color) {
+		this.setState({
+			designer: {
+				name: this.props.theme.name,
+				button: {
+					backgroundColor: color.hex,
+				}
+			}
+		});
+
+		this.props.setDesigner(this.state.designer);
+	}
+
 	renderDesignerMode() {
 		//Temporary
 		return (
-			<React.Fragment>
-				{
-					!this.props.character &&
-					<div id="header" className={`theme-${this.props.selectedTheme}`}>
-						<Header/>
-					</div>
-				}
-				<main id="rootContent" className={`theme-${this.props.selectedTheme}`} onContextMenu={this.disableContext}>
-						<div className="themeContainer">
-							<Switch>
-								<Route exact path="/" render={() => this.renderSessionRoute(<Page/>)} />
-								<Route path="/authentication" render={() => this.renderSessionRoute(<AuthenticationContainer/>)} />
-								<Route path="/session" render={() => this.renderSessionRoute(<SessionContainer/>)} />
-								<Route path="/account" render={() => this.renderSessionRoute(<AccountContainer/>)} />
-								<Route component={PageNotFound} />
-							</Switch>
-						</div>
-				</main>
-				<div id="footer" className={`theme-${this.props.selectedTheme}`}>
-					<div className="themeContainer">
-						{
-							this.props.account &&
-							this.props.account.accountLevel === 3 &&
-							<a href="#" onClick={this.adminArea} className="themeButton" id="admin"><MdVerifiedUser size={18} /></a>
-						}
-						{
-							this.props.account &&
-							this.props.account.accountLevel === (3 || 5) &&
-							<a href="#" onClick={this.designerMode} className="themeButton" id="designer"><MdBrush size={18} /></a>
-						}
-						{
-							this.props.loggedIn &&
-							this.props.account.accountLevel === (3 || 5 || 7) &&
-							<a href="#" onClick={this.giveFeedback} className="themeButton" id="feedback"><MdFeedback size={18} /></a>
-						}
-						<a href={this.state.issueURL} target="_blank" className="themeButton" id="bug"><MdBugReport size={18}/></a>
-					</div>
+			<div id="designerArea">
+				<div style={{width: '50%', float: 'left'}}>
+					HERE YOU DESIGN STUFF!<br/>
+					Button color: {this.state.designer.button.backgroundColor}
 				</div>
-				<Loader />
-			</React.Fragment>
+				<div style={{width: '50%', float: 'right'}}>
+					<SketchPicker color={this.state.designer.button.backgroundColor} onChangeComplete={this.handleChangeComplete}/>
+				</div>
+			</div>
 		);
 	}
 
@@ -156,11 +146,11 @@ class App extends React.Component {
 			<React.Fragment>
 				{
 					!this.props.character &&
-					<div id="header" className={`theme-${this.props.selectedTheme}`}>
+					<div id="header" className={`theme-${this.props.theme.name}`}>
 						<Header/>
 					</div>
 				}
-				<main id="rootContent" className={`theme-${this.props.selectedTheme}`} onContextMenu={this.disableContext}>
+				<main id="rootContent" className={`theme-${this.props.theme.name}`} onContextMenu={this.disableContext}>
 						<div className="themeContainer">
 							<Switch>
 								<Route exact path="/" render={() => this.renderSessionRoute(<Page/>)} />
@@ -171,12 +161,19 @@ class App extends React.Component {
 							</Switch>
 						</div>
 				</main>
-				<div id="footer" className={`theme-${this.props.selectedTheme}`}>
+				<div id="footer" className={`theme-${this.props.theme.name}`}>
 					<div className="themeContainer">
 						{
 							this.props.account &&
+							this.props.account.accountLevel === (3 || 5) &&
+							this.state.designerMode &&
+							this.renderDesignerMode()
+						}
+						{
+							this.props.account &&
 							this.props.account.accountLevel === 3 &&
-							<a href="#" onClick={this.adminArea} className="themeButton" id="admin"><MdVerifiedUser size={18} /></a>
+							this.props.theme.button &&
+								<a href="#" onClick={this.adminArea} style={{color: this.props.theme.button.backgroundColor}} id="admin"><MdVerifiedUser size={18} /></a>
 						}
 						{
 							this.props.account &&
@@ -214,12 +211,7 @@ class App extends React.Component {
 			<React.Fragment>
 				{this.renderModals()}
 				{
-					!this.state.designerMode &&
 					this.renderPage()
-				}
-				{
-					this.state.designerMode &&
-					this.renderDesignerMode()
 				}
 			</React.Fragment>
 		);
@@ -229,16 +221,22 @@ class App extends React.Component {
 function mapDispatchToProps(dispatch) {
 	return bindActionCreators({
 		socketConnect,
+		setDesigner,
 	}, dispatch);
 }
 
 function mapStateToProps(state) {
+	let themed = state.theme.selected;
+	if(state.theme.designer.name) {
+		console.log('Designer mode on');
+		themed = state.theme.designer;
+	}
 	return {
 		isConnected: state.app.connected,
 		loggedIn: state.account.loggedIn || false,
 		account: state.account.account,
 		character: state.character.selected,
-		selectedTheme: state.theme.selected.name,
+		theme: themed,
 	};
 }
 

@@ -7,20 +7,15 @@ import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import ServerMap from './server';
-
-import {newEvent} from './'
-import {gameLogout, newInput} from './actions';
+import {gameLogout} from './actions';
 import {socketSend} from '../app/actions';
 
-import {Container, Navbar, Nav, NavItem, Row, Col, Input, Button, Form} from 'reactstrap';
 import Character from './character';
-import CharacterUI from './character/ui';
-import SelectedCard from './character/selectedCard';
 
 import TestThree from './three';
 import Interface from './interface';
 import ConfigUI from './interface/config'
+import {setLanguage} from '../localization/actions';
 
 import {MdAddCircleOutline} from 'react-icons/lib/md';
 
@@ -48,6 +43,8 @@ class Session extends React.Component {
 		if(!this.props.loggedIn) {
 			return this.props.history.push('/authentication');
 		}
+
+		this.props.setLanguage(this.props.account.language);
 
 		this.props.socketSend({
 			type: GET_THEME_LIST,
@@ -108,7 +105,7 @@ class Session extends React.Component {
 					<div>
 						<ConfigUI />
 						<div className="toggleGridBtn">
-							<a href="penis" onClick={this.toggleGrid} className="themeButton"><MdAddCircleOutline /> Grid</a>
+							<a href="#" onClick={this.toggleGrid} className="themeButton"><MdAddCircleOutline /> Grid</a>
 						</div>
 					</div>
 				}
@@ -118,7 +115,7 @@ class Session extends React.Component {
 						<div className="toggleGridBtn">
 							<a href="#" onClick={this.toggleGrid} className="themeButton"><MdAddCircleOutline /> Grid</a>
 						</div>
-						<Interface />
+						<Interface character={this.props.character}/>
 					</div>
 				}
 			</React.Fragment>
@@ -153,6 +150,7 @@ function mapActionsToProps(dispatch) {
 	return bindActionCreators({
 		socketSend,
 		gameLogout,
+		setLanguage,
 	}, dispatch);
 }
 
@@ -163,6 +161,7 @@ function mapStateToProps(state) {
 		players: state.session.players,
 		socket: state.app.socket,
 		loggedIn: state.account.loggedIn,
+		account: state.account.account,
 		authToken: state.account.authToken,
 		connection: {
 			isConnected: state.app.connected,

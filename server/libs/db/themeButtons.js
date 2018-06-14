@@ -24,6 +24,34 @@ export default (sequelize, DataTypes) =>
 		{
 			type: DataTypes.STRING,
 		},
+		display:
+		{
+			type: DataTypes.STRING,
+		},
+		transition:
+		{
+			type: DataTypes.STRING,
+		},
+		border:
+		{
+			type: DataTypes.STRING,
+		},
+		textColor:
+		{
+			type: DataTypes.STRING,
+		},
+		borderColor:
+		{
+			type: DataTypes.STRING,
+		},
+		backgroundColor:
+		{
+			type: DataTypes.STRING,
+		},
+		textTransform:
+		{
+			type: DataTypes.STRING,
+		},
 		createdAt:
 		{
 			type: DataTypes.DATE,

@@ -227,8 +227,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
 	let themed = state.theme.selected;
-	if(state.theme.designer.name) {
-		console.log('Designer mode on');
+	if(state.theme.designer !== null) {
 		themed = state.theme.designer;
 	}
 	return {

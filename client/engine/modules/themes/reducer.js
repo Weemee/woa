@@ -13,7 +13,7 @@ const defaultState = {
 		name: 'blue',
 	},
 	list: [],
-	designer: [],
+	designer: null,
 };
 
 export default function(state = defaultState, action) {
@@ -28,7 +28,6 @@ export default function(state = defaultState, action) {
 			return {
 				...state,
 				selected: action.payload,
-				designer: action.payload,
 		};
 
 		case SET_DESIGNER:

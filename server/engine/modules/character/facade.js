@@ -122,24 +122,7 @@ export default class CharacterFacade {
 						[db.Op.like]: [socket.account.userID]
 					}
 				},
-				include: [
-					{
-						model: db.characterStats,
-						as: 'stats',
-					},
-					{
-						model: db.characterLevels,
-						as: 'levels',
-					},
-					{
-						model: db.characterLocation,
-						as: 'location',
-					},
-					{
-						model: db.characterTalents,
-						as: 'talents',
-					},
-				]
+				include: await db.include(['stats', 'levels', 'location', 'talents']),
 			}).then(async(result) =>
 			{
 				return result;
@@ -211,7 +194,7 @@ export default class CharacterFacade {
 		this.Server.timerFacade.addLoop(character);
 		character.pauseResume();
 		const test = await this.Server.userFacade.setLastCharPlayed(character.userID, character.id);
-		console.log(test);
+		console.log('\nLast character played: ', test, '\n');
 
 		this.dispatchUpdateCharacterList(character.userID);
 
@@ -279,78 +262,32 @@ export default class CharacterFacade {
 
 	async databaseLoad(userID, characterName) {
 		try {
-		const newCharacter = await db.characterObject.findOne({
-			where:
-			{
-				[db.Op.and]: [
+			const newCharacter = await db.characterObject.findOne({
+				where:
 				{
-					userID:
+					[db.Op.and]: [
 					{
-						[db.Op.like]: [userID]
-					}
-				},
-				{
-					nameLowerCase:
+						userID:
+						{
+							[db.Op.like]: [userID]
+						}
+					},
 					{
-						[db.Op.like]: [characterName.toLowerCase()]
-					}
-				}],
-			},
-			include: [
-				{
-					model: db.characterStats,
-					as: 'stats',
+						nameLowerCase:
+						{
+							[db.Op.like]: [characterName.toLowerCase()]
+						}
+					}],
 				},
-				{
-					model: db.characterLevels,
-					as: 'levels',
-				},
-				{
-					model: db.characterLocation,
-					as: 'location',
-				},
-				{
-					model: db.characterResources,
-					as: 'resources',
-				},
-				{
-					model: db.characterModifiers,
-					as: 'modifiers',
-				},
-				{
-					model: db.characterTalents,
-					as: 'talents',
-				},
-				{
-					model: db.characterActions,
-					as: 'actions',
-				},
-				{
-					model: db.characterUnlockedBuildings,
-					as: 'unlockedBuildings',
-				},
-				{
-					model: db.characterUnlockedElements,
-					as: 'unlockedElements',
-				},
-				{
-					model: db.characterUnlockedFunctions,
-					as: 'unlockedFunctions',
-				},
-				{
-					model: db.characterUnlockedResearch,
-					as: 'unlockedResearch',
-				},
-			],
-		}).then (result => {
-
-			return result;
-		}).catch(err => {
-			if (err) {
-				return 'Error load character.';
-			}
-		});
-		return newCharacter;
+				include: await db.include('characterObject'),
+			}).then (result => {
+				return result;
+			}).catch(err => {
+				if (err) {
+					return 'Error load character.', err;
+				}
+			});
+			return newCharacter;
 		}
 		catch (err) {
 			this.Server.onError(err);
@@ -474,7 +411,7 @@ export default class CharacterFacade {
 		return checkDelete;
 	}
 
-	async create(userID, characterName, characterSpec) {
+	async create(userID, characterName, characterSpec, characterDifficulty, characterServer) {
 		//Move this check to input::facade, since multiple names will be checked
 		const nameFormat = /^[\u00C0-\u017Fa-zA-Z][\u00C0-\u017Fa-zA-Z]+[\u00C0-\u017Fa-zA-Z]?$/g;
 		
@@ -482,7 +419,7 @@ export default class CharacterFacade {
 			return 'Only letters allowed!';
 		}
 
-		const character = await this.databaseCreate(userID, characterName, characterSpec);
+		const character = await this.databaseCreate(userID, characterName, characterSpec, characterDifficulty, characterServer);
 		
 		if(!character) {
 			return;
@@ -497,7 +434,7 @@ export default class CharacterFacade {
 		return newCharacter;
 	}
 
-	async databaseCreate(userID, characterName, characterSpec) {
+	async databaseCreate(userID, characterName, characterSpec, characterDifficulty, characterServer) {
 		//Find and count all, check if you have 5 already.
 		const checkLimit = await db.characterObject.count({
 			where:
@@ -536,6 +473,7 @@ export default class CharacterFacade {
 					userID: userID,
 					name: characterName,
 					spec: characterSpec,
+					difficulty: characterDifficulty,
 					stats: {
 						status: 'offline',
 					},
@@ -548,8 +486,8 @@ export default class CharacterFacade {
 					resources: {
 						
 					},
-					modifiers: {
-	
+					buildings: {
+
 					},
 					talents: {
 	
@@ -571,52 +509,7 @@ export default class CharacterFacade {
 					},
 				},
 				{
-					include: [
-						{
-							model: db.characterStats,
-							as: 'stats',
-						},
-						{
-							model: db.characterLevels,
-							as: 'levels',
-						},
-						{
-							model: db.characterLocation,
-							as: 'location',
-						},
-						{
-							model: db.characterResources,
-							as: 'resources',
-						},
-						{
-							model: db.characterModifiers,
-							as: 'modifiers',
-						},
-						{
-							model: db.characterTalents,
-							as: 'talents',
-						},
-						{
-							model: db.characterActions,
-							as: 'actions',
-						},
-						{
-							model: db.characterUnlockedBuildings,
-							as: 'unlockedBuildings',
-						},
-						{
-							model: db.characterUnlockedElements,
-							as: 'unlockedElements',
-						},
-						{
-							model: db.characterUnlockedFunctions,
-							as: 'unlockedFunctions',
-						},
-						{
-							model: db.characterUnlockedResearch,
-							as: 'unlockedResearch',
-						},
-					],
+					include: await db.include('characterObject'),
 				}).catch(err => {
 					if(err) {
 						console.log(err);
@@ -671,7 +564,7 @@ export default class CharacterFacade {
 	async databaseSave(character) {
 		Object.keys(character).map(async (key, index) => {
 			const database = 'character' + key.charAt(0).toUpperCase() + key.slice(1);
-			if(db[database]) {		
+			if(db[database]) {
 				await db[database].update(
 				character[key].dataValues,
 				{

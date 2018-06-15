@@ -75,8 +75,7 @@ class Session extends React.Component {
 		if(document.activeElement.value) {
 			return;
 		}
-
-		//Keystate switch
+		//e.preventDefault();
 	}
 
 	isActiveTab(tabName) {

@@ -18,7 +18,9 @@ export default (sequelize, DataTypes) => {
 		},
 		spec: {
 			type: DataTypes.STRING,
-			defaultValue: '',
+		},
+		difficulty: {
+			type: DataTypes.TINYINT,
 		},
 		createdAt: {
 			type: DataTypes.DATE,
@@ -42,61 +44,27 @@ export default (sequelize, DataTypes) => {
 		characterObject.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 	});
 
+	CharacterObject.a = [
+		'stats',
+		'levels',
+		'location',
+		'resources',
+		'buildings',
+		'talents',
+		'actions',
+		'unlockedBuildings',
+		'unlockedElements',
+		'unlockedFunctions',
+		'unlockedResearch'
+	];
+
 	CharacterObject.associate = (model) => {
-		CharacterObject.hasOne(model.characterStats, {
-			as: 'stats',
-			foreignKey: 'charID',
-		});
-
-		CharacterObject.hasOne(model.characterLevels, {
-			as: 'levels',
-			foreignKey: 'charID',
-		});
-
-		CharacterObject.hasOne(model.characterLocation, {
-			as: 'location',
-			foreignKey: 'charID',
-		});
-
-		CharacterObject.hasOne(model.characterResources, {
-			as: 'resources',
-			foreignKey: 'charID',
-		});
-
-		CharacterObject.hasOne(model.characterModifiers, {
-			as: 'modifiers',
-			foreignKey: 'charID',
-		});
-
-		CharacterObject.hasOne(model.characterTalents, {
-			as: 'talents',
-			foreignKey: 'charID',
-		});
-
-		CharacterObject.hasOne(model.characterActions, {
-			as: 'actions',
-			foreignKey: 'charID',
-		});
-
-		CharacterObject.hasOne(model.characterUnlockedBuildings, {
-			as: 'unlockedBuildings',
-			foreignKey: 'charID',
-		});
-
-		CharacterObject.hasOne(model.characterUnlockedElements, {
-			as: 'unlockedElements',
-			foreignKey: 'charID',
-		});
-
-		CharacterObject.hasOne(model.characterUnlockedFunctions, {
-			as: 'unlockedFunctions',
-			foreignKey: 'charID',
-		});
-
-		CharacterObject.hasOne(model.characterUnlockedResearch, {
-			as: 'unlockedResearch',
-			foreignKey: 'charID',
-		});
+		for(let i = 0; i < CharacterObject.a.length; i++) {
+			CharacterObject.hasOne(model['character' + CharacterObject.a[i].charAt(0).toUpperCase() + CharacterObject.a[i].slice(1)], {
+				as: CharacterObject.a[i],
+				foreignKey: 'charID',
+			});
+		}
 	};
 	
 	return CharacterObject;

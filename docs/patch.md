@@ -5,6 +5,35 @@
 ***
 =================================================
 
+##### *Version 0.0.498*
+
+## General
+
+## Client
+
+<h4>General</h4>
+
+* Create character now sends name, specialization, server and difficulty
+
+<h4>Bugs</h4>
+
+* Fixed a bug with the 'enter' key spamming errors in the log, when pressing it after going back from a logged in character
+
+## Server
+
+<h4>General</h4>
+
+* Character difficulty applies to everything
+* Refactored triggers
+* Database interaction is more modular and fluid (got annoyed every time I had to add an association to something)
+
+<h4>Bugs</h4>
+
+## Misc/Dev/Boring stuff
+
+***
+=================================================
+
 ##### *Version 0.0.491*
 
 ## General

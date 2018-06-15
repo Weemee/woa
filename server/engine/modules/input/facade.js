@@ -203,6 +203,13 @@ export default class InputFacade {
 							}
 						break;
 
+						case 'server':
+							if(!temp) {
+								return 'No server';
+							}
+							console.log(temp);
+						break;
+
 						case 'building':
 							if(!rule[1]) {
 								//Check if building exists

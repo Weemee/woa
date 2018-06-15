@@ -14,17 +14,17 @@
 ##### *Version 0.0.387*
 
 ## General
-* Temp
 
 ## Client
-* Temp
 
-* <h4>Bugs</h4>
+<h4>General</h4>
+
+<h4>Bugs</h4>
 
 ## Server
-* Temp
 
-* <h4>Bugs</h4>
+<h4>General</h4>
 
-## Misc/Dev/Git/Boring stuff
-* Temp
+<h4>Bugs</h4>
+
+## Misc/Dev/Boring stuff

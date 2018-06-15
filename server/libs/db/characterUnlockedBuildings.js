@@ -13,6 +13,11 @@ export default (sequelize, DataTypes) =>
 			type: DataTypes.BOOLEAN,
 			defaultValue: 0,
 		},
+		researchlab:
+		{
+			type: DataTypes.BOOLEAN,
+			defaultValue: 0,
+		},
 		createdAt:
 		{
 			type: DataTypes.DATE,

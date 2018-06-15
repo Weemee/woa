@@ -8,9 +8,11 @@ import {
 async function inputCreateCharacter(socket, character, input, params, inputObject, Server) {
 	let name = params[0];
 	let spec = params[1];
+	let difficulty = params[2];
+	let server = params[3];
 
 	try{
-		const newCharacter = await Server.characterFacade.create(socket.account.userID, name, spec);
+		const newCharacter = await Server.characterFacade.create(socket.account.userID, name, spec, difficulty, server);
 		if(!newCharacter) {
 			return Server.socketFacade.dispatchToSocket(socket, {
 				type: SET_NOTES,
@@ -73,7 +75,6 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 async function inputSelectCharacter(socket, character, input, params, inputObject, Server) {
 	const characterToLoad = params[0];
 	await Server.socketFacade.logoutOutSession(socket, socket.account.userID);
-
 	try {
 		if(characterToLoad.stats.firstLogin) {
 			console.log('\nFirst login: ', characterToLoad.stats.firstLogin, '\n');
@@ -104,7 +105,6 @@ async function inputSelectCharacter(socket, character, input, params, inputObjec
 
 async function inputDeleteCharacter(socket, character, input, params, inputObject, Server) {
 	const characterToDelete = params[0];
-	console.log(characterToDelete);
 	
 	try {
 		console.log('Delete character ', characterToDelete.id, '!');
@@ -216,6 +216,14 @@ export default [
 			{
 				spec: 'Specialization',
 				rules: 'required',
+			},
+			{
+				difficulty: 'Difficulty',
+				rules: 'required',
+			},
+			{
+				server: 'Server',
+				rules: 'required|server',
 			},
 		],
 		onServerInput: false,

@@ -1,6 +1,5 @@
 import uuid from 'uuid/v4';
-import triggers from './triggers';
-import unlocks from './unlocks';
+import Triggers from './triggers';
 
 export default class Character {
 	constructor(Server, character) {
@@ -12,10 +11,9 @@ export default class Character {
 
 		this.paused = true;
 
-		this.buildings = this.stripFetched(this.unlockedBuildings),
-		this.elements = this.stripFetched(this.unlockedElements),
-		this.functions = this.stripFetched(this.unlockedFunctions),
-		this.research = this.stripFetched(this.unlockedResearch),
+		this.triggers = null;
+
+		this.availableBuildings = {};
 
 		Object.assign(this, {
 			...character.dataValues,
@@ -28,6 +26,36 @@ export default class Character {
 
 	initTimers() {
 		//this.Server.timerFacade.addLoop(this);
+	}
+
+	getDifficulty(diff) {
+		switch(diff) {
+			case 0:
+				return 'tutorial';
+			case 1:
+				return 'veryeasy';
+			case 2:
+				return 'easy';
+			case 3:
+				return 'moderate';
+			case 4:
+				return 'prettyhard';
+			case 5:
+				return 'kappa';
+		}
+	}
+
+	initCharacter() {
+		if(!this.triggers) {
+			this.triggers = Triggers[this.getDifficulty(this.difficulty)];
+		}
+		this.Server.buildingFacade.loadList(this.getDifficulty(this.difficulty));
+		for(const item in this.stripFetched(this.unlockedBuildings)) {
+			const state = this.stripFetched(this.unlockedBuildings)[item];
+			if(state) {
+				this.availableBuildings[item] =  this.Server.buildingFacade.getBuilding(item);
+			}
+		}
 	}
 
 	stripFetched(object) {
@@ -48,10 +76,15 @@ export default class Character {
 			userID: this.userID,
 			name: this.name,
 			spec: this.spec,
+			difficulty: this.difficulty,
 			stats: this.stripFetched(this.stats),
 			levels: this.stripFetched(this.levels),
 			location: this.stripFetched(this.location),
 			resources: this.stripFetched(this.resources),
+			buildings: {
+				owned: this.stripFetched(this.buildings),
+				available: this.availableBuildings,
+			},
 			talents: this.stripFetched(this.talents),
 			actions: this.stripFetched(this.actions),
 			unlocked: {
@@ -61,6 +94,22 @@ export default class Character {
 				research: this.stripFetched(this.unlockedResearch),
 			},
 		};
+	}
+
+	getModifier(mod) {
+		if(!mod) {
+			return;
+		}
+
+		const diff = this.triggers.baseValues.difficulty;
+
+		switch(mod) {
+			case 'loopSpeed':
+				return diff.loopSpeed;
+
+			case 'gathering':
+				return diff.gatheringMult;
+		}
 	}
 
 	setGenerating(resource) {
@@ -79,9 +128,16 @@ export default class Character {
 	}
 
 	generate(resource) {
-		if(this.resources[resource].owned < this.resources[resource].max)
+		const res = this.resources[resource];
+		if(res.owned < res.max)
 		{
-			this.resources[resource].owned += 1;
+			let newOwned = res.owned + 1.00 * this.getModifier('gathering');
+			console.log(Number((newOwned).toFixed(2)));
+			if(newOwned >= res.max) {
+				res.owned = 100;
+			} else {
+				res.owned = Number((newOwned).toFixed(2));
+			}
 		}
 	}
 
@@ -91,7 +147,6 @@ export default class Character {
 	}
 
 	checkBuildings() {
-		console.log(this.actions.buildingQueue);
 		this.checkLastBuilding();
 	}
 
@@ -112,24 +167,26 @@ export default class Character {
 	}
 
 	checkResearch() {
-		console.log(this.actions.researching);
+
 	}
 
 	checkTriggers(force = false) {
-		for(const cat in triggers) {
-			for(const item in triggers[cat]) {
-				const trigger = triggers[cat][item];
-				if(force) {
-					if((trigger.bool) && (typeof trigger.once === 'undefined')) {
-						this.unlockedFeature(item);
+		for(const cat in this.triggers) {
+			if(cat !== 'baseValues') {
+				for(const item in this.triggers[cat]) {
+					const trigger = this.triggers[cat][item];
+					if(force) {
+						if((trigger.bool) && (typeof trigger.once === 'undefined')) {
+							this.unlockedFeature(item);
+						}
+						continue;
 					}
-					continue;
-				}
-
-				if(!trigger.bool && this.triggerMet(trigger.trigger) && !this.alreadyUnlocked(cat, item)) {
-					this.unlockedFeature(cat, item);
-					trigger.bool = !trigger.bool;
-					console.log('Unlocked:', item, '', trigger.bool);
+	
+					if(!trigger.bool && this.triggerMet(trigger.trigger) && !this.alreadyUnlocked(cat, item)) {
+						this.unlockedFeature(cat, item);
+						trigger.bool = !trigger.bool;
+						console.log('Unlocked:', item, '', trigger.bool);
+					}
 				}
 			}
 		}
@@ -151,11 +208,14 @@ export default class Character {
 	}
 
 	alreadyUnlocked(cat, item) {
-		return this['unlocked' + cat.charAt(0).toUpperCase() + cat.slice(1)][item]
+		return this['unlocked' + cat.charAt(0).toUpperCase() + cat.slice(1)][item];
 	}
 
 	unlockedFeature(cat, item) {
 		this['unlocked' + cat.charAt(0).toUpperCase() + cat.slice(1)][item] = true;
+		if(cat === 'buildings') {
+			this.availableBuildings += {[item]: this.Server.buildingFacade.getBuilding(item)};
+		}
 	}
 
 	firstLogin() {

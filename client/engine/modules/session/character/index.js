@@ -140,8 +140,8 @@ class Character extends React.Component {
 		this.props.newInput(`selectcharacter ${name}`);
 	}
 
-	createCharacter(name, spec) {
-		this.props.newInput(`createcharacter ${name} ${spec}`);
+	createCharacter(name, spec, difficulty, server) {
+		this.props.newInput(`createcharacter ${name} ${spec} ${difficulty} ${server}`);
 	}
 
 	deleteCharacter(name) {
@@ -184,7 +184,7 @@ class Character extends React.Component {
 		}
 
 		if(type === 'create') {
-			this.createCharacter(input.object.name, input.object.spec);
+			this.createCharacter(input.object.name, input.object.spec, input.object.difficulty, input.object.server);
 		}
 	}
 

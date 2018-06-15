@@ -85,8 +85,9 @@ class CreateCard extends React.Component {
 		return {
 			object: {
 				name: this.state.name,
-				server: this.state.serverSelect,
+				server: (this.state.difficulty === '0' ? 'tutorial' : this.state.serverSelect),
 				spec: spec,
+				difficulty: this.state.difficulty,
 			},
 			type: 'create',
 		};
@@ -304,11 +305,18 @@ class CreateCard extends React.Component {
 							</div>
 						}
 						{
-							this.state.name &&
-							this.state.difficulty &&
-							this.state.serverSelect &&
-							this.state.specialization &&
-							<Button className="themeButton" block={true} onClick={() => this.props.onClick(this.return(this.specs[this.state.specialization].name))}>Create character</Button>
+							this.state.difficulty === '0' ? (
+								this.state.name &&
+								this.state.difficulty &&
+								this.state.specialization &&
+								<Button className="themeButton" block={true} onClick={() => this.props.onClick(this.return(this.specs[this.state.specialization].name))}>Create character</Button>
+							) : (
+								this.state.name &&
+								this.state.difficulty &&
+								this.state.serverSelect &&
+								this.state.specialization &&
+								<Button className="themeButton" block={true} onClick={() => this.props.onClick(this.return(this.specs[this.state.specialization].name))}>Create character</Button>
+							)
 						}
 					</CardBody>
 				</Card>

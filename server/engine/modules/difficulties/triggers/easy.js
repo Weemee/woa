@@ -29,6 +29,16 @@ export default {
 				},
 			},
 		},
+		researchlab: {
+			bool: false,
+			msg: 'Temp',
+			trigger: {
+				resources: {
+					hydrogen: 30,
+					helium: 30,
+				},
+			},
+		},
 	},
 	research: {
 		fusion: {

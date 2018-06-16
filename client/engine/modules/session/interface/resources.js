@@ -10,18 +10,20 @@ class Resources extends React.Component {
 		super(props);
 
 		this.state = {
-			generating: this.props.character.actions.generating,
+			status: this.props.character.actions.current.status,
+			source: this.props.character.actions.current.source,
 		};
 
-		this.generateResource = this.generateResource.bind(this);
+		this.setStatus = this.setStatus.bind(this);
 	}
 
-	generateResource(resource) {
-		console.log(resource);
+	setStatus(status, source) {
+		console.log(status, source);
 		this.setState({
-			generating: resource,
+			status: status,
+			source: source,
 		});
-		this.props.newInput(`generateresource ${resource}`);
+		this.props.newInput(`setcharacteraction ${status} ${source}`);
 	}
 
 	render() {
@@ -35,10 +37,10 @@ class Resources extends React.Component {
 				<div>
 						Hydrogen: {this.props.character.resources.hydrogen.owned}/{this.props.character.resources.hydrogen.max}
 					{
-						this.state.generating === 'hydrogen' ? (
-							<Button color='blue' onClick={() => this.generateResource('slacking')}>Stop</Button>
+						this.state.source === 'hydrogen' ? (
+							<Button color='blue' onClick={() => this.setStatus(null, null)}>Stop</Button>
 						) : (
-							<Button color='blue' onClick={() => this.generateResource('hydrogen')}>Generate</Button>
+							<Button color='blue' onClick={() => this.setStatus('gathering', 'hydrogen')}>Generate</Button>
 						)
 					}
 				</div>
@@ -48,10 +50,10 @@ class Resources extends React.Component {
 				<div>
 						Helium: {this.props.character.resources.helium.owned}/{this.props.character.resources.helium.max}
 					{
-						this.state.generating === 'helium' ? (
-							<Button color='blue' onClick={() => this.generateResource('slacking')}>Stop</Button>
+						this.state.source === 'helium' ? (
+							<Button color='blue' onClick={() => this.setStatus(null, null)}>Stop</Button>
 						) : (
-							<Button color='blue' onClick={() => this.generateResource('helium')}>Generate</Button>
+							<Button color='blue' onClick={() => this.setStatus('gathering', 'helium')}>Generate</Button>
 						)
 					}
 				</div>

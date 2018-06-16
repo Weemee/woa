@@ -1,6 +1,5 @@
 export default class Building {
 	constructor(Server, buildingData, modifiers = {}) {
-		//console.log('\nNew entry: ', buildingData, '\n');
 		Object.assign(this,
 			buildingData
 		);

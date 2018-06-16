@@ -224,6 +224,8 @@ export default class CharacterFacade {
 			return;
 		}
 
+		character.unmountCharacter();
+
 		try {
 			await this.save(character.userID);
 		} catch (err) {

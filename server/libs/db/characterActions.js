@@ -8,10 +8,10 @@ export default (sequelize, DataTypes) =>
 		{
 			type: DataTypes.INTEGER,
 		},
-		generating:
+		current:
 		{
-			type: DataTypes.STRING,
-			defaultValue: 'slacking',
+			type: DataTypes.JSON,
+			defaultValue: {status: 'slacking', source: 'nothing'},
 		},
 		buildingQueue:
 		{

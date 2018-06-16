@@ -18,14 +18,6 @@ export default class Character {
 		Object.assign(this, {
 			...character.dataValues,
 		});
-
-		if(this.userID) {
-			this.initTimers();
-		}
-	}
-
-	initTimers() {
-		//this.Server.timerFacade.addLoop(this);
 	}
 
 	getDifficulty(diff) {
@@ -56,6 +48,48 @@ export default class Character {
 				this.availableBuildings[item] =  this.Server.buildingFacade.getBuilding(item);
 			}
 		}
+
+		this.timers.push({
+			ID: 'gbc',
+			timer: setInterval(this.Server.timerFacade.garbageCollection, 100, this),
+		});
+
+		if(this.actions.buildingQueue) {
+			console.log('There are buildings in the queue, add timers');
+			this.actions.buildingQueue.forEach((timer, index) => {
+				console.log('\n');
+				console.log('Building:', timer);
+				console.log('Index:', index);
+
+				const building = {
+					ID: timer.ID,
+					time: timer.time,
+				};
+				this.Server.timerFacade.addTimer(this, building);
+			});
+		}
+	}
+
+	unmountCharacter() {
+		this.timers.forEach((timer, index) => {
+			if(timer.ID) {
+				try {
+					clearInterval(timer.timer);
+				} catch(err) {
+	
+				}
+			} else {
+				try {
+					if(this.actions.buildingQueue[index - 1].time !== (this.timers[index].steps / 10)) {
+						this.actions.buildingQueue[index - 1].time = (this.timers[index].steps / 10);
+					}
+					clearInterval(timer.timer);
+				} catch(err) {
+	
+				}
+				
+			}
+		});
 	}
 
 	stripFetched(object) {
@@ -112,18 +146,27 @@ export default class Character {
 		}
 	}
 
-	setGenerating(resource) {
-		console.log('Set generating:', resource);
-		this.actions.generating = resource;
+	setActionStatus(status, source) {
+		console.log('\nStatus:', status, '& source:', source);
+
+		this.actions.current = {
+			status: status,
+			source: source,
+		};
 	}
 
 	checkUpdates() {
-		if(this.actions.generating !== 'slacking') {
-			this.generate(this.actions.generating);
+		if(this.actions.current.status !== null) {
+			if(this.actions.current.status === 'gathering') {
+				this.generate(this.actions.current.source);
+			}
+			if(this.actions.current.status === 'building') {
+				this.build(this.actions.current.source);
+			}
 		}
 
 		this.checkTriggers();
-		this.checkBuildings();
+		this.checkBuildings(this.actions.buildingQueue);
 		this.checkResearch();
 	}
 
@@ -141,29 +184,63 @@ export default class Character {
 		}
 	}
 
+	build() {
+		this.timers[1].start();
+	}
+
 	pauseResume() {
 		this.paused = !this.paused;
 		return this.paused;
 	}
 
-	checkBuildings() {
-		this.checkLastBuilding();
+	checkBuildings(queue) {
+		if(this.checkLastBuilding(queue)) {
+			//console.log('No more buildings');
+			//this.addToBuildingsQueue('storage');
+			//this.addToBuildingsQueue('researchlab');
+			return;
+		} else {
+			//console.log('There are some buildings, lets check what...');
+			//This is where we start the timer to build, check resources, return resources etc.
+			this.build();
+			for(let index in queue) {
+				//console.log('\nBuilding:', queue[index]);
+				//console.log('Now we remove it');
+				//this.removeFromBuildingsQueue(queue, index);
+			}
+		}
 	}
 
-	checkLastBuilding() {
-
+	checkLastBuilding(queue) {
+		if(queue.length === 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	addToBuildingsQueue(buildingObj) {
-
+	addToBuildingsQueue(objID) {
+		const building = {
+			ID: objID,
+			time: this.Server.buildingFacade.getBuildingTime(objID)
+		};
+		this.Server.timerFacade.addTimer(this, building);
+		this.actions.buildingQueue.push(building);
 	}
 
-	removeFromBuildingsQueue(buildingObj) {
-
+	removeFromBuildingsQueue() {
+		console.log('Removing');
+		const q = this.actions.buildingQueue;
+		q.shift();
+		if(!this.checkLastBuilding(q)) {
+			console.log('Starting new build');
+			this.build();
+		}
+		console.log('No more buildings');
 	}
 
-	getQueueIndexFromBuildings(buildingID) {
-
+	getQueueBuildingFromQueueIndex(index) {
+		return this.actions.buildingQueue[index];
 	}
 
 	checkResearch() {

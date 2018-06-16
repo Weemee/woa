@@ -185,10 +185,10 @@ async function inputEditCharacter(socket, character, input, params, inputObject,
 	}
 }
 
-function inputGenerateResource(socket, character, input, params, inputObject, Server) {
-	const resource = params[0];
-	console.log(resource);
-	character.setGenerating(resource);
+function inputSetCharacterAction(socket, character, input, params, inputObject, Server) {
+	const status = params[0];
+	const source = params[1];
+	character.setActionStatus(status, source);
 }
 
 export default [
@@ -261,16 +261,20 @@ export default [
 		method: inputEditCharacter,
 	},
 	{
-		input: 'generateresource',
+		input: 'setcharacteraction',
 		aliases: [],
 		params: [
 			{
-				resource: 'Resource',
-				rules: 'required',
+				status: 'Status',
+				rules: 'status',
+			},
+			{
+				source: 'Source',
+				rules: 'status',
 			}
 		],
 		onServerInput: false,
-		description: 'Set resource to generate',
-		method: inputGenerateResource,
+		description: 'Set character action',
+		method: inputSetCharacterAction,
 	},
 ];

@@ -5,7 +5,7 @@
 ***
 =================================================
 
-##### *Version 0.0.498*
+##### *Version 0.0.507*
 
 ## General
 
@@ -26,6 +26,15 @@
 * Character difficulty applies to everything
 * Refactored triggers
 * Database interaction is more modular and fluid (got annoyed every time I had to add an association to something)
+* Buildings are now building. Following functions are now supported to send from the client:
+	* Add building to building queue (buy building)
+	* Start timer (build)
+	* Stop timer (not building anymore, maybe gathering or research)
+	* Remove building from queue (regret buy or building done)
+	* Get building (to remove or something else)
+	* Start next building (previous building done, starting next)
+	* Queue empty (if nothing is left, nothing to build)
+	* Saves time left as you logout and continues from where you left off
 
 <h4>Bugs</h4>
 

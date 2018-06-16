@@ -1,4 +1,4 @@
-
+import Timer from './object';
 
 export default class TimerFacade {
 	constructor(Server) {
@@ -36,15 +36,21 @@ export default class TimerFacade {
 		console.log('Removed game loop for character: ', character.userID);
 	}
 
-	addCooldown() {
+	addTimer(character, object) {
+		if(!object.time) {
+			object.time = 1;
+		}
 
+		const newTimer = new Timer(object.ID, object.time);
+		character.timers.push(newTimer);
 	}
 
-	removeCooldown() {
-
-	}
-
-	garbageCollection() {
-
+	garbageCollection(character) {
+		character.timers.map((obj) => {
+			if(obj.terminate) {
+				character.timers = character.timers.filter((o) => !o.terminate);
+				character.removeFromBuildingsQueue();
+			}
+		});
 	}
 }

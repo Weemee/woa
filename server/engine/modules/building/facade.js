@@ -22,6 +22,10 @@ export default class BuildingsFacade {
 		return this.templates[item];
 	}
 
+	getBuildingTime(item) {
+		return this.templates[item].stats.time;
+	}
+
 	loadList(diff) {
 		for(const cat in BuildingList) {
 			if(cat === diff) {

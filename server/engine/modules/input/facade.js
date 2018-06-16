@@ -225,6 +225,8 @@ export default class InputFacade {
 						break;
 
 						case 'player':
+
+						case 'status':
 					};
 
 					msgPars[i] = temp;

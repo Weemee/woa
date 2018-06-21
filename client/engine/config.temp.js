@@ -21,7 +21,7 @@ const Config = {
 		strategies: 300,
 	},
 
-	version: '0.0.491',
+	version: '0.0.515',
 };
 
 export default Config;

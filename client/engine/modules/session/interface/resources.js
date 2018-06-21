@@ -29,35 +29,35 @@ class Resources extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<div>
-					Resources
-				</div>
-				{
-					this.props.character.unlocked.elements.hydrogen &&
-				<div>
-						Hydrogen: {this.props.character.resources.hydrogen.owned}/{this.props.character.resources.hydrogen.max}
+					<div>
+						Resources
+					</div>
 					{
-						this.state.source === 'hydrogen' ? (
-							<Button color='blue' onClick={() => this.setStatus(null, null)}>Stop</Button>
-						) : (
-							<Button color='blue' onClick={() => this.setStatus('gathering', 'hydrogen')}>Generate</Button>
-						)
+						this.props.character.unlocked.elements.hydrogen &&
+					<div>
+							Hydrogen: {this.props.character.resources.hydrogen.owned}/{this.props.character.resources.hydrogen.max}
+						{
+							this.state.source === 'hydrogen' ? (
+								<Button color='blue' onClick={() => this.setStatus(null, null)}>Stop</Button>
+							) : (
+								<Button color='blue' onClick={() => this.setStatus('gathering', 'hydrogen')}>Generate</Button>
+							)
+						}
+					</div>
 					}
-				</div>
-				}
-				{
-					this.props.character.unlocked.elements.helium &&
-				<div>
-						Helium: {this.props.character.resources.helium.owned}/{this.props.character.resources.helium.max}
 					{
-						this.state.source === 'helium' ? (
-							<Button color='blue' onClick={() => this.setStatus(null, null)}>Stop</Button>
-						) : (
-							<Button color='blue' onClick={() => this.setStatus('gathering', 'helium')}>Generate</Button>
-						)
+						this.props.character.unlocked.elements.helium &&
+					<div>
+							Helium: {this.props.character.resources.helium.owned}/{this.props.character.resources.helium.max}
+						{
+							this.state.source === 'helium' ? (
+								<Button color='blue' onClick={() => this.setStatus(null, null)}>Stop</Button>
+							) : (
+								<Button color='blue' onClick={() => this.setStatus('gathering', 'helium')}>Generate</Button>
+							)
+						}
+					</div>
 					}
-				</div>
-				}
 			</React.Fragment>
 		);
 	}

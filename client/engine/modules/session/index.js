@@ -1,5 +1,6 @@
 import {
 	GET_THEME_LIST,
+	CHARACTER_LOGOUT,
 } from 'libs/constants';
 
 import React from 'react';
@@ -16,6 +17,8 @@ import TestThree from './three';
 import Interface from './interface';
 import ConfigUI from './interface/config'
 import {setLanguage} from '../localization/actions';
+
+import {getAccountDetails} from '../account/actions';
 
 import {MdAddCircleOutline} from 'react-icons/lib/md';
 
@@ -43,6 +46,15 @@ class Session extends React.Component {
 		if(!this.props.loggedIn) {
 			return this.props.history.push('/authentication');
 		}
+
+		if(this.props.character && this.props.characterList) {
+			return this.props.socketSend({
+				type: CHARACTER_LOGOUT,
+				payload: null,
+			});
+		}
+
+		this.props.getAccountDetails(this.props.account.id, this.props.authToken);
 
 		this.props.setLanguage(this.props.account.language);
 
@@ -150,6 +162,7 @@ function mapActionsToProps(dispatch) {
 		socketSend,
 		gameLogout,
 		setLanguage,
+		getAccountDetails,
 	}, dispatch);
 }
 
@@ -157,6 +170,7 @@ function mapStateToProps(state) {
 	return {
 		session: {...state.session},
 		character: state.character.selected,
+		characterList: state.character.list,
 		players: state.session.players,
 		socket: state.app.socket,
 		loggedIn: state.account.loggedIn,

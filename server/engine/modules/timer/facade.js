@@ -31,9 +31,13 @@ export default class TimerFacade {
 			if(obj.char.userID === character.userID) {
 				clearInterval(obj.timer);
 				obj.char.userID !== character.userID;
+				console.log('Removed game loop for character: ', character.userID);
 			}
 		});
-		console.log('Removed game loop for character: ', character.userID);
+	}
+
+	checkLoopExist(character) {
+		return true;
 	}
 
 	addTimer(character, object) {
@@ -41,7 +45,7 @@ export default class TimerFacade {
 			object.time = 1;
 		}
 
-		const newTimer = new Timer(object.ID, object.time);
+		const newTimer = new Timer(character, object);
 		character.timers.push(newTimer);
 	}
 

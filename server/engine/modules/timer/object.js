@@ -1,14 +1,19 @@
 export default class Timer {
-	constructor(source, time) {
-		this.source = source;
+	constructor(character, object) {
+		this.character = character;
 
-		this.time = time || 0;
+		this.source = object.ID;
 
-		this.steps = (1000 * time) / 100;
+		this.time = object.time || 0;
+
+		this.steps =  ((1000 * object.time) / 100) - (object.steps || 0);
+		console.log(object.steps, '\n', this.steps);
 
 		this.timer = null;
 
 		this.paused = true;
+
+		this.started = false;
 
 		this.terminate = false;
 	}
@@ -22,12 +27,14 @@ export default class Timer {
 			return;
 		}
 
-		this.paused = false;
+		if(!this.started) {
+			this.started = true;
+		}
 
 		this.timer = setInterval(() => {
 			if(!this.paused) {
 				this.steps--;
-				console.log(this.steps);
+				//console.log('\nObject:', this.steps);
 
 				if(this.steps === 0) {
 					this.terminate = true;
@@ -35,13 +42,5 @@ export default class Timer {
 				}
 			}
 		}, 100);
-	}
-
-	stop() {
-		if(this.terminate) {
-			return;
-		}
-		
-		this.paused = true;
 	}
 }

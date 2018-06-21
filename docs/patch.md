@@ -5,7 +5,7 @@
 ***
 =================================================
 
-##### *Version 0.0.507*
+##### *Version 0.0.515*
 
 ## General
 
@@ -14,10 +14,16 @@
 <h4>General</h4>
 
 * Create character now sends name, specialization, server and difficulty
+* Now visually displays what is new (sort of, still prototype). It only tracks what's new from original base state (with other words, a newly created character). So every time you log in for now, it will display what is new. No major annoyance (in my personal opinion), but it will be fixed in the future. For now, it "works"
 
 <h4>Bugs</h4>
 
-* Fixed a bug with the 'enter' key spamming errors in the log, when pressing it after going back from a logged in character
+1. Fixed a bug with the 'enter' key spamming errors in the log, when pressing it after going back from a logged in character
+2. Fixed a bug causing the 'session' path through navigation to not correctly load account details
+3. Fixed a bug causing accounts to be able to navigate back to the logged in state if they navigate too fast. Nothing worked in this state, since there's no logged in character 
+
+	3.1 Fixed another bug relating to the bug above which caused unwanted behaviours when navigating too fast with special nagivation keybinds (like extra mouse buttons)
+4. 
 
 ## Server
 
@@ -39,6 +45,9 @@
 <h4>Bugs</h4>
 
 ## Misc/Dev/Boring stuff
+
+
+Fixed a few things regarding the build system, that made it behave unexpectedly. Some variables were passed as 'strings' when an 'integer' was expected. This caused other/new issues regarding the following 'if-statement', which checked if an object ID was sent with the function. This object ID could be 0, which made the if-statement 
 
 ***
 =================================================

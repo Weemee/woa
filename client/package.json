@@ -1,6 +1,6 @@
 {
 	"name": "woa",
-	"version": "0.0.79",
+	"version": "0.0.515",
 	"description": "Client for World of Atoms",
 	"scripts": {
 		"start": "webpack-dev-server --progress --colors --inline --config webpack.development.js",

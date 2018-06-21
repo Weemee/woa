@@ -1,6 +1,7 @@
 import {
 	CHARACTER_GET_LIST,
 	GET_SERVER_LIST,
+	CHARACTER_LOGOUT,
 } from 'libs/constants';
 
 import React from 'react';
@@ -20,6 +21,7 @@ import CreateCard from './createCard';
 import EditCard from './editCard';
 
 import {setLoading} from '../../app/actions';
+import {getAccountDetails} from '../../account/actions';
 
 class Character extends React.Component {
 	constructor(props) {
@@ -44,8 +46,16 @@ class Character extends React.Component {
 
 	componentDidMount() {
 		if(!this.props.loggedIn) {
+			if(this.props.character) {
+				this.props.socketSend({
+					type: CHARACTER_LOGOUT,
+					payload: null,
+				});
+			}
 			return this.props.history.push('/authentication');
 		}
+
+		this.props.getAccountDetails(this.props.account.id, this.props.authToken);
 
 		this.props.socketSend({
 			type: CHARACTER_GET_LIST,
@@ -73,7 +83,9 @@ class Character extends React.Component {
 							return null;
 						}
 						if(props.notes.type === 'success') {
+							console.log('success');
 							if(props.characterList !== state.characterList) {
+								console.log('Change in list');
 								if(props.characterList <= 0) {
 									console.log('Empty block array');
 									if(props.characterList) {
@@ -85,24 +97,23 @@ class Character extends React.Component {
 										}
 									}
 								}
-								else {
-									console.log('Difference in character list (props & state !==), updating...');
-									const a = props.characterList.length - 1;
-									console.log('Props: ', props.characterList[a].name);
-									return {
-										characterList: props.characterList,
-										case: {
-											type: 'preview',
-											data: props.characterList[a].name,
-										},
-									};
-								}
-							}
+							} 
 						}
+
+						console.log('Difference in character list (props & state !==), updating...');
+						const a = props.characterList.length - 1;
+						console.log('Props: ', props.characterList[a].name);
+						return {
+							characterList: props.characterList,
+							case: {
+								type: 'preview',
+								data: props.characterList[a].name,
+							},
+						};
 					}
 					else {
 						const lastPlayed = props.characterList.find((obj) => obj.charID === props.account.lastCharPlayed);
-						console.log('Last played character: ', lastPlayed);
+						console.log('No found, last played character: ', lastPlayed);
 						if(!lastPlayed) {
 							return null;
 						}
@@ -267,6 +278,7 @@ function mapDispatchToProps(dispatch) {
 		socketSend,
 		newInput,
 		setLoading,
+		getAccountDetails,
 	}, dispatch);
 }
 

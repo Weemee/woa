@@ -81,3 +81,26 @@
 	left: 0px;
 	top: 0px;
 }
+
+.newThing {
+	position: absolute;
+	width: 12px;
+	height: 24px;
+	margin-top: -16px;
+	margin-left: 26px;
+	text-align: center;
+	border-style: solid;
+	border-width: 2px;
+	border-color: orange;
+	border-radius: 3px;
+}
+
+.hideScroll {
+	width: calc(100% + 15);
+	height: calc(100% - 42px);
+	overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}

@@ -11,7 +11,7 @@ export default (sequelize, DataTypes) =>
 		current:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {status: 'slacking', source: 'nothing'},
+			defaultValue: {status: null, source: null},
 		},
 		buildingQueue:
 		{

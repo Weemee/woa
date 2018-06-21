@@ -1,4 +1,5 @@
 import Promise from 'bluebird';
+import moment from 'moment';
 
 import {
 	CHARACTER_UPDATE,
@@ -213,21 +214,24 @@ export default class CharacterFacade {
 	}
 
 	async remove(userID) {
-
-		if (typeof userID != 'number') {
+		if(typeof userID != 'number') {
 			userID = parseInt(userID);
 		}
 
 		const character = this.get(userID);
 
-		if (!character) {
+		if(!character) {
 			return;
 		}
 
+		if(this.Server.timerFacade.checkLoopExist(character)) {
+			this.Server.timerFacade.removeLoop(character);
+		}
+		
 		character.unmountCharacter();
 
 		try {
-			await this.save(character.userID);
+			await this.save(character.userID, true);
 		} catch (err) {
 			this.Server.onError(err);
 		}
@@ -238,7 +242,6 @@ export default class CharacterFacade {
 		});
 
 		this.managedCharacters = this.managedCharacters.filter((obj) => obj.userID !== userID);
-		this.Server.timerFacade.removeLoop(character);
 
 		this.dispatchRemoveFromCharacterList(userID);
 	}
@@ -549,18 +552,21 @@ export default class CharacterFacade {
 		}
 
 		if(disconnect) {
-			console.log('\nCharacter disconnecting, pausing updates...');
+			console.log('\nCharacter forcing, pausing updates...');
 			const pausing = await character.pauseResume();
 			if(pausing) {
 				console.log('\tUpdates paused!');
+				this.Server.timerFacade.removeLoop(character);
+
+				this.Server.log.info(`Saving character ${userID}`);
+				await this.databaseSave(character);
+				this.Server.log.info(`Saved ${character.name} (${userID})`);
 			}
+		} else {
+			this.Server.log.info(`Saving character ${userID}`);
+			await this.databaseSave(character);
+			this.Server.log.info(`Saved ${character.name} (${userID})`);
 		}
-
-		this.Server.log.info(`Saving characters ${userID}`);
-
-		await this.databaseSave(character);
-
-		this.Server.log.info(`Saved ${character.name} (${userID})`);
 	}
 
 	async databaseSave(character) {
@@ -582,6 +588,20 @@ export default class CharacterFacade {
 					return err;
 				});
 			}
+		});
+
+		db.characterObject.update(
+			character['updatedAt'],
+			{
+				where:
+				{
+					id:
+					{
+						[db.Op.like]: [character.id]
+					}
+				}
+			}).catch(err => {
+			return err;
 		});
 	}
 

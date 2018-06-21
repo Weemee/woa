@@ -1,4 +1,5 @@
 import uuid from 'uuid/v4';
+import moment from 'moment';
 import Triggers from './triggers';
 
 export default class Character {
@@ -9,11 +10,16 @@ export default class Character {
 
 		this.timers = [];
 
+		//Move to internal
 		this.paused = true;
 
 		this.triggers = null;
 
 		this.availableBuildings = {};
+
+		this.internalActions = {
+			removingBuilding: false,
+		};
 
 		Object.assign(this, {
 			...character.dataValues,
@@ -23,16 +29,22 @@ export default class Character {
 	getDifficulty(diff) {
 		switch(diff) {
 			case 0:
+				console.log('tutorial');
 				return 'tutorial';
 			case 1:
+				console.log('veryeasy');
 				return 'veryeasy';
 			case 2:
+				console.log('easy');
 				return 'easy';
 			case 3:
+				console.log('moderate');
 				return 'moderate';
 			case 4:
+				console.log('prettyhard');
 				return 'prettyhard';
 			case 5:
+				console.log('kappa');
 				return 'kappa';
 		}
 	}
@@ -58,15 +70,21 @@ export default class Character {
 			console.log('There are buildings in the queue, add timers');
 			this.actions.buildingQueue.forEach((timer, index) => {
 				console.log('\n');
-				console.log('Building:', timer);
+				console.log('Building:', timer.ID);
 				console.log('Index:', index);
+				console.log('Steps:', timer.steps);
 
 				const building = {
 					ID: timer.ID,
 					time: timer.time,
+					steps: timer.steps,
 				};
 				this.Server.timerFacade.addTimer(this, building);
 			});
+		}
+
+		if(this.actions.current.status === 'building') {
+			this.build();
 		}
 	}
 
@@ -80,14 +98,13 @@ export default class Character {
 				}
 			} else {
 				try {
-					if(this.actions.buildingQueue[index - 1].time !== (this.timers[index].steps / 10)) {
-						this.actions.buildingQueue[index - 1].time = (this.timers[index].steps / 10);
+					if(this.actions.buildingQueue[index - 1].steps !== (this.timers[index].steps)) {
+						this.actions.buildingQueue[index - 1].steps = (this.actions.buildingQueue[index - 1].time * 10) - (this.timers[index].steps);
 					}
 					clearInterval(timer.timer);
 				} catch(err) {
-	
+					console.log(err);
 				}
-				
 			}
 		});
 	}
@@ -160,13 +177,20 @@ export default class Character {
 			if(this.actions.current.status === 'gathering') {
 				this.generate(this.actions.current.source);
 			}
+
 			if(this.actions.current.status === 'building') {
-				this.build(this.actions.current.source);
+				this.build();
+			} else {
+				if(this.actions.buildingQueue.length !== 0) {
+					this.timers[1].paused = true;
+				}
 			}
 		}
 
 		this.checkTriggers();
-		this.checkBuildings(this.actions.buildingQueue);
+		if(!this.internalActions.removingBuilding) {
+			this.checkBuildings(this.actions.buildingQueue);
+		}
 		this.checkResearch();
 	}
 
@@ -185,7 +209,19 @@ export default class Character {
 	}
 
 	build() {
-		this.timers[1].start();
+		if(this.actions.buildingQueue.length === 0) {
+			return;
+		}
+
+		if(!this.timers[1].started) {
+			this.timers[1].start();
+			console.log('Started new timer');
+			return;
+		}
+
+		if(this.timers[1].paused) {
+			this.timers[1].paused = false;
+		}
 	}
 
 	pauseResume() {
@@ -194,6 +230,10 @@ export default class Character {
 	}
 
 	checkBuildings(queue) {
+		if(this.internalActions.removingBuilding) {
+			return;
+		}
+		
 		if(this.checkLastBuilding(queue)) {
 			//console.log('No more buildings');
 			//this.addToBuildingsQueue('storage');
@@ -201,12 +241,9 @@ export default class Character {
 			return;
 		} else {
 			//console.log('There are some buildings, lets check what...');
-			//This is where we start the timer to build, check resources, return resources etc.
-			this.build();
-			for(let index in queue) {
-				//console.log('\nBuilding:', queue[index]);
-				//console.log('Now we remove it');
-				//this.removeFromBuildingsQueue(queue, index);
+			if(this.actions.current.status === 'building') {
+				queue[0].steps = (queue[0].time * 10) - this.timers[1].steps;
+				//console.log('\nQueue:', queue[0].steps);
 			}
 		}
 	}
@@ -220,23 +257,73 @@ export default class Character {
 	}
 
 	addToBuildingsQueue(objID) {
-		const building = {
+		if(!objID) {
+			return {
+				error: true,
+				message: 'Could not find ', objID,
+			};
+		}
+
+		const building = this.Server.buildingFacade.getBuilding(objID);
+
+		//Check resources
+		console.log(building);
+
+		if(!building.stats.cost) {
+			console.log('Does not cost anything, it is a multiplier or expo function');
+		} else {
+			console.log('The cost is ', building.stats.cost);
+		}
+
+		//Deduct resources
+
+		//Make object
+		const bObj = {
 			ID: objID,
-			time: this.Server.buildingFacade.getBuildingTime(objID)
+			time: building.time,
+			steps: 0,
 		};
-		this.Server.timerFacade.addTimer(this, building);
-		this.actions.buildingQueue.push(building);
+
+		//Add object timer
+		this.Server.timerFacade.addTimer(this, bObj);
+		//Add to building queue
+		this.actions.buildingQueue.push(bObj);
 	}
 
-	removeFromBuildingsQueue() {
-		console.log('Removing');
-		const q = this.actions.buildingQueue;
-		q.shift();
-		if(!this.checkLastBuilding(q)) {
-			console.log('Starting new build');
-			this.build();
+	removeFromBuildingsQueue(objID = null) {
+		this.internalActions.removingBuilding = true;
+		if(typeof(objID) === 'string') {
+			objID = parseInt(objID);
 		}
-		console.log('No more buildings');
+
+		console.log('Removing:', objID);
+		const q = this.actions.buildingQueue;
+		if(objID !== null) {
+			console.log('\nTimer to remove:', this.timers[objID + 1]);
+			//Item not removed AT ALL
+			console.log('\nBefore:', this.timers);
+			//if(this.actions.current.status === 'building') {
+				//console.log('Inside if, timer:', this.timers[1]);
+				this.timers[objID + 1].paused = true;
+				this.timers[objID + 1].steps = 0;
+			//}
+			clearInterval(this.timers[objID + 1].timer);
+			q.splice(objID, 1);
+			this.timers.splice(objID + 1, 1);
+			//console.log('\nTimer to remove:', this.timers[objID + 1]);
+			console.log('\nAfter:', this.timers);
+			this.build();
+		} else {
+			q.shift();
+			if(!this.checkLastBuilding(q)) {
+				if(this.actions.current.status === 'building') {
+					console.log('Starting new build');
+					console.log('\nRemaining timers:', this.timers);
+				}
+			}
+		}
+		
+		this.internalActions.removingBuilding = false;
 	}
 
 	getQueueBuildingFromQueueIndex(index) {

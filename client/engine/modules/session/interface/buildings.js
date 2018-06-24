@@ -44,13 +44,16 @@ class Unlocks extends React.Component {
 							<Button color='blue' onClick={() => this.purchaseBuilding('storage')}>Buy</Button>
 						)}
 					</div>
-					<div>
-						Research lab ({!this.props.character.buildings.researchlab ? 0 : 1337}): {!this.props.character.unlocked.buildings.researchlab ? (
-							'false'
-						) : (
-							<Button color='blue' onClick={() => this.purchaseBuilding('researchlab')}>Buy</Button>
-						)}
-					</div>
+					{
+						!this.props.character.buildings.owned.researchlab.progress &&
+						<div>
+							Research lab ({!this.props.character.buildings.researchlab ? 0 : 1337}): {!this.props.character.unlocked.buildings.researchlab ? (
+								'false'
+							) : (
+								<Button color='blue' onClick={() => this.purchaseBuilding('researchlab')}>Buy</Button>
+							)}
+						</div>
+					}
 				</div>
 				<div style={{position: 'absolute', width: '50%', height: '100%', right: '0', backgroundColor: 'rgba(137, 137, 137, 0.67)'}}>
 					<div style={{height: '42px', width: '100%'}}>
@@ -78,7 +81,8 @@ class Unlocks extends React.Component {
 													width: '25%',
 													marginTop: '2px',
 													marginRight: '2px'
-												}} className="btn-danger" onClick={() => this.removeBuilding(index)}
+												}
+											} className="btn-danger" onClick={() => this.removeBuilding(index)}
 											>
 												Remove
 											</Button>

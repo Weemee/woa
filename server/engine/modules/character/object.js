@@ -234,15 +234,10 @@ export default class Character {
 		}
 		
 		if(this.checkLastBuilding(queue)) {
-			//console.log('No more buildings');
-			//this.addToBuildingsQueue('storage');
-			//this.addToBuildingsQueue('researchlab');
 			return;
 		} else {
-			//console.log('There are some buildings, lets check what...');
 			if(this.actions.current.status === 'building') {
 				queue[0].steps = (queue[0].time * 10) - this.timers[1].steps;
-				//console.log('\nQueue:', queue[0].steps);
 			}
 		}
 	}
@@ -262,12 +257,10 @@ export default class Character {
 				message: 'Could not find ', objID,
 			};
 		}
-
+		console.log(objID);
 		const building = this.Server.buildingFacade.getBuilding(objID);
 
 		//Check resources
-		console.log(building);
-
 		let costs;
 		if(!building.stats.cost) {
 			console.log('Does not cost anything, it is a multiplier or expo function');
@@ -289,6 +282,29 @@ export default class Character {
 		} else {
 			console.log('The cost is ', building.stats.cost);
 			costs = building.stats.cost;
+			let purchase = true;
+
+			for(const res in costs) {
+				if(this.resources[res].owned < costs[res]) {
+					console.log('False:', res);
+					purchase = false;
+				} else {
+					console.log('True:', res);
+				}
+			}
+
+			if(!purchase) {
+				return false;
+			}
+
+			for(const res in costs) {
+				this.resources[res].owned -= costs[res];
+			}
+
+			if(building.stats.unique) {
+				//this.buildings.owned[objID].progress = true;
+				this.buildings[objID].progress = true;
+			}
 		}
 
 		//Make object
@@ -310,26 +326,23 @@ export default class Character {
 			objID = parseInt(objID);
 		}
 
-		console.log('Removing:', objID);
 		const q = this.actions.buildingQueue;
+		
 		if(objID !== null) {
-			console.log('\nTimer to remove:', this.timers[objID + 1]);
-			//Item not removed AT ALL
-			console.log('\nBefore:', this.timers);
-			//if(this.actions.current.status === 'building') {
-				//console.log('Inside if, timer:', this.timers[1]);
-				this.timers[objID + 1].paused = true;
-				this.timers[objID + 1].steps = 0;
-			//}
+			const bID = this.Server.buildingFacade.getBuilding(this.actions.buildingQueue[objID].ID);
+			if(bID.stats.unique) {
+				this.buildings[this.actions.buildingQueue[objID].ID].progress = false;
+			}
+			
+			this.timers[objID + 1].paused = true;
+			this.timers[objID + 1].steps = 0;
+
 			clearInterval(this.timers[objID + 1].timer);
 			q.splice(objID, 1);
 			this.timers.splice(objID + 1, 1);
-			//console.log('\nTimer to remove:', this.timers[objID + 1]);
-			console.log('\nAfter:', this.timers);
+
 			this.build();
 		} else {
-			const building = q[0].ID;
-			//console.log(this.buildings.owned[building]);
 			q.shift();
 			
 			if(!this.checkLastBuilding(q)) {

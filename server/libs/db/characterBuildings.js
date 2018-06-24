@@ -11,10 +11,18 @@ export default (sequelize, DataTypes) =>
 		storage:
 		{
 			type: DataTypes.JSON,
+			defaultValue: {
+				owned: 0,
+				max: 10,
+			},
 		},
 		researchlab:
 		{
 			type: DataTypes.JSON,
+			defaultValue: {
+				complete: false,
+				progress: false,
+			},
 		},
 		createdAt:
 		{

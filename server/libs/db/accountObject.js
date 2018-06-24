@@ -91,5 +91,20 @@ export default (sequelize, DataTypes) =>
 		return bcrypt.compare(string, password);
 	}
 
+	AccountObject.a = [
+		'keybinds',
+		'reservedNames',
+	];
+
+	AccountObject.associate = (model) => {
+		for(let i = 0; i < AccountObject.a.length; i++) {
+			AccountObject.hasOne(model['account' + AccountObject.a[i].charAt(0).toUpperCase() + AccountObject.a[i].slice(1)], {
+				as: AccountObject.a[i],
+				foreignKey: 'userID',
+				onDelete: 'CASCADE',
+			});
+		}
+	};
+
 	return AccountObject;
 }

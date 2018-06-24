@@ -1,13 +1,5 @@
 export default (sequelize, DataTypes) =>
 {
-	const ServerUniverse = sequelize.define('serverUniverses',
-	{
-		serverMultiverseID:
-		{
-			type: DataTypes.INTEGER,
-		}
-	});
-
 	const ServerMultiverse = sequelize.define('serverMultiverses',
 	{
 		name:
@@ -42,8 +34,18 @@ export default (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	ServerMultiverse.hasMany(ServerUniverse);
-	ServerUniverse.belongsTo(ServerMultiverse, {foreignKey: 'serverMultiverseID', targetKey: 'id'});
+	ServerMultiverse.a = [
+		'universes',
+	];
+
+	ServerMultiverse.associate = (model) => {
+		for(let i = 0; i < ServerMultiverse.a.length; i++) {
+			ServerMultiverse.hasOne(model['server' + ServerMultiverse.a[i].charAt(0).toUpperCase() + ServerMultiverse.a[i].slice(1)], {
+				as: ServerMultiverse.a[i],
+				foreignKey: 'serverMultiverseID',
+			});
+		}
+	};
 
 	return ServerMultiverse;
 }

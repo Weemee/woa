@@ -1,20 +1,7 @@
 export default (sequelize, DataTypes) =>
 {
-	const ServerSupercluster = sequelize.define('serverSuperclusters',
-	{
-		serverUniverseID:
-		{
-			type: DataTypes.INTEGER,
-		}
-	});
-
 	const ServerUniverse = sequelize.define('serverUniverses',
 	{
-		id:
-		{
-			type: DataTypes.INTEGER,
-			primaryKey: true,
-		},
 		serverMultiverseID:
 		{
 			type: DataTypes.INTEGER,
@@ -66,8 +53,18 @@ export default (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	ServerUniverse.hasMany(ServerSupercluster);
-	ServerSupercluster.belongsTo(ServerUniverse, {foreignKey: 'serverUniverseID', targetKey: 'id'});
+	ServerUniverse.a = [
+		'superclusters',
+	];
 
+	ServerUniverse.associate = (model) => {
+		for(let i = 0; i < ServerUniverse.a.length; i++) {
+			ServerUniverse.hasOne(model['server' + ServerUniverse.a[i].charAt(0).toUpperCase() + ServerUniverse.a[i].slice(1)], {
+				as: ServerUniverse.a[i],
+				foreignKey: 'serverUniverseID',
+			});
+		}
+	};
+	
 	return ServerUniverse;
 }

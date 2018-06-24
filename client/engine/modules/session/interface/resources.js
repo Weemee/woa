@@ -18,11 +18,6 @@ class Resources extends React.Component {
 	}
 
 	setStatus(status, source) {
-		console.log(status, source);
-		this.setState({
-			status: status,
-			source: source,
-		});
 		this.props.newInput(`setcharacteraction ${status} ${source}`);
 	}
 
@@ -37,7 +32,7 @@ class Resources extends React.Component {
 					<div>
 							Hydrogen: {this.props.character.resources.hydrogen.owned}/{this.props.character.resources.hydrogen.max}
 						{
-							this.state.source === 'hydrogen' ? (
+							this.props.character.actions.current.source === 'hydrogen' ? (
 								<Button color='blue' onClick={() => this.setStatus(null, null)}>Stop</Button>
 							) : (
 								<Button color='blue' onClick={() => this.setStatus('gathering', 'hydrogen')}>Generate</Button>
@@ -50,7 +45,7 @@ class Resources extends React.Component {
 					<div>
 							Helium: {this.props.character.resources.helium.owned}/{this.props.character.resources.helium.max}
 						{
-							this.state.source === 'helium' ? (
+							this.props.character.actions.current.source === 'helium' ? (
 								<Button color='blue' onClick={() => this.setStatus(null, null)}>Stop</Button>
 							) : (
 								<Button color='blue' onClick={() => this.setStatus('gathering', 'helium')}>Generate</Button>

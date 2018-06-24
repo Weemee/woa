@@ -104,7 +104,7 @@ class Header extends React.Component {
 		return (
 			<Navbar className="themeHeader" expand="md" onContextMenu={this.disableContext}>
 				<Container>
-				<NavbarBrand className="themeTitle" href="#" onClick={() => this.props.history.push('/')}>Penis</NavbarBrand>
+				<NavbarBrand className="themeTitle" href="#" onClick={() => this.props.history.push('/')}>World of Atoms</NavbarBrand>
 				{
 					this.props.loggedIn &&
 					<Dropdown isOpen={this.state.open.theme} toggle={this.toggleTheme}>

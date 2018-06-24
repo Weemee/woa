@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4';
 
-export default class Character {
+export default class Theme {
 	constructor(Server, theme) {
 		this.Server = Server;
 
@@ -14,10 +14,10 @@ export default class Character {
 	exportToClient() {
 		return {
 			name: this.name,
-			button: this.button.dataValues,
-			header: this.header.dataValues,
+			button: this.buttons.dataValues,
+			header: this.headers.dataValues,
 			buttonHover: this.buttonHover.dataValues,
-			container: this.container.dataValues,
+			container: this.containers.dataValues,
 		};
 	}
 }

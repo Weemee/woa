@@ -189,6 +189,7 @@ function inputSetCharacterAction(socket, character, input, params, inputObject, 
 	const status = params[0];
 	const source = params[1];
 	character.setActionStatus(status, source);
+	Server.characterFacade.updateClient(character.userID);
 }
 
 export default [

@@ -1,5 +1,4 @@
 import uuid from 'uuid/v4';
-import moment from 'moment';
 import Triggers from './triggers';
 
 export default class Character {
@@ -269,18 +268,33 @@ export default class Character {
 		//Check resources
 		console.log(building);
 
+		let costs;
 		if(!building.stats.cost) {
 			console.log('Does not cost anything, it is a multiplier or expo function');
+			costs = {
+				div: building.stats.divider,
+				mult: building.stats.multiplier,
+			};
+
+			const temp = 'hydrogen';
+			const check = this.resources[temp].max / costs.div;
+			console.log(check);
+
+			if(this.resources[temp].owned <= check) {
+				return;
+			}
+
+			this.resources[temp].owned -= check;
+
 		} else {
 			console.log('The cost is ', building.stats.cost);
+			costs = building.stats.cost;
 		}
-
-		//Deduct resources
 
 		//Make object
 		const bObj = {
 			ID: objID,
-			time: building.time,
+			time: building.stats.time,
 			steps: 0,
 		};
 
@@ -314,7 +328,10 @@ export default class Character {
 			console.log('\nAfter:', this.timers);
 			this.build();
 		} else {
+			const building = q[0].ID;
+			//console.log(this.buildings.owned[building]);
 			q.shift();
+			
 			if(!this.checkLastBuilding(q)) {
 				if(this.actions.current.status === 'building') {
 					console.log('Starting new build');

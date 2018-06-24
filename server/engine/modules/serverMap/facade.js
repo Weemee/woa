@@ -43,29 +43,27 @@ export default class ServerMapFacade {
 				include: [
 					{
 						model: db.serverUniverses,
+						as: 'universes',
 						include: [
 							{
 								model: db.serverSuperclusters,
+								as: 'superclusters',
 								include: [
 									{
 										model: db.serverLocalclusters,
+										as: 'localclusters',
 										include: [
 											{
 												model: db.serverInterstellars,
+												as: 'interstellars',
 												include: [
 													{
 														model: db.serverGalaxies,
+														as: 'galaxies',
 														include: [
 															{
 																model: db.serverSolarsystems,
-																include: [
-																	{
-																		model: db.serverStars,
-																	},
-																	{
-																		model: db.serverPlanets,
-																	}
-																]
+																as: 'solarsystems',
 															}
 														]
 													}

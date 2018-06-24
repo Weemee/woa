@@ -9,10 +9,6 @@ class Unlocks extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			building: (this.props.character.actions.current.status === 'building' ? true : false),
-		};
-
 		this.purchaseBuilding = this.purchaseBuilding.bind(this);
 		this.removeBuilding = this.removeBuilding.bind(this);
 		this.build = this.build.bind(this);
@@ -27,15 +23,11 @@ class Unlocks extends React.Component {
 	}
 
 	build() {
-		if(!this.state.building) {
+		if(this.props.character.actions.current.status !== 'building') {
 			this.props.newInput('setcharacteraction building null');
 		} else {
 			this.props.newInput('setcharacteraction null null');
 		}
-
-		this.setState({
-			building: !this.state.building,
-		});
 	}
 
 	render() {
@@ -67,7 +59,7 @@ class Unlocks extends React.Component {
 						</div>
 
 						<div style={{float: 'right', width: '50%'}}>
-							<Button style={{float: 'right', marginTop: '1px', marginRight: '10px'}} className="btn-info" onClick={this.build}>{!this.state.building ? 'Build' : 'Stop'}</Button>
+							<Button style={{float: 'right', marginTop: '1px', marginRight: '10px'}} className="btn-info" onClick={this.build}>{this.props.character.actions.current.status !== 'building' ? 'Build' : 'Stop'}</Button>
 						</div>
 					</div>
 

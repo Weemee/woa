@@ -1,13 +1,5 @@
 export default (sequelize, DataTypes) =>
 {
-	const ServerInterstellar = sequelize.define('serverInterstellars',
-	{
-		serverLocalclusterID:
-		{
-			type: DataTypes.INTEGER,
-		}
-	});
-
 	const ServerLocalcluster = sequelize.define('serverLocalclusters',
 	{
 		serverSuperclusterID:
@@ -61,8 +53,18 @@ export default (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	ServerLocalcluster.hasMany(ServerInterstellar);
-	ServerInterstellar.belongsTo(ServerLocalcluster, {foreignKey: 'serverLocalclusterID', targetKey: 'id'});
+	ServerLocalcluster.a = [
+		'interstellars',
+	];
+
+	ServerLocalcluster.associate = (model) => {
+		for(let i = 0; i < ServerLocalcluster.a.length; i++) {
+			ServerLocalcluster.hasOne(model['server' + ServerLocalcluster.a[i].charAt(0).toUpperCase() + ServerLocalcluster.a[i].slice(1)], {
+				as: ServerLocalcluster.a[i],
+				foreignKey: 'serverLocalclusterID',
+			});
+		}
+	};
 
 	return ServerLocalcluster;
 }

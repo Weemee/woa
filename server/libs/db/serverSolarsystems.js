@@ -1,21 +1,5 @@
 export default (sequelize, DataTypes) =>
 {
-	const ServerStar = sequelize.define('serverStars',
-	{
-		serverSolarsystemID:
-		{
-			type: DataTypes.INTEGER,
-		}
-	});
-
-	const ServerPlanet = sequelize.define('serverPlanets',
-	{
-		serverSolarsystemID:
-		{
-			type: DataTypes.INTEGER,
-		}
-	});
-
 	const ServerSolarsystem = sequelize.define('serverSolarsystems',
 	{
 		serverGalaxyID:
@@ -69,9 +53,19 @@ export default (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	ServerSolarsystem.hasOne(ServerStar);
-	ServerSolarsystem.hasMany(ServerPlanet);
-	ServerStar.belongsTo(ServerSolarsystem, {foreignKey: 'serverSolarsystemID', targetKey: 'id'});
+	ServerSolarsystem.a = [
+		'stars',
+		'planets',
+	];
+
+	ServerSolarsystem.associate = (model) => {
+		for(let i = 0; i < ServerSolarsystem.a.length; i++) {
+			ServerSolarsystem.hasOne(model['server' + ServerSolarsystem.a[i].charAt(0).toUpperCase() + ServerSolarsystem.a[i].slice(1)], {
+				as: ServerSolarsystem.a[i],
+				foreignKey: 'serverSolarsystemID',
+			});
+		}
+	};
 
 	return ServerSolarsystem;
 }

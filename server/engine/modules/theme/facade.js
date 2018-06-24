@@ -83,15 +83,15 @@ export default class ThemeFacade {
 			include: [
 				{
 					model: db.themeButtons,
-					as: 'button',
+					as: 'buttons',
 				},
 				{
 					model: db.themeHeaders,
-					as: 'header',
+					as: 'headers',
 				},
 				{
 					model: db.themeContainers,
-					as: 'container',
+					as: 'containers',
 				},
 				{
 					model: db.themeButtonHover,
@@ -142,15 +142,15 @@ export default class ThemeFacade {
 				include: [
 					{
 						model: db.themeButtons,
-						as: 'button',
+						as: 'buttons',
 					},
 					{
 						model: db.themeHeaders,
-						as: 'header',
+						as: 'headers',
 					},
 					{
 						model: db.themeContainers,
-						as: 'container',
+						as: 'containers',
 					},
 					{
 						model: db.themeButtonHover,

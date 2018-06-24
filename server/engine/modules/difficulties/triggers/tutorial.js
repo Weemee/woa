@@ -2,7 +2,7 @@ export default {
 	baseValues: {
 		difficulty: {
 			loopSpeed: 0.50,
-			gatheringMult: 4.00,
+			gatheringMult: 8.00,
 			buildingSpeed: 0.25,
 			researchSpeed: 0.25,
 		},
@@ -20,6 +20,16 @@ export default {
 	},
 	buildings: {
 		storage: {
+			bool: false,
+			msg: 'Temp',
+			trigger: {
+				resources: {
+					hydrogen: 20,
+					helium: 20,
+				},
+			},
+		},
+		researchlab: {
 			bool: false,
 			msg: 'Temp',
 			trigger: {

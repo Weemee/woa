@@ -14,6 +14,7 @@ fs.readdirSync(__dirname).filter(file => {
 	const model = sequelize['import'](path.join(__dirname, file));
 	console.log('Loaded db: ', model.name);
 	db[model.name] = model;
+	db[model.name].sync();
 });
 
 Object.keys(db).forEach((modelName) => {

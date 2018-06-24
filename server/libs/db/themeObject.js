@@ -25,27 +25,22 @@ export default (sequelize, DataTypes) =>
 		themeObject.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 	});
 
+	ThemeObject.a = [
+		'buttonHover',
+		'buttons',
+		'containers',
+		'headers',
+	];
+
 	ThemeObject.associate = (model) => {
-		ThemeObject.hasOne(model.themeButtons, {
-			as: 'button',
-			foreignKey: 'themeID',
-		});
-
-		ThemeObject.hasOne(model.themeButtonHover, {
-			as: 'buttonHover',
-			foreignKey: 'themeID',
-		});
-
-		ThemeObject.hasOne(model.themeHeaders, {
-			as: 'header',
-			foreignKey: 'themeID',
-		});
-
-		ThemeObject.hasOne(model.themeContainers, {
-			as: 'container',
-			foreignKey: 'themeID',
-		});
-	}
+		for(let i = 0; i < ThemeObject.a.length; i++) {
+			ThemeObject.hasOne(model['theme' + ThemeObject.a[i].charAt(0).toUpperCase() + ThemeObject.a[i].slice(1)], {
+				as: ThemeObject.a[i],
+				foreignKey: 'themeID',
+				onDelete: 'CASCADE',
+			});
+		}
+	};
 
 	return ThemeObject;
 }

@@ -63,6 +63,7 @@ export default (sequelize, DataTypes) => {
 			CharacterObject.hasOne(model['character' + CharacterObject.a[i].charAt(0).toUpperCase() + CharacterObject.a[i].slice(1)], {
 				as: CharacterObject.a[i],
 				foreignKey: 'charID',
+				onDelete: 'CASCADE',
 			});
 		}
 	};

@@ -52,7 +52,10 @@ export default class Character {
 		if(!this.triggers) {
 			this.triggers = Triggers[this.getDifficulty(this.difficulty)];
 		}
+
 		this.Server.buildingFacade.loadList(this.getDifficulty(this.difficulty));
+		this.Server.researchFacade.loadList(this.getDifficulty(this.difficulty));
+
 		for(const item in this.stripFetched(this.unlockedBuildings)) {
 			const state = this.stripFetched(this.unlockedBuildings)[item];
 			if(state) {
@@ -137,6 +140,7 @@ export default class Character {
 			stats: this.stripFetched(this.stats),
 			levels: this.stripFetched(this.levels),
 			location: this.stripFetched(this.location),
+			research: this.stripFetched(this.research),
 			resources: this.stripFetched(this.resources),
 			buildings: {
 				owned: this.stripFetched(this.buildings),
@@ -394,6 +398,14 @@ export default class Character {
 		}
 		
 		this.internalActions.removingBuilding = false;
+	}
+
+	addToResearchQueue(objID) {
+		console.log(this.Server.researchFacade.getList());
+	}
+
+	removeFromResearchQueue(objID = null) {
+		
 	}
 
 	addToBuildingsOwned(buildingID, objID) {

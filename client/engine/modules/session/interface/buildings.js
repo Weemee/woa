@@ -38,7 +38,7 @@ class Unlocks extends React.Component {
 						Buildings
 					</div>
 					<div>
-						Storage ({!this.props.character.buildings.storage ? 0 : 1337}): {!this.props.character.unlocked.buildings.storage ? (
+						Storage ({this.props.character.buildings.owned.storage.owned}): {!this.props.character.unlocked.buildings.storage ? (
 							'false'
 						) : (
 							<Button color='blue' onClick={() => this.purchaseBuilding('storage')}>Buy</Button>

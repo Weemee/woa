@@ -11,29 +11,59 @@ class Research extends React.Component {
 
 		this.purchaseResearch = this.purchaseResearch.bind(this);
 		this.removeResearch = this.removeResearch.bind(this);
-		this.research = this.research.bind(this);
+		this.setStatus = this.setStatus.bind(this);
 	}
 
-	purchaseResearch(buildingID) {
-		this.props.newInput(`addbuilding ${buildingID}`);
+	purchaseResearch(researchID) {
+		this.props.newInput(`addresearch ${researchID}`);
 	}
 
-	removeResearch(buildingID) {
-		this.props.newInput(`removebuilding ${buildingID}`);
+	removeResearch(researchID) {
+		this.props.newInput(`removeresearch ${researchID}`);
 	}
 
-	research() {
-		if(this.props.character.actions.current.status !== 'building') {
-			this.props.newInput('setcharacteraction building null');
-		} else {
-			this.props.newInput('setcharacteraction null null');
-		}
+	setStatus(status, source) {
+		this.props.newInput(`setcharacteraction ${status} ${source}`);
+	}
+
+	renderObject(res, i) {
+		
+		return (
+			<div key={i}>
+				{res}
+				{
+					<Button color='blue' onClick={() => this.purchaseResearch(res)}>Buy</Button>
+				}
+			</div>
+		);
+	}
+
+	renderUnlocks() {
+		const objects = [];
+
+		Object.keys(this.props.character.research).map((res, index) => {
+			if(this.props.character.unlocked.research[res]) {
+				objects.push(this.renderObject(res, index));
+			}
+		});
+
+		const status = this.props.character.actions.current.source === 'researching' ? [null, null] : ['researching', 'researching'];
+
+		return (
+			<div>
+				<Button onClick={() => this.setStatus(status[0], status[1])} className="btn-info">
+					{this.props.character.actions.current.status !== 'researching' ? 'Research' : 'Stop'}
+				</Button>
+
+				{objects}
+			</div>
+		);
 	}
 
 	render() {
 		return (
 			<React.Fragment>
-				Penis
+				{this.renderUnlocks()}
 			</React.Fragment>
 		);
 	}

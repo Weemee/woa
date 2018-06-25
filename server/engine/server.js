@@ -9,6 +9,7 @@ import ServerMapFacade from './modules/serverMap/facade';
 import TimerFacade from './modules/timer/facade';
 import ThemeFacade from './modules/theme/facade';
 import BuildingFacade from './modules/building/facade';
+import ResearchFacade from './modules/research/facade';
 
 import {newEvent} from './actions';
 
@@ -35,6 +36,7 @@ class Server {
 		this.timerFacade = new TimerFacade(this);
 		this.themeFacade = new ThemeFacade(this);
 		this.buildingFacade = new BuildingFacade(this);
+		this.researchFacade = new ResearchFacade(this);
 
 		if (autoIni) {
 			this.init();
@@ -50,6 +52,7 @@ class Server {
 		await this.serverMapFacade.init();
 		await this.themeFacade.init();
 		await this.buildingFacade.init();
+		await this.researchFacade.init();
 
 		this.setupServerTimers();
 

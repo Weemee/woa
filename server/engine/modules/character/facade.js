@@ -488,6 +488,9 @@ export default class CharacterFacade {
 					location: {
 	
 					},
+					research: {
+
+					},
 					resources: {
 						
 					},

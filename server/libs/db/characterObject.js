@@ -50,6 +50,7 @@ export default (sequelize, DataTypes) => {
 		'location',
 		'resources',
 		'buildings',
+		'research',
 		'talents',
 		'actions',
 		'unlockedBuildings',

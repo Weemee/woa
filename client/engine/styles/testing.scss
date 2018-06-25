@@ -104,3 +104,123 @@
 ::-webkit-scrollbar {
 	display: none;
 }
+
+.periodicElement {
+	position: absolute;
+	width: calc(100% / 18);
+	height: 10%;
+	box-shadow: 0px 0px 12px rgba(34, 170, 248, 0.5);
+	border: 1px solid rgba(127,255,255,0.25);
+	text-align: center;
+	cursor: default;
+
+	.periodicSymbol {
+		position: absolute;
+		top: 10px;
+		left: 0px;
+		right: 0px;
+		font-size: 24px;
+		font-weight: bold;
+		color: rgba(255,255,255,0.75);
+		text-shadow: 0 0 10px rgba(32, 212, 212, 0.726);
+	}
+
+	.periodicNumber {
+		position: absolute;
+		top: 0px;
+		left: 2px;
+		font-size: 14px;
+		color: rgba(255,255,255,0.75);
+		text-shadow: 0 0 10px rgba(32, 212, 212, 0.726);
+	}
+
+	.periodicMass {
+		position: absolute;
+		top: 38px;
+		left: 0px;
+		right: 0px;
+		font-size: 12px;
+		color: rgba(255,255,255,0.75);
+	}
+
+	.resourceAmount {
+		position: absolute;
+		top: 52px;
+		left: 0px;
+		right: 0px;
+		font-size: 14px;
+		color: rgba(255,255,255,0.75);
+	}
+}
+
+.periodicElement:hover {
+	box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+	border: 1px solid rgba(127,255,255,0.75);
+}
+
+.resourceContainer {
+	position: absolute;
+	width: 70%;
+	height: 80%;
+	border-style: solid;
+	border-width: 2px;
+	background-color: rgba(92, 137, 137, 0.90);
+	top: 5%;
+	left: 0;
+	z-index: 98;
+}
+
+.topContainer {
+	position: absolute;
+	width: 40%;
+	height: 20%;
+	border-style: solid;
+	border-width: 2px;
+	background-color: rgba(92, 137, 137, 0.90);
+	left: 10%;
+}
+
+.rightContainer {
+	position: absolute;
+	width: 40%;
+	height: 40%;
+	border-style: solid;
+	border-width: 2px;
+	background-color: rgba(92, 137, 137, 0.90);
+	right: 0;
+	top: 20%;
+	z-index: 99;
+}
+
+.middleContainer {
+	position: absolute;
+	width: 20%;
+	height: 20%;
+	border-style: solid;
+	border-width: 2px;
+	background-color: rgba(92, 137, 137, 0.90);
+	top: 60%;
+	left: 60%;
+}
+
+.bRightContainer {
+	position: absolute;
+	width: 20%;
+	height: 20%;
+	border-style: solid;
+	border-width: 2px;
+	background-color: rgba(92, 137, 137, 0.90);
+	bottom: 20%;
+	right: 0;
+}
+
+.bLeftContainer {
+	position: absolute;
+	width: 20%;
+	height: 20%;
+	border-style: solid;
+	border-width: 2px;
+	background-color: rgba(92, 137, 137, 0.90);
+	bottom: 0;
+	left: 0;
+}

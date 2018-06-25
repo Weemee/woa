@@ -18,7 +18,7 @@ class Interface extends React.Component {
 		super(props);
 
 		this.state = {
-			left: {
+			resources: {
 				fadeIn: true,
 				triggered: (this.props.character.unlocked.elements.hydrogen ? true : false),
 			},
@@ -53,10 +53,10 @@ class Interface extends React.Component {
 	}
 
 	toggleContainer(con) {
-		if(con === 'left') {
+		if(con === 'resources') {
 			this.setState({
-				left: {
-					fadeIn: !this.state.left.fadeIn,
+				resources: {
+					fadeIn: !this.state.resources.fadeIn,
 					triggered: true,
 				},
 			});
@@ -112,40 +112,40 @@ class Interface extends React.Component {
 		return (	
 			<React.Fragment>
 				{
-					this.state.left.triggered &&
-					<Fade in={this.state.left.fadeIn} style={{position: 'absolute', width: '15%', height: '30%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', top: '40%', left: '0'}}>
+					this.state.resources.triggered &&
+					<div className="resourceContainer" style={this.state.resources.fadeIn ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Resources />
-					</Fade>
+					</div>
 				}
 				{
 					this.state.top.triggered &&
-					<Fade in={this.state.top.fadeIn} style={{position: 'absolute', width: '40%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', marginLeft: '30%'}}>
+					<div className="topContainer" style={this.state.top.fadeIn ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Location />
-					</Fade>
+					</div>
 				}
 				{
 					this.state.right.triggered &&
-					<Fade in={this.state.right.fadeIn} style={{position: 'absolute', width: '60%', height: '40%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', top: '30%', right: '20%'}}>
+					<div className="rightContainer" style={this.state.right.fadeIn ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Buildings />
-					</Fade>
+					</div>
 				}
 				{
 					this.state.middle.triggered &&
-					<Fade in={this.state.middle.fadeIn} style={{position: 'absolute', width: '20%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', marginTop: '60%', marginLeft: '40%'}}>
+					<div className="middleContainer" style={this.state.middle.fadeIn ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Levels />
-					</Fade>
+					</div>
 				}
 				{
 					this.state.bottomRight.triggered &&
-					<Fade in={this.state.bottomRight.fadeIn} style={{position: 'absolute', width: '20%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', bottom: '0', right: '0'}}>
+					<div className="bRightContainer" style={this.state.bottomRight.fadeIn ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Research />
-					</Fade>
+					</div>
 				}
 				{
 					this.state.bottomLeft.triggered &&
-					<Fade in={this.state.bottomLeft.fadeIn} style={{position: 'absolute', width: '20%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', bottom: '0', left: '0'}}>
+					<div className="bLeftContainer" style={this.state.bottomLeft.fadeIn ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Stats />
-					</Fade>
+					</div>
 				}
 
 				<div className="userInterface">
@@ -156,14 +156,14 @@ class Interface extends React.Component {
 								this.props.character.unlocked.elements.hydrogen &&
 								<NavItem>
 									{
-										!this.state.left.triggered &&
+										!this.state.resources.triggered &&
 										<Fade in={true} timeout={150}>
 											<div className="btn-warning newThing">
 												<b>!</b>
 											</div>
 										</Fade>
 									}
-									<a href="#" onClick={() => this.toggleContainer('left')} className={'btn btn-' + (this.state.left ? 'primary active' : 'info')}><MdAddCircleOutline /></a>
+									<a href="#" onClick={() => this.toggleContainer('resources')} className={'btn btn-' + (this.state.resources ? 'primary active' : 'info')}><MdAddCircleOutline /></a>
 								</NavItem>
 							}
 							{
@@ -211,6 +211,7 @@ class Interface extends React.Component {
 							}
 							{
 								this.props.character.unlocked.functions.research &&
+								this.props.character.buildings.owned.researchlab.complete &&
 								<NavItem>
 								{
 									!this.state.bottomRight.triggered &&

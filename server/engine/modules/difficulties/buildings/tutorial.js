@@ -7,10 +7,10 @@ export default {
 		stats: {
 			unique: true,
 			cost: {
-				hydrogen: 10,
-				helium: 10,
+				hydrogen: 2,
+				helium: 2,
 			},
-			time: 33,
+			time: 8,
 			researchTime: 60,
 		},
 		upgradeable: true,
@@ -30,8 +30,8 @@ export default {
 		stats: {
 			unique: false,
 			cost: false,
-			divider: 2,
-			time: 17,
+			divider: 10,
+			time: 4,
 			maxMult: 2,
 		},
 		upgradeable: false,

@@ -85,6 +85,13 @@ export default class Character {
 		if(this.actions.current.status === 'building') {
 			this.build();
 		}
+
+		if(this.resources['hydrogen'].max !== (100 * Math.pow(2, this.buildings.storage.owned) / 2).toExponential(2) || this.resources['hydrogen'].max !== (100 * Math.pow(2, this.buildings.storage.owned)) / 2) {
+			console.log('\nMax (', (100 * Math.pow(2, this.buildings.storage.owned) / 2).toExponential(2), ') resources (',this.resources['hydrogen'].max, ') are not accurate, fixing...');
+			for(const res in this.stripFetched(this.resources)) {
+				this.updateMaxStorage(res);
+			}
+		}
 	}
 
 	unmountCharacter() {
@@ -195,12 +202,13 @@ export default class Character {
 
 	generate(resource) {
 		const res = this.resources[resource];
+
 		if(res.owned < res.max)
 		{
 			let newOwned = res.owned + 1.00 * this.getModifier('gathering');
 			console.log(Number((newOwned).toFixed(2)));
 			if(newOwned >= res.max) {
-				res.owned = 100;
+				res.owned = res.max;
 			} else {
 				res.owned = Number((newOwned).toFixed(2));
 			}
@@ -269,15 +277,45 @@ export default class Character {
 				mult: building.stats.multiplier,
 			};
 
-			const temp = 'hydrogen';
-			const check = this.resources[temp].max / costs.div;
-			console.log(check);
+			let storageInTheMaking = 0;
+			if(this.actions.buildingQueue.length) {
+				this.actions.buildingQueue.forEach((building, index) => {
+					if(building.ID === 'storage') {
+						storageInTheMaking++;
+					}
+				});
+			}
+			let check;
 
-			if(this.resources[temp].owned <= check) {
-				return;
+			if(storageInTheMaking > 0) {
+				console.log('\nWe are building storages, increase cost');
+				if((100 * Math.pow(2, this.buildings.storage.owned) / 2).toString().length <= 4) {
+					check = ((100 * Math.pow(2, this.buildings.storage.owned + storageInTheMaking)) / 2) / costs.div;
+					console.log('Check inside <= 4', check);
+				} else {
+					check = ((100 * Math.pow(2, this.buildings.storage.owned + storageInTheMaking) / 2) / costs.div).toExponential(2);
+					console.log('Check inside +e', check);
+				}
+			} else {
+				check = this.resources['hydrogen'].max / costs.div;
+				console.log('Default check', check);
 			}
 
-			this.resources[temp].owned -= check;
+			for(const unEle in this.unlockedElements.dataValues) {
+				if(this.unlockedElements.dataValues[unEle]) {
+					console.log(unEle + ':', this.unlockedElements.dataValues[unEle]);
+					if(this.resources[unEle].owned < check) {
+						console.log('\nNot enough', unEle);
+						return;
+					}
+				}
+			}
+
+			for(const unEle in this.unlockedElements.dataValues) {
+				if(this.unlockedElements.dataValues[unEle]) {
+					this.resources[unEle].owned -= check;
+				}
+			}
 
 		} else {
 			console.log('The cost is ', building.stats.cost);
@@ -343,17 +381,42 @@ export default class Character {
 
 			this.build();
 		} else {
+			const firstBuilding = this.getQueueBuildingFromQueueIndex(0);
+			console.log(firstBuilding);
+			this.addToBuildingsOwned(this.Server.buildingFacade.getBuilding(firstBuilding.ID), firstBuilding);
 			q.shift();
 			
 			if(!this.checkLastBuilding(q)) {
 				if(this.actions.current.status === 'building') {
-					console.log('Starting new build');
-					console.log('\nRemaining timers:', this.timers);
+
 				}
 			}
 		}
 		
 		this.internalActions.removingBuilding = false;
+	}
+
+	addToBuildingsOwned(buildingID, objID) {
+		if(buildingID.stats.unique) {
+			this.buildings[objID.ID].complete = true;
+		} else {
+			this.buildings[objID.ID].owned += 1;
+			if(objID.ID === 'storage') {
+				for(const res in this.stripFetched(this.resources)) {
+					this.updateMaxStorage(res);
+				}
+				console.log('Storage upgraded');
+			}
+			console.log(this.buildings[objID.ID].owned);
+		}
+	}
+
+	updateMaxStorage(resource) {
+		if((100 * Math.pow(2, this.buildings.storage.owned) / 2).toString().length <= 4) {
+			this.resources[resource].max = (100 * Math.pow(2, this.buildings.storage.owned)) / 2;
+		} else {
+			this.resources[resource].max = (100 * Math.pow(2, this.buildings.storage.owned) / 2).toExponential(2);
+		}
 	}
 
 	getQueueBuildingFromQueueIndex(index) {

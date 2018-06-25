@@ -12,8 +12,8 @@ export default (sequelize, DataTypes) =>
 		{
 			type: DataTypes.JSON,
 			defaultValue: {
-				owned: 0,
-				max: 10,
+				owned: 1,
+				max: 100,
 			},
 		},
 		researchlab:

@@ -12,7 +12,7 @@ class Location extends React.Component {
 		const y = 10000;
 		const z = 10000;
 
-		const instance = Math.pow((x*y*z).toExponential(), 7).toExponential();
+		const instance = Math.pow((x*y*z).toExponential(), 7).toExponential(2);
 
 		return (
 			<React.Fragment>

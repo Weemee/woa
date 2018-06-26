@@ -181,7 +181,7 @@ class Interface extends React.Component {
 								</NavItem>
 							}
 							{
-								this.props.character.unlocked.buildings.storage &&
+								this.props.character.unlocked.functions.research &&
 								<NavItem>
 								{
 									!this.state.right.triggered &&

@@ -2,7 +2,7 @@ export default {
 	baseValues: {
 		difficulty: {
 			loopSpeed: 0.50,
-			gatheringMult: 15.00,
+			gatheringMult: 5.00,
 			buildingSpeed: 0.25,
 			researchSpeed: 0.25,
 		},
@@ -112,8 +112,7 @@ export default {
 			msg: 'Temp',
 			trigger: {
 				resources: {
-					hydrogen: 8,
-					magnesium: 8,
+					hydrogen: 80000000,
 				},
 			},
 		},
@@ -1178,14 +1177,15 @@ export default {
 			},
 		},
 	},
+
 	buildings: {
 		storage: {
 			bool: false,
 			msg: 'Temp',
 			trigger: {
 				resources: {
-					hydrogen: 20,
-					helium: 20,
+					hydrogen: 50,
+					helium: 50,
 				},
 			},
 		},
@@ -1194,12 +1194,13 @@ export default {
 			msg: 'Temp',
 			trigger: {
 				resources: {
-					hydrogen: 20,
-					helium: 20,
+					hydrogen: 10,
+					helium: 10,
 				},
 			},
 		},
 	},
+
 	research: {
 		fusion: {
 			bool: false,
@@ -1212,6 +1213,7 @@ export default {
 			},
 		},
 	},
+
 	functions: {
 		location: {
 			bool: false,
@@ -1220,6 +1222,7 @@ export default {
 				resources: {
 					hydrogen: 200,
 					helium: 120,
+					lithium: 200,
 				},
 			},
 		},
@@ -1230,6 +1233,7 @@ export default {
 				resources: {
 					hydrogen: 20,
 					helium: 20,
+					lithium: 20,
 				},
 			},
 		},

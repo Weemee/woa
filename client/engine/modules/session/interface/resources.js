@@ -3,11 +3,17 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 import {newInput} from '../actions';
-import {Button} from 'reactstrap';
+import {UncontrolledTooltip} from 'reactstrap';
 
 class Resources extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			hover: false,
+			resource: '',
+			index: '',
+		}
 
 		this.table = [
 			'H', 'Hydrogen', '1.008', 1, 1,
@@ -131,10 +137,36 @@ class Resources extends React.Component {
 		];
 
 		this.setStatus = this.setStatus.bind(this);
+		this.setHover = this.setHover.bind(this);
+		this.unsetHover = this.unsetHover.bind(this);
 	}
 
 	setStatus(status, source) {
 		this.props.newInput(`setcharacteraction ${status} ${source}`);
+	}
+
+	tooltipHover() {
+		return (
+			<div id="tooltipHere" style={{position: 'absolute', width: '50%', height: '28%', backgroundColor: 'rgba(0, 0, 0, 1)', top: '1%', left: '13.5%'}}>	
+				Hovering: {this.state.resource}
+			</div>
+		);
+	}
+
+	setHover(res, i) {
+		this.setState({
+			hover: true,
+			resource: res,
+			index: i,
+		});
+	}
+
+	unsetHover() {
+		this.setState({
+			hover: false,
+			resource: '',
+			index: '',
+		});
 	}
 
 	renderElement(res, i) {
@@ -147,7 +179,7 @@ class Resources extends React.Component {
 		const status = this.props.character.actions.current.source === res ? [null, null] : ['gathering', res];
 
 		return (
-			<div key={i} onClick={() => this.setStatus(status[0], status[1])} className="periodicElement" style={{backgroundColor: `${gath}`, left: `${posX}`, top: `${posY}`}}>
+			<div id={res} key={i} onMouseOut={() => this.unsetHover()} onMouseOver={() => this.setHover(res, i)} onClick={() => this.setStatus(status[0], status[1])} className="periodicElement" style={{backgroundColor: `${gath}`, left: `${posX}`, top: `${posY}`}}>
 				<div className="periodicNumber">
 					{(i / 5) + 1}
 				</div>
@@ -183,10 +215,24 @@ class Resources extends React.Component {
 		);
 	}
 
+	renderExtra() {
+		return (
+			<div id="tooltipHere" style={{position: 'absolute', width: '15%', height: '28%', backgroundColor: 'rgba(0, 0, 0, 1)', bottom: '1%', left: '1%'}}>	
+				Dark matter: placeholder
+			</div>
+		);
+	}
+
 	render() {
 		return (
 			<React.Fragment>
+				{
+					this.state.hover &&
+					this.tooltipHover()
+				}
 				{this.renderTable()}
+
+				{this.renderExtra()}
 			</React.Fragment>
 		);
 	}

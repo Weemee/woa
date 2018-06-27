@@ -7,7 +7,7 @@
 		"lint": "eslint engine",
 		"prebuild": "rimraf distribution",
 		"postinstall": "cp -n engine/config.temp.js engine/config.js",
-		"build": "webpack --optimize-minimize --progress --config webpack.production.js"
+		"build": "cross-env NODE_ENV=production webpack --optimize-minimize --progress --config webpack.production.js"
 	},
 	"repository": {
 		"type": "git",

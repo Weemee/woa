@@ -112,7 +112,7 @@ export default {
 			msg: 'Temp',
 			trigger: {
 				resources: {
-					hydrogen: 80000000,
+					hydrogen: 80,
 				},
 			},
 		},

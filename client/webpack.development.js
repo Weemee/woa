@@ -49,6 +49,7 @@ module.exports = {
 		host: '192.168.1.33',
 		port: 8193,
 		historyApiFallback: true,
+		disableHostCheck: true,
 		contentBase: './',
 	},
 

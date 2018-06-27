@@ -4,6 +4,8 @@ Bugs:
 		☐ What: Sometimes gets 'typeof' (string) for 'userID' instead of (integer)
 		☐ Solution: Make sure the 'typeof' (integer) is being sent as 'userID', not 'typeof' (string)
 	☐ @critical Creating a character with the same name as another character breaks everything
+	☐ Timer fucking off to the right, not good
+	☐ Grid broken
 General:
 	☐ Research
 	☐ Talents
@@ -13,7 +15,7 @@ General:
 	☐ Navigation / exploration
 	☐ Warp / reset / black hole
 	☐ Tooltip
-	
+	☐ Character reset
 Utils:
 	☐ An entirely new interface for admins
 	☐ Options to alter game mechanics

@@ -25,6 +25,67 @@ export default class Character {
 		});
 	}
 
+	reset() {
+		//Reset timers (fix this, lazy bastard)
+		this.timers = [];
+		this.timers.push({
+			ID: 'gbc',
+			timer: setInterval(this.Server.timerFacade.garbageCollection, 100, this),
+		});
+
+		//Reset everything
+		const a = this.actions.dataValues;
+		this.setActionStatus(null, null);
+		a.buildingQueue = [];
+		a.researching = [];
+
+		for(const bul in this.buildings.dataValues) {
+			for(const i in this.buildings[bul]) {
+				if(typeof(this.buildings[bul][i]) === 'number') {
+					const b = this.buildings[bul];
+					if(bul === 'storage') {
+						b.max = 100;
+						b.owned = 1;
+					} else {
+						b.max = 100;
+						b.owned = 0;
+					}
+				}
+
+				if(typeof(this.buildings[bul][i]) === 'boolean') {
+					if(this.buildings[bul][i]) {
+						console.log('\nIt is true, changing...');
+						this.buildings[bul][i] = false;
+					}
+				}
+			}
+		}
+
+		for(const res in this.resources.dataValues) {
+			const r = this.resources[res];
+			r.owned = 0;
+			r.max = 100;
+		}
+
+		for(const ele in this.unlockedElements.dataValues) {
+			if(ele !== 'hydrogen') {
+				this.unlockedElements[ele] = false;
+			}
+		}
+
+		for(const bul in this.unlockedBuildings.dataValues) {
+			this.unlockedBuildings[bul] = false;
+		}
+
+		for(const res in this.unlockedResearch.dataValues) {
+			this.unlockedResearch[res] = false;
+		}
+
+		for(const fun in this.unlockedFunctions.dataValues) {
+			this.unlockedFunctions[fun] = false;
+		}
+	}
+
 	getDifficulty(diff) {
 		switch(diff) {
 			case 0:
@@ -95,6 +156,35 @@ export default class Character {
 				this.updateMaxStorage(res);
 			}
 		}
+
+		console.log(this.getPrime(217));
+	}
+
+	getPrime(prime) {
+		let m = -1;
+		
+		if(prime <= 1) {
+			return m;
+		}
+
+		while(prime % 2 == 0) {
+			m = 2;
+
+			prime >>= 1;
+		}
+
+		for(let i = 3; i <= Math.sqrt(prime); i += 2) {
+			while(prime % i == 0) {
+				m = i;
+				prime = prime / i;
+			}
+		}
+
+		if(prime > 2) {
+			m = prime;
+		}
+
+		return m;
 	}
 
 	unmountCharacter() {
@@ -444,17 +534,18 @@ export default class Character {
 			if(cat !== 'baseValues') {
 				for(const item in this.triggers[cat]) {
 					const trigger = this.triggers[cat][item];
+					let bool = this['unlocked' + cat.charAt(0).toUpperCase() + cat.slice(1)].dataValues[item];
 					if(force) {
-						if((trigger.bool) && (typeof trigger.once === 'undefined')) {
+						if((bool) && (typeof trigger.once === 'undefined')) {
 							this.unlockedFeature(item);
 						}
 						continue;
 					}
 	
-					if(!trigger.bool && this.triggerMet(trigger.trigger) && !this.alreadyUnlocked(cat, item)) {
+					if(!bool && this.triggerMet(trigger.trigger) && !this.alreadyUnlocked(cat, item)) {
 						this.unlockedFeature(cat, item);
-						trigger.bool = !trigger.bool;
-						console.log('Unlocked:', item, '', trigger.bool);
+						bool = !bool;
+						console.log('Unlocked:', item, '', bool);
 					}
 				}
 			}

@@ -4,8 +4,7 @@ Bugs:
 		☐ What: Sometimes gets 'typeof' (string) for 'userID' instead of (integer)
 		☐ Solution: Make sure the 'typeof' (integer) is being sent as 'userID', not 'typeof' (string)
 	☐ @critical Creating a character with the same name as another character breaks everything
-	☐ Timer fucking off to the right, not good
-	☐ Grid broken
+	☐ @high Trying to load stuff on session, unauthorized pleb
 General:
 	☐ Research
 	☐ Talents
@@ -13,9 +12,6 @@ General:
 	☐ Achievements
 	☐ Experience / levels
 	☐ Navigation / exploration
-	☐ Warp / reset / black hole
-	☐ Tooltip
-	☐ Character reset
 Utils:
 	☐ An entirely new interface for admins
 	☐ Options to alter game mechanics
@@ -40,26 +36,25 @@ Account:
 		☐ Email sent with link
 Database: 
 	☐ @high Proper error logging
+	☐ @high Move difficulty to db (to make it editable)
+		☐ Type (tutorial, easy, etc)
+		☐ Triggers
+		☐ Buildings
+		☐ Research
 Character:
-	Check:
-		☐ Loading bar
-		☐ @high Generate
-			☐ Resources
-			☐ Unlocks
-			☐ Research
-			☐ Talents
-			☐ Location
-			☐ Stats
-Buildings:
-	☐ Check resources
-	☐ Undo
-		☐ Give back resources
-		☐ Remove building
-	☐ Add to buildings owned
-	☐ Maybe change to base on 1000ms instead of 100ms (or more like, make it fit to diff)
+	General:
+		☐ @critical Reset function, warp / reset / black hole
+	Create:
+		☐ Finish character creation
+		☐ Fix map system for it (at least store it)
+		☐ Fix specialization (make the system somehow)
+	Resources:
+		☐ Make a tiny menu for each element
+			☐ Storage upgrade
+			☐ Add / remove drones
+			☐ Upgrades
+			☐ 
 Improvements:
-	☐ @low ? Re-structure loading to be handled server side (call when loading and loading done) and client only renders
-	☐ @high Fix pleb code structures, make it modular 
 	☐ @high Comment everything
 Security:
 	https://expressjs.com/en/advanced/developing-template-engines.html
@@ -72,10 +67,32 @@ Security:
 		☐ Other
 			☐ Rate-limiting, loopback.io, express-limiter, Strongloop
 			☐ CSRF, csurf
-Other:
-	☐ Improve logging
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+   ✔ Timer fucking off to the right, not good @done(18-06-28 08:20) @project(Bugs)
+   ✔ Grid broken @done(18-06-28 08:20) @project(Bugs)
+   ✔ Tooltip @done(18-06-28 08:11) @project(General)
+   ✘ Character reset @cancelled(18-06-28 08:11) @project(General)
+   ✘ Check: @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Loading bar @cancelled(18-06-28 08:10) @project(Character)
+   ✘ @high Generate @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Resources @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Unlocks @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Research @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Talents @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Location @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Stats @cancelled(18-06-28 08:10) @project(Character)
+   ✔ Buildings: @done(18-06-28 08:10)
+   ✔ Check resources @done(18-06-28 08:10)
+   ✔ Undo @done(18-06-28 08:10)
+   ✘ Give back resources @cancelled(18-06-28 08:10)
+   ✔ Remove building @done(18-06-28 08:10)
+   ✔ Add to buildings owned @done(18-06-28 08:10)
+   ✔ Maybe change to base on 1000ms instead of 100ms (or more like, make it fit to diff) @done(18-06-28 08:10)
+   ✘ @low ? Re-structure loading to be handled server side (call when loading and loading done) and client only renders @cancelled(18-06-28 08:10) @project(Improvements)
+   ✔ @high Fix pleb code structures, make it modular @done(18-06-28 08:09) @project(Improvements)
+   ✘ Other: @cancelled(18-06-28 08:10)
+   ✘ Improve logging @cancelled(18-06-28 08:10)
    ✔ @high Build and structure the rousource panel @done(18-06-26 14:58) @project(Active)
    ✔ Look at ideas.txt @done(18-06-26 14:58) @project(Active)
    ✔ @high Character interface automated @done(18-06-26 14:58) @project(Active)

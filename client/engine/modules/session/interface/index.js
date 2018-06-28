@@ -113,37 +113,37 @@ class Interface extends React.Component {
 			<React.Fragment>
 				{
 					this.state.resources.triggered &&
-					<div className="resourceContainer" style={this.state.resources.fadeIn ? ({display: 'inline'}) : ({display: 'none'})}>
+					<div className="resourceContainer" style={this.state.resources.fadeIn && this.props.character.unlocked.elements.hydrogen ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Resources />
 					</div>
 				}
 				{
 					this.state.top.triggered &&
-					<div className="topContainer" style={this.state.top.fadeIn ? ({display: 'inline'}) : ({display: 'none'})}>
+					<div className="topContainer" style={this.state.top.fadeIn && this.props.character.unlocked.functions.location ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Location />
 					</div>
 				}
 				{
 					this.state.right.triggered &&
-					<div className="rightContainer" style={this.state.right.fadeIn ? ({display: 'inline'}) : ({display: 'none'})}>
+					<div className="rightContainer" style={this.state.right.fadeIn && this.props.character.unlocked.functions.research ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Buildings />
 					</div>
 				}
 				{
 					this.state.middle.triggered &&
-					<div className="middleContainer" style={this.state.middle.fadeIn ? ({display: 'inline'}) : ({display: 'none'})}>
+					<div className="middleContainer" style={this.state.middle.fadeIn && this.props.character.unlocked.functions.talents ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Levels />
 					</div>
 				}
 				{
 					this.state.bottomRight.triggered &&
-					<div className="bRightContainer" style={this.state.bottomRight.fadeIn ? ({display: 'inline'}) : ({display: 'none'})}>
+					<div className="bRightContainer" style={this.state.bottomRight.fadeIn && this.props.character.unlocked.functions.research && this.props.character.buildings.owned.researchlab.complete ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Research />
 					</div>
 				}
 				{
 					this.state.bottomLeft.triggered &&
-					<div className="bLeftContainer" style={this.state.bottomLeft.fadeIn ? ({display: 'inline'}) : ({display: 'none'})}>
+					<div className="bLeftContainer" style={this.state.bottomLeft.fadeIn && this.props.character.unlocked.elements.hydrogen? ({display: 'inline'}) : ({display: 'none'})}>
 						<Stats />
 					</div>
 				}

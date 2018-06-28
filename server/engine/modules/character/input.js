@@ -74,6 +74,7 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 
 async function inputSelectCharacter(socket, character, input, params, inputObject, Server) {
 	const characterToLoad = params[0];
+
 	await Server.socketFacade.logoutOutSession(socket, socket.account.userID);
 	try {
 		if(characterToLoad.stats.firstLogin) {
@@ -101,6 +102,10 @@ async function inputSelectCharacter(socket, character, input, params, inputObjec
 	} catch (err) {
 		Server.onError(err, socket);
 	}
+}
+
+async function inputResetCharacter(socket, character, input, params, inputObject, Server) {
+	Server.characterFacade.reset(socket.account.userID);
 }
 
 async function inputDeleteCharacter(socket, character, input, params, inputObject, Server) {
@@ -277,5 +282,13 @@ export default [
 		onServerInput: false,
 		description: 'Set character action',
 		method: inputSetCharacterAction,
+	},
+	{
+		input: 'resetcharacter',
+		aliases: [],
+		params: [],
+		onServerInput: false,
+		description: 'Reset character',
+		method: inputResetCharacter,
 	},
 ];

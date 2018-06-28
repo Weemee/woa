@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 import {newInput} from '../actions';
-import {UncontrolledTooltip} from 'reactstrap';
+import {Button} from 'reactstrap';
 
 class Resources extends React.Component {
 	constructor(props) {
@@ -139,10 +139,15 @@ class Resources extends React.Component {
 		this.setStatus = this.setStatus.bind(this);
 		this.setHover = this.setHover.bind(this);
 		this.unsetHover = this.unsetHover.bind(this);
+		this.reset = this.reset.bind(this);
 	}
 
 	setStatus(status, source) {
 		this.props.newInput(`setcharacteraction ${status} ${source}`);
+	}
+
+	reset() {
+		this.props.newInput('resetcharacter');
 	}
 
 	tooltipHover() {
@@ -219,6 +224,7 @@ class Resources extends React.Component {
 		return (
 			<div id="tooltipHere" style={{position: 'absolute', width: '15%', height: '28%', backgroundColor: 'rgba(0, 0, 0, 1)', bottom: '1%', left: '1%'}}>	
 				Dark matter: placeholder
+				<Button onClick={() => this.reset()}>Reset</Button>
 			</div>
 		);
 	}

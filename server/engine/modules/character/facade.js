@@ -299,6 +299,11 @@ export default class CharacterFacade {
 		}
 	}
 
+	async reset(userID) {
+		const character = this.get(userID);
+		character.reset();
+	}
+
 	async edit(userID, characterName, newName) {
 		const nameFormat = /^[\u00C0-\u017Fa-zA-Z'][\u00C0-\u017Fa-zA-Z-' ]+[\u00C0-\u017Fa-zA-Z']?$/g;
 

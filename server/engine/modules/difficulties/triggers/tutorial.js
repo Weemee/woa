@@ -9,7 +9,6 @@ export default {
 	},
 	elements: {
 		helium: {
-			bool: false,
 			msg: 'Temp',
 			trigger: {
 				resources: {
@@ -112,7 +111,7 @@ export default {
 			msg: 'Temp',
 			trigger: {
 				resources: {
-					hydrogen: 80,
+					hydrogen: 80000000,
 				},
 			},
 		},

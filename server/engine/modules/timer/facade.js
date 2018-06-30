@@ -11,8 +11,15 @@ export default class TimerFacade {
 		this.garbageCollection = this.garbageCollection.bind(this);
 	}
 
-	addLoop(character) {
-		character.initCharacter();
+	async addLoop(character) {
+		const init = await character.initCharacter();
+		if(!init) {
+			console.log('Could not add loop for: ', character.userID);
+			return;
+		}
+
+		const factor = character.getModifier('loopSpeed');
+
 		this.managedTimers.push({
 			char: character,
 			timer: setInterval(() => {
@@ -20,7 +27,7 @@ export default class TimerFacade {
 					character.checkUpdates();
 					this.Server.characterFacade.updateClient(character.userID);
 				}
-			}, 1000 * character.getModifier('loopSpeed')),
+			}, 1000 * factor),
 		});
 
 		console.log('Added game loop for character: ', character.userID);

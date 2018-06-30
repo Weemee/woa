@@ -8,6 +8,15 @@ export default (sequelize, DataTypes) => {
 		name: {
 			type: DataTypes.STRING,
 		},
+		category: {
+			type: DataTypes.STRING,
+		},
+		msg: {
+			type: DataTypes.STRING,
+		},
+		trigger: {
+			type: DataTypes.JSON,
+		},
 		createdAt: {
 			type: DataTypes.DATE,
 		},
@@ -17,13 +26,11 @@ export default (sequelize, DataTypes) => {
 	},
 	{
 		freezeTableName: true,
+		null: false,
 	});
 
-	DifficultyTriggers.beforeCreate(async(difficultyTriggers, options) => {
+	DifficultyTriggers.beforeCreate(async(difficultyTriggers) => {
 		difficultyTriggers.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
-		if (difficultyTriggers.name) {
-			difficultyTriggers.nameLowerCase = difficultyTriggers.name.toLowerCase();
-		}
 	});
 	
 	return DifficultyTriggers;

@@ -1,4 +1,3 @@
-import BuildingList from './buildinglist';
 import BuildingInputs from './input';
 import Building from './object';
 
@@ -6,7 +5,8 @@ export default class BuildingsFacade {
 	constructor(Server) {
 		this.Server = Server;
 
-		this.templates = {};
+		this.buildingList = {};
+		this.templates = [];
 	}
 
 	init() {
@@ -19,18 +19,21 @@ export default class BuildingsFacade {
 	}
 
 	getBuilding(item) {
-		return this.templates[item];
+		for(let i = 0; i < this.templates.length; i++) {
+			if(this.templates[i].object.id === item) {
+				return this.templates[i].object;
+			}
+		}
 	}
 
 	getBuildingTime(item) {
+		console.log(this.templates[item].stats.time);
 		return this.templates[item].stats.time;
 	}
 
-	loadList(diff) {
-		for(const cat in BuildingList) {
-			if(cat === diff) {
-				this.templates = new Building(null, BuildingList[cat]);
-			}
-		}
+	loadList(object) {
+		//Fix
+		this.templates.push(new Building(null, object));
+		console.log(this.templates);
 	}
 }

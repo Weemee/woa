@@ -1,31 +1,5 @@
 export default {
-	baseValues: {
-		difficulty: {
-			loopSpeed: 0.50,
-			gatheringMult: 5.00,
-			buildingSpeed: 0.25,
-			researchSpeed: 0.25,
-		},
-	},
 	elements: {
-		helium: {
-			msg: 'Temp',
-			trigger: {
-				resources: {
-					hydrogen: 8,
-				},
-			},
-		},
-		lithium: {
-			bool: false,
-			msg: 'Temp',
-			trigger: {
-				resources: {
-					hydrogen: 8,
-					magnesium: 8,
-				},
-			},
-		},
 		beryllium: {
 			bool: false,
 			msg: 'Temp',
@@ -1172,87 +1146,6 @@ export default {
 				resources: {
 					hydrogen: 8,
 					magnesium: 8,
-				},
-			},
-		},
-	},
-
-	buildings: {
-		storage: {
-			bool: false,
-			msg: 'Temp',
-			trigger: {
-				resources: {
-					hydrogen: 50,
-					helium: 50,
-				},
-			},
-		},
-		researchlab: {
-			bool: false,
-			msg: 'Temp',
-			trigger: {
-				resources: {
-					hydrogen: 10,
-					helium: 10,
-				},
-			},
-		},
-	},
-
-	research: {
-		fusion: {
-			bool: false,
-			msg: 'Temp',
-			trigger: {
-				resources: {
-					hydrogen: 30,
-					helium: 40,
-				},
-			},
-		},
-	},
-
-	functions: {
-		location: {
-			bool: false,
-			msg: 'Temp',
-			trigger: {
-				resources: {
-					hydrogen: 200,
-					helium: 120,
-					lithium: 200,
-				},
-			},
-		},
-		talents: {
-			bool: false,
-			msg: 'Temp',
-			trigger: {
-				resources: {
-					hydrogen: 20,
-					helium: 20,
-					lithium: 20,
-				},
-			},
-		},
-		research: {
-			bool: false,
-			msg: 'Temp',
-			trigger: {
-				resources: {
-					hydrogen: 5,
-					helium: 5,
-				},
-			},
-		},
-		fuel: {
-			bool: false,
-			msg: 'Temp',
-			trigger: {
-				resources: {
-					hydrogen: 200,
-					helium: 120,
 				},
 			},
 		},

@@ -1,7 +1,7 @@
 export default {
 	researchlab: {
 		name: 'Research lab',
-		description: 'Allows you to research things. Not the best lab, since it\'s made out of hydrogen and helium, so watch out for explosions and laughter.',
+		description: 'Allows you to research things. Not the best lab, since it is made out of hydrogen and helium, so watch out for explosions and laughter.',
 		type: 'crafting',
 		subtype: 'building',
 		stats: {

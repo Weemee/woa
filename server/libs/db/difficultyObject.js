@@ -5,14 +5,17 @@ export default (sequelize, DataTypes) => {
 		name: {
 			type: DataTypes.STRING,
 		},
-		base: {
-			type: DataTypes.JSON,
-			defaultValue: {
-				loopSpeed: 1,
-				gatheringMult: 1,
-				buildingSpeed: 1,
-				researchSpeed: 1,
-			}
+		loopSpeed: {
+			type: DataTypes.FLOAT,
+		},
+		gatheringMult: {
+			type: DataTypes.FLOAT,
+		},
+		buildingSpeed: {
+			type: DataTypes.FLOAT,
+		},
+		researchSpeed: {
+			type: DataTypes.FLOAT,
 		},
 		createdAt: {
 			type: DataTypes.DATE,
@@ -23,6 +26,7 @@ export default (sequelize, DataTypes) => {
 	},
 	{
 		freezeTableName: true,
+		null: false,
 	});
 
 	DifficultyObject.beforeCreate(async(difficultyObject, options) => {

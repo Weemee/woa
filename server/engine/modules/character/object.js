@@ -1,5 +1,4 @@
 import uuid from 'uuid/v4';
-import Triggers from './triggers';
 
 export default class Character {
 	constructor(Server, character) {
@@ -12,7 +11,7 @@ export default class Character {
 		//Move to internal
 		this.paused = true;
 
-		this.triggers = null;
+		this.triggers = [];
 
 		this.availableBuildings = {};
 
@@ -86,36 +85,20 @@ export default class Character {
 		}
 	}
 
-	getDifficulty(diff) {
-		switch(diff) {
-			case 0:
-				console.log('tutorial');
-				return 'tutorial';
-			case 1:
-				console.log('veryeasy');
-				return 'veryeasy';
-			case 2:
-				console.log('easy');
-				return 'easy';
-			case 3:
-				console.log('moderate');
-				return 'moderate';
-			case 4:
-				console.log('prettyhard');
-				return 'prettyhard';
-			case 5:
-				console.log('kappa');
-				return 'kappa';
-		}
-	}
+	async initCharacter() {
+		const diff = await this.Server.characterFacade.getDifficulty(this.difficulty);
 
-	initCharacter() {
-		if(!this.triggers) {
-			this.triggers = Triggers[this.getDifficulty(this.difficulty)];
+		for(let i = 0; i < diff.buildings.length; i++) {
+			this.Server.buildingFacade.loadList(this.stripFetched(diff.buildings[i], 'diffID'));
+		}
+		//this.Server.researchFacade.loadList(this.stripFetched(derp.research[0], 'diffID'));
+
+		for(let i = 0; i < diff.triggers.length; i++) {
+			const filter = this.stripFetched(diff.triggers[i], 'diffID');
+			this.triggers.push(filter);
 		}
 
-		this.Server.buildingFacade.loadList(this.getDifficulty(this.difficulty));
-		this.Server.researchFacade.loadList(this.getDifficulty(this.difficulty));
+		this.difficulty = this.stripFetched(diff.base, 'diff');
 
 		for(const item in this.stripFetched(this.unlockedBuildings)) {
 			const state = this.stripFetched(this.unlockedBuildings)[item];
@@ -157,7 +140,10 @@ export default class Character {
 			}
 		}
 
-		console.log(this.getPrime(217));
+		//console.log(this.getPrime(217));
+		console.log(this.getModifier('loopSpeed'));
+
+		return true;
 	}
 
 	getPrime(prime) {
@@ -208,13 +194,21 @@ export default class Character {
 		});
 	}
 
-	stripFetched(object) {
+	stripFetched(object, specialID) {
 		if(!object) {
 			return {};
 		}
 		
 		delete object.dataValues['id'];
-		delete object.dataValues['charID'];
+
+		if(!specialID) {
+			delete object.dataValues['charID'];
+		} else if (specialID === 'diff') {
+
+		} else {
+			delete object.dataValues[specialID];
+		}
+
 		delete object.dataValues['createdAt'];
 		delete object.dataValues['updatedAt'];
 
@@ -226,7 +220,7 @@ export default class Character {
 			userID: this.userID,
 			name: this.name,
 			spec: this.spec,
-			difficulty: this.difficulty,
+			difficulty: this.difficulty.name,
 			stats: this.stripFetched(this.stats),
 			levels: this.stripFetched(this.levels),
 			location: this.stripFetched(this.location),
@@ -251,15 +245,13 @@ export default class Character {
 		if(!mod) {
 			return;
 		}
-
-		const diff = this.triggers.baseValues.difficulty;
-
+		
 		switch(mod) {
 			case 'loopSpeed':
-				return diff.loopSpeed;
+				return this.difficulty.loopSpeed;
 
 			case 'gathering':
-				return diff.gatheringMult;
+				return this.difficulty.gatheringMult;
 		}
 	}
 
@@ -530,24 +522,20 @@ export default class Character {
 	}
 
 	checkTriggers(force = false) {
-		for(const cat in this.triggers) {
-			if(cat !== 'baseValues') {
-				for(const item in this.triggers[cat]) {
-					const trigger = this.triggers[cat][item];
-					let bool = this['unlocked' + cat.charAt(0).toUpperCase() + cat.slice(1)].dataValues[item];
-					if(force) {
-						if((bool) && (typeof trigger.once === 'undefined')) {
-							this.unlockedFeature(item);
-						}
-						continue;
-					}
-	
-					if(!bool && this.triggerMet(trigger.trigger) && !this.alreadyUnlocked(cat, item)) {
-						this.unlockedFeature(cat, item);
-						bool = !bool;
-						console.log('Unlocked:', item, '', bool);
-					}
+		for(const index in this.triggers) {
+			const object = this.triggers[index];
+			let bool = this['unlocked' + object.category.charAt(0).toUpperCase() + object.category.slice(1)][object.name];
+			if(force) {
+				if((bool) && (typeof trigger.once === 'undefined')) {
+					this.unlockedFeature(object.name);
 				}
+				continue;
+			}
+
+			if(!bool && this.triggerMet(object.trigger) && !this.alreadyUnlocked(object.category, object.name)) {
+				this.unlockedFeature(object.category, object.name);
+				bool = !bool;
+				console.log('Unlocked:', object.name, '', bool);
 			}
 		}
 	}

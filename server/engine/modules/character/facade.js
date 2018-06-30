@@ -258,11 +258,94 @@ export default class CharacterFacade {
 		const character = await this.databaseLoad(parseInt(userID), characterName);
 		if (character === null) {
 			return null;
-			}
+		}
 
 		const newCharacter = new Character(this.Server, character);
 
 		return newCharacter;
+	}
+
+	async getDifficulty(diff) {
+		diff++;
+		const d = await this.databaseDiff(diff);
+		if (d.base === null || d.triggers === null || d.buildings === null) {
+			return null;
+		}
+
+		return d;
+	}
+
+	async databaseDiff(diff) {
+		try {
+			const base = await db.difficultyObject.findOne({
+				where:
+				{
+					id:
+					{
+						[db.Op.like]: [diff]
+					}
+				}
+			}).then (result => {
+				return result;
+			}).catch(err => {
+				if (err) {
+					return 'Error load DB.', err;
+				}
+			});
+
+			const triggers = await db.difficultyTriggers.findAll({
+				where:
+				{
+					diffID:
+					{
+						[db.Op.like]: [base.id]
+					}
+				},
+			}).then (result => {
+				return result;
+			}).catch(err => {
+				if (err) {
+					return 'Error load DB.', err;
+				}
+			});
+
+			const buildings = await db.difficultyBuildings.findAll({
+				where:
+				{
+					diffID:
+					{
+						[db.Op.like]: [base.id]
+					}
+				},
+			}).then (result => {
+				return result;
+			}).catch(err => {
+				if (err) {
+					return 'Error load DB.', err;
+				}
+			});
+
+			return {
+				base: base,
+				triggers: triggers,
+				buildings: buildings,
+			}
+		}
+		catch (err) {
+			this.Server.onError(err);
+		}
+	}
+
+	stripFetched(object) {
+		if(!object) {
+			return {};
+		}
+		
+		delete object.dataValues['id'];
+		delete object.dataValues['createdAt'];
+		delete object.dataValues['updatedAt'];
+
+		return object.dataValues;
 	}
 
 	async databaseLoad(userID, characterName) {

@@ -12,6 +12,24 @@ General:
 	☐ Achievements
 	☐ Experience / levels
 	☐ Navigation / exploration
+	Map:
+		☐ Re-factor it
+		☐ Make the multiverses unqiue in the sense of based on people
+		☐ Everything under, can also be based on people, but like a family tree
+		☐ Make the multiverse actually generate things, like the position of the solar system in a universe
+		Include:
+			(J.O-H.AN):
+				☐ Type: Super cluster
+				☐ Name: Just an Ordinary, Handsome and Awesome Neutron
+				☐ Description: It's the super cluster which has a balance between positivity and negativity, like a neutron!
+			(MI-LEN:E):
+				☐ Type: Super cluster
+				☐ Name: Most Intensive, Labile Energy Nucleus: Extruded
+				☐ Description: The result of multiple black hole extrusions, pushing down all matter into a densed space of raw energy.
+			(MORROM):
+				☐ Type: Multiverse
+				☐ Name: Many Octaves Randomly Redestributed Orbit Mass
+				☐ Description: The first multiverse, holding everything we know
 Utils:
 	☐ An entirely new interface for admins
 	☐ Options to alter game mechanics
@@ -36,14 +54,7 @@ Account:
 		☐ Email sent with link
 Database: 
 	☐ @high Proper error logging
-	☐ @high Move difficulty to db (to make it editable)
-		☐ Type (tutorial, easy, etc)
-		☐ Triggers
-		☐ Buildings
-		☐ Research
 Character:
-	General:
-		☐ @critical Reset function, warp / reset / black hole
 	Create:
 		☐ Finish character creation
 		☐ Fix map system for it (at least store it)
@@ -69,6 +80,12 @@ Security:
 			☐ CSRF, csurf
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+   ✔ @high Move difficulty to db (to make it editable) @done(18-06-30 19:33) @project(Database)
+   ✔ Type (tutorial, easy, etc) @done(18-06-30 19:33) @project(Database)
+   ✔ Triggers @done(18-06-30 19:33) @project(Database)
+   ✔ Buildings @done(18-06-30 19:33) @project(Database)
+   ✔ Research @done(18-06-30 19:33) @project(Database)
+   ✔ @critical Reset function, warp / reset / black hole @done(18-06-29 15:35) @project(Character.General)
    ✔ Timer fucking off to the right, not good @done(18-06-28 08:20) @project(Bugs)
    ✔ Grid broken @done(18-06-28 08:20) @project(Bugs)
    ✔ Tooltip @done(18-06-28 08:11) @project(General)

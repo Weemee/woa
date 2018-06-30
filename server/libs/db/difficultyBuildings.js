@@ -5,8 +5,8 @@ export default (sequelize, DataTypes) => {
 		diffID: {
 			type: DataTypes.INTEGER,
 		},
-		name: {
-			type: DataTypes.STRING,
+		object: {
+			type: DataTypes.JSON,
 		},
 		createdAt: {
 			type: DataTypes.DATE,
@@ -17,13 +17,11 @@ export default (sequelize, DataTypes) => {
 	},
 	{
 		freezeTableName: true,
+		null: false,
 	});
 
-	DifficultyBuildings.beforeCreate(async(difficultyBuildings, options) => {
+	DifficultyBuildings.beforeCreate(async(difficultyBuildings) => {
 		difficultyBuildings.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
-		if (difficultyBuildings.name) {
-			difficultyBuildings.nameLowerCase = difficultyBuildings.name.toLowerCase();
-		}
 	});
 	
 	return DifficultyBuildings;

@@ -5,6 +5,12 @@ export default (sequelize, DataTypes) => {
 		name: {
 			type: DataTypes.STRING,
 		},
+		description: {
+			type: DataTypes.TEXT,
+		},
+		spoiler: {
+			type: DataTypes.TEXT,
+		},
 		loopSpeed: {
 			type: DataTypes.FLOAT,
 		},

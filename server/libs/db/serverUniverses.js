@@ -10,20 +10,36 @@ export default (sequelize, DataTypes) =>
 		{
 			type: DataTypes.STRING,
 		},
+		fullName:
+		{
+			type: DataTypes.STRING,
+		},
+		posX:
+		{
+			type: DataTypes.DOUBLE,
+		},
+		posY:
+		{
+			type: DataTypes.DOUBLE,
+		},
+		posZ:
+		{
+			type: DataTypes.DOUBLE,
+		},
 		gridSizeX:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 7,
 		},
 		gridSizeY:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 7,
 		},
 		gridSizeZ:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 7,
 		},
 		ownedBy:
 		{
@@ -51,6 +67,7 @@ export default (sequelize, DataTypes) =>
 	},
 	{
 		freezeTableName: true,
+		nulle: false,
 	});
 
 	ServerUniverse.a = [

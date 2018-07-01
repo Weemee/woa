@@ -6,20 +6,24 @@ export default (sequelize, DataTypes) =>
 		{
 			type: DataTypes.STRING,
 		},
+		fullName:
+		{
+			type: DataTypes.STRING,
+		},
 		gridSizeX:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 7,
 		},
 		gridSizeY:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 7,
 		},
 		gridSizeZ:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 7,
 		},
 		createdAt:
 		{
@@ -32,6 +36,7 @@ export default (sequelize, DataTypes) =>
 	},
 	{
 		freezeTableName: true,
+		null: false,
 	});
 
 	ServerMultiverse.a = [

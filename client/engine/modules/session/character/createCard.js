@@ -7,7 +7,7 @@ class CreateCard extends React.Component {
 
 		this.state = {
 			name: '',
-			serverSelect: '',
+			serverSelect: 'random',
 			friendName: '',
 			serverType: 'random',
 			difficulty: '',
@@ -16,14 +16,6 @@ class CreateCard extends React.Component {
 		};
 
 		this.specs = [
-			{
-				name: 'Arithmetic',
-				description: 'is a very smart person when it comes to numbers! 10+11=101 (or 5 if you prefer), easy!',
-			},
-			{
-				name: 'Capitalist',
-				description: 'is the one the loves money. More money, more love. More love, more fun!',
-			},
 			{
 				name: 'Casual',
 				description: 'is a casual pleb. Nothing special...',
@@ -50,47 +42,34 @@ class CreateCard extends React.Component {
 			},
 		];
 
-		this.diffs = [
-			{
-				diff: 'Tutorial',
-				description: 'This difficulty is for those who are new to the game. Things will be easy to acquire and progression will be fast. However, there is an upper limit. Once a certain point has been reached, there is no more content on this difficulty. You would have to restart with a NEW charcter.',
-			},
-			{
-				diff: 'Very easy',
-				description: 'This difficulty is for those who want things to go faster. This does not mean the game will be very easy, just implying that progression will be way faster than any other difficulties.',
-			},
-			{
-				diff: 'Easy',
-				description: 'This difficulty is for those who want an average experience, but still faster than the Moderate difficulty. Everything is pretty much doubled (in favor for speed and progression)',
-			},
-			{
-				diff: 'Moderate',
-				description: 'This difficulty is for those who want the default values for everything in the game.',
-			},
-			{
-				diff: 'Pretty hard',
-				description: 'This difficulty is for those who easily gets bored if it is too easy and want something more of a challenge. The way you progress through the game on this difficulty is different from the other difficulties',
-			},
-			{
-				diff: 'Kappa',
-				description: 'Yeah... Are you sure? Ok, have fun! (this difficulty implements new mechanics)',
-			},
-		];
-
 		this.return = this.return.bind(this);
-		this.renderServerOptions = this.renderServerOptions.bind(this);
 	}
 
 	return(spec) {
+		let sendServer = this.state.serverSelect;
+		if(this.state.difficulty === '0') {
+			sendServer = 'tutorial';
+		}
+
+		if(this.state.friendName) {
+			sendServer = 'friend' + this.state.friendName;
+		}
+
+		console.log(sendServer);
+
 		return {
 			object: {
 				name: this.state.name,
-				server: (this.state.difficulty === '0' ? 'tutorial' : this.state.serverSelect),
+				server: sendServer,
 				spec: spec,
 				difficulty: this.state.difficulty,
 			},
 			type: 'create',
 		};
+	}
+
+	firstUppercase(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
 	renderServerOptions() {
@@ -106,6 +85,7 @@ class CreateCard extends React.Component {
 							onChange={(e) => {
 								this.setState({
 									serverType: e.target.value,
+									serverSelect: e.target.value,
 								});
 							}}
 							value='random'
@@ -162,6 +142,7 @@ class CreateCard extends React.Component {
 							onChange={(e) => {
 								this.setState({
 									serverType: e.target.value,
+									serverSelect: '',
 								});
 							}}
 							value='friend'
@@ -201,14 +182,15 @@ class CreateCard extends React.Component {
 								onChange={(e) => {
 									this.setState({
 										difficulty: e.target.value,
+										spoiler: false,
 									});
 								}}
 								value={this.state.difficulty}
 							>
 								<option value="" defaultValue hidden>Select difficulty</option>
 								{
-									Object.keys(this.diffs).map((index) => {
-										return <option key={index} value={index}>{this.diffs[index].diff}</option>
+									Object.keys(this.props.difficulties).map((index) => {
+										return <option key={index} value={index}>{this.firstUppercase(this.props.difficulties[index].name)}</option>
 									})
 								}
 							</Input>
@@ -219,8 +201,8 @@ class CreateCard extends React.Component {
 								this.renderServerOptions()
 							) : (
 								<div>
-									If the difficulty <b>'{this.diffs[this.state.difficulty].diff}'</b> is selected, you can't select any server option. <br />
-									The <b>'{this.diffs[this.state.difficulty].diff}'</b> is <b>only</b> meant to help you understand the game and learn the interface.
+									If the difficulty <b>'{this.firstUppercase(this.props.difficulties[this.state.difficulty].name)}'</b> is selected, you can't select any server option. <br />
+									The <b>{this.firstUppercase(this.props.difficulties[this.state.difficulty].name)}</b> is <b>only</b> meant to help you understand the game and learn the interface.
 								</div>
 							)
 						}
@@ -233,6 +215,7 @@ class CreateCard extends React.Component {
 									onChange={(e) => {
 										this.setState({
 											friendName: e.target.value,
+											serverSelect: 'friend',
 										});
 									}}
 									value={this.state.friendName}
@@ -254,8 +237,8 @@ class CreateCard extends React.Component {
 							>
 								<option value="" defaultValue hidden>Select specialization</option>
 								{
-									Object.keys(this.specs).map((index) => {
-										return <option key={index} value={index}>{this.specs[index].name}</option>
+									Object.keys(this.props.specializations).map((index) => {
+										return <option key={index} value={index}>{this.firstUppercase(this.props.specializations[index].name)}</option>
 									})
 								}
 							</Input>
@@ -264,15 +247,16 @@ class CreateCard extends React.Component {
 						{
 							this.state.difficulty &&
 							<div>
-								Difficulty: <b>{this.diffs[this.state.difficulty].diff}</b> <br />
-								{this.diffs[this.state.difficulty].description}
+								Difficulty: <b>{this.firstUppercase(this.props.difficulties[this.state.difficulty].name)}</b> <br />
+								{this.props.difficulties[this.state.difficulty].description}
 							</div>
 						}
 						{
-							this.state.difficulty === '5' &&
+							this.state.difficulty !== '' &&
+							this.props.difficulties[this.state.difficulty].spoiler &&
 							<div>
 								<br />
-								If you want a <b>HUGE</b> spoiler of what the <b>{this.diffs[this.state.difficulty].diff}</b> difficulty brings, click the button.
+								If you want a <b>HUGE</b> spoiler of what the <b>{this.props.difficulties[this.state.difficulty].name}</b> difficulty brings, click the button.
 								<br />
 								{
 									!this.state.spoiler ? (
@@ -290,7 +274,7 @@ class CreateCard extends React.Component {
 									) : (
 										<div>
 											<br />
-											<p>The spoiler is...</p>
+											<p>{this.props.difficulties[this.state.difficulty].spoiler}</p>
 										</div>
 									)	
 								}
@@ -300,8 +284,8 @@ class CreateCard extends React.Component {
 							this.state.specialization &&
 							<div>
 								<br />
-								Description: <b>{this.specs[this.state.specialization].name}</b> <br />
-								The <b>{this.specs[this.state.specialization].name}</b> {this.specs[this.state.specialization].description}
+								Description: <b>{this.firstUppercase(this.props.specializations[this.state.specialization].name)}</b> <br />
+								The <b>'{this.props.specializations[this.state.specialization].name}'</b> {this.props.specializations[this.state.specialization].description}
 							</div>
 						}
 						{

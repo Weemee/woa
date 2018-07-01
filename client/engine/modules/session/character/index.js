@@ -1,6 +1,8 @@
 import {
 	CHARACTER_GET_LIST,
 	GET_SERVER_LIST,
+	GET_SPEC_LIST,
+	GET_DIFF_LIST,
 	CHARACTER_LOGOUT,
 } from 'libs/constants';
 
@@ -64,6 +66,16 @@ class Character extends React.Component {
 
 		this.props.socketSend({
 			type: GET_SERVER_LIST,
+			payload: null,
+		});
+
+		this.props.socketSend({
+			type: GET_SPEC_LIST,
+			payload: null,
+		});
+
+		this.props.socketSend({
+			type: GET_DIFF_LIST,
 			payload: null,
 		});
 	}
@@ -221,7 +233,7 @@ class Character extends React.Component {
 							<Notes />
 							{
 								this.state.case.type === 'create' &&
-								<CreateCard onClick={this.handleInput} serverMaps={this.props.serverMaps}/>
+								<CreateCard onClick={this.handleInput} serverMaps={this.props.serverMaps} specializations={this.props.specializations} difficulties={this.props.difficulties}/>
 							}
 							{
 								this.state.case.type === 'preview' &&
@@ -290,6 +302,8 @@ function mapStateToProps(state) {
 		socket: state.app.socket,
 		character: state.character.selected,
 		characterList: state.character.list,
+		specializations: state.character.specializations,
+		difficulties: state.character.difficulties,
 		loggedIn: state.account.loggedIn,
 	};
 }

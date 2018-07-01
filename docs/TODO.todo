@@ -13,23 +13,7 @@ General:
 	☐ Experience / levels
 	☐ Navigation / exploration
 	Map:
-		☐ Re-factor it
-		☐ Make the multiverses unqiue in the sense of based on people
-		☐ Everything under, can also be based on people, but like a family tree
 		☐ Make the multiverse actually generate things, like the position of the solar system in a universe
-		Include:
-			(J.O-H.AN):
-				☐ Type: Super cluster
-				☐ Name: Just an Ordinary, Handsome and Awesome Neutron
-				☐ Description: It's the super cluster which has a balance between positivity and negativity, like a neutron!
-			(MI-LEN:E):
-				☐ Type: Super cluster
-				☐ Name: Most Intensive, Labile Energy Nucleus: Extruded
-				☐ Description: The result of multiple black hole extrusions, pushing down all matter into a densed space of raw energy.
-			(MORROM):
-				☐ Type: Multiverse
-				☐ Name: Many Octaves Randomly Redestributed Orbit Mass
-				☐ Description: The first multiverse, holding everything we know
 Utils:
 	☐ An entirely new interface for admins
 	☐ Options to alter game mechanics
@@ -56,15 +40,13 @@ Database:
 	☐ @high Proper error logging
 Character:
 	Create:
-		☐ Finish character creation
 		☐ Fix map system for it (at least store it)
-		☐ Fix specialization (make the system somehow)
 	Resources:
 		☐ Make a tiny menu for each element
 			☐ Storage upgrade
 			☐ Add / remove drones
 			☐ Upgrades
-			☐ 
+			☐ Something
 Improvements:
 	☐ @high Comment everything
 Security:
@@ -80,6 +62,24 @@ Security:
 			☐ CSRF, csurf
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+   ✔ Re-factor it @done(18-07-01 13:24) @project(General.Map)
+   ✔ Make the multiverses unqiue in the sense of based on people @done(18-07-01 13:24) @project(General.Map)
+   ✔ Everything under, can also be based on people, but like a family tree @done(18-07-01 13:24) @project(General.Map)
+   ✔ Finish character creation @done(18-07-01 13:22) @project(Character.Create)
+   ✔ Fix specialization (make the system somehow) @done(18-07-01 13:22) @project(Character.Create)
+   ✔ Include: @done(18-07-01 08:47) @project(General.Map)
+   ✔ (J.O-H.AN): @done(18-07-01 08:47) @project(General.Map)
+   ✔ Type: Super cluster @done(18-07-01 08:47) @project(General.Map)
+   ✔ Name: Just an Ordinary, Handsome and Awesome Neutron @done(18-07-01 08:47) @project(General.Map)
+   ✔ Description: It's the super cluster which has a balance between positivity and negativity, like a neutron! @done(18-07-01 08:47) @project(General.Map)
+   ✔ (MI-LEN:E): @done(18-07-01 08:43) @project(General.Map)
+   ✔ Type: Super cluster @done(18-07-01 08:43) @project(General.Map)
+   ✔ Name: Most Intensive, Labile Energy Nucleus: Extruded @done(18-07-01 08:43) @project(General.Map)
+   ✔ Description: The result of multiple black hole extrusions, pushing down all matter into a densed space of raw energy. @done(18-07-01 08:43) @project(General.Map)
+   ✔ (MORROM): @done(18-07-01 08:42) @project(General.Map)
+   ✔ Type: Multiverse @done(18-07-01 08:42) @project(General.Map)
+   ✔ Name: Many Octaves Randomly Redestributed Orbit Mass @done(18-07-01 08:42) @project(General.Map)
+   ✔ Description: The first multiverse, holding everything we know @done(18-07-01 08:42) @project(General.Map)
    ✔ @high Move difficulty to db (to make it editable) @done(18-06-30 19:33) @project(Database)
    ✔ Type (tutorial, easy, etc) @done(18-06-30 19:33) @project(Database)
    ✔ Triggers @done(18-06-30 19:33) @project(Database)

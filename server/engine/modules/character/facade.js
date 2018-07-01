@@ -8,6 +8,10 @@ import {
 	CHARACTER_GET_LIST,
 	CHARACTER_LIST,
 	CHARACTER_LEFT_SERVER,
+	GET_DIFF_LIST,
+	DIFFICULTY_LIST,
+	GET_SPEC_LIST,
+	SPECIALIZATION_LIST,
 } from 'libs/constants';
 
 import Character from './object';
@@ -41,6 +45,10 @@ export default class CharacterFacade {
 		switch(action.type) {
 			case CHARACTER_GET_LIST:
 				return this.getCharacterList(socket, action);
+			case GET_DIFF_LIST:
+				return this.getSpecializationList(socket, action);
+			case GET_SPEC_LIST:
+				return this.getDifficultyList(socket, action);
 		}
 
 		return null;
@@ -111,6 +119,67 @@ export default class CharacterFacade {
 				userID,
 			},
 		});
+	}
+
+	async getDifficultyList(socket, action) {
+		try {
+			const list = await db.difficultyObject.findAll({
+
+			}).then(async(result) =>
+			{
+				return result;
+			}).catch(err => {
+				if(err) {
+					return err;
+				}
+			});
+
+			this.Server.socketFacade.dispatchToSocket(socket, {
+				type: DIFFICULTY_LIST,
+				payload: list.map((obj) => {
+					return {
+						name: obj.name,
+						description: obj.description,
+						spoiler: obj.spoiler,
+						loopSpeed: obj.loopSpeed,
+						gatheringMult: obj.gatheringMult,
+						buildingsSpeed: obj.buildingSpeed,
+						researchSpeed: obj.researchSpeed,
+					};
+				}),
+			});
+		} catch(err) {
+			this.Server.onError(err, socket);
+		}
+	}
+
+	async getSpecializationList(socket, action) {
+		try {
+			const list = await db.specializations.findAll({
+
+			}).then(async(result) =>
+			{
+				return result;
+			}).catch(err => {
+				if(err) {
+					return err;
+				}
+			});
+
+			this.Server.socketFacade.dispatchToSocket(socket, {
+				type: SPECIALIZATION_LIST,
+				payload: list.map((obj) => {
+					return {
+						name: obj.name,
+						description: obj.description,
+						talentPoints: obj.talentPoints,
+						talentLock: obj.talentLock,
+					};
+				}),
+			});
+		} catch(err) {
+			this.Server.onError(err, socket);
+		}
 	}
 
 	async getCharacterList(socket, action) {
@@ -507,10 +576,21 @@ export default class CharacterFacade {
 	async create(userID, characterName, characterSpec, characterDifficulty, characterServer) {
 		//Move this check to input::facade, since multiple names will be checked
 		const nameFormat = /^[\u00C0-\u017Fa-zA-Z][\u00C0-\u017Fa-zA-Z]+[\u00C0-\u017Fa-zA-Z]?$/g;
-		
+		let server;
+
 		if(!nameFormat.test(characterName)) {
 			return 'Only letters allowed!';
 		}
+
+		if(characterServer === 'random') {
+			server = this.Server.serverMapFacade.randomizeLocation();
+		} else if (characterServer.slice(0, 6) === 'friend') {
+			server = this.Server.serverMapFacade.friendLocation(characterServer.slice(6));
+		} else {
+			server = this.Server.serverMapFacade.serverLocation(characterServer);
+		}
+
+		console.log(server);
 
 		const character = await this.databaseCreate(userID, characterName, characterSpec, characterDifficulty, characterServer);
 		

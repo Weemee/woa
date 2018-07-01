@@ -140,7 +140,7 @@ export default class Character {
 			}
 		}
 
-		//console.log(this.getPrime(217));
+		console.log(this.getPrime(49));
 		console.log(this.getModifier('loopSpeed'));
 
 		return true;

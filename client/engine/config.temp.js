@@ -1,11 +1,4 @@
-const dev = true;
-let host = '';
-
-if(dev) {
-	host = 'http://localhost';
-} else {
-	host = 'http://yourOwnHost.com';
-}
+const host = 'localhost || http://yourhost.whatever';
 
 const Config = {
 	socket: {

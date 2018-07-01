@@ -207,7 +207,12 @@ export default class InputFacade {
 							if(!temp) {
 								return 'No server';
 							}
-							console.log(temp);
+
+							if(temp.slice(0, 6) === 'friend') {
+								//console.log('\nYou are playing with your friend, ', temp.slice(6));
+							} else {
+								//console.log(temp);
+							}
 						break;
 
 						case 'building':

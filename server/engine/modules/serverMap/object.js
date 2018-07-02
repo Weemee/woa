@@ -1,9 +1,11 @@
 export default class ServerMap {
-	constructor(Server, data) {
+	constructor(Server, server, data) {
 		this.Server = Server;
 
+		this.data = data;
+
 		Object.assign(this, {
-			...data.dataValues,
+			...server.dataValues,
 		});
 
 		if (this.id) {
@@ -13,6 +15,9 @@ export default class ServerMap {
 
 	init() {
 		console.log('\nRunning server data init for: ', this.name);
+		if(this.data.length !== 0) {
+			//console.log(this.data[1].supercluster[0].localcluster[0].interstellar[0].galaxy[0].solarsystem);
+		}
 	}
 
 	loadServer() {

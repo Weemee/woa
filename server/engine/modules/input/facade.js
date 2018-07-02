@@ -1,5 +1,5 @@
 import {parsedJsonData} from 'libs/utils/functions';
-import {ACCOUNT_INPUT} from 'libs/constants';
+import {ACCOUNT_INPUT, SET_NOTES} from 'libs/constants';
 
 export default class InputFacade {
 	constructor(Server) {
@@ -78,8 +78,15 @@ export default class InputFacade {
 			const parsedParams = await this.validate(character, params, this.inputs[input].params, socket);
 
 			if(typeof parsedParams === 'string') {
-				this.Server.eventToSocket(socket, 'error', parsedParams);
-				return this.Server.eventToSocket(socket, 'multiline', this.getInfo(input));
+				return this.Server.socketFacade.dispatchToSocket(socket, {
+					type: SET_NOTES,
+					payload: {
+						message: parsedParams,
+						type: 'error',
+					},
+				});
+				/*this.Server.eventToSocket(socket, 'error', parsedParams);
+				return this.Server.eventToSocket(socket, 'multiline', this.getInfo(input));*/
 			}
 			return this.inputs[input].method(
 				socket,

@@ -29,62 +29,69 @@ export default class ServerMapFacade {
 
 	async loadAllServerMaps() {
 		const firstLoad = await this.getMultiverses();
+
 		for(let a = 0; a < firstLoad.length; a++) {
-			let multiverse = [];
+			//Universes pushed in
 			let universe = [];
-			let supercluster = [];
-			let localcluster = [];
-			let interstellar = [];
-			let galaxy = [];
-			let solarsystem = [];
-			let stars = [];
 			const secondLoad = await this.getUniverses(firstLoad[a].dataValues.id);
-			console.log(secondLoad.length);
-
+			
 			for(let b = 0; b < secondLoad.length; b++) {
+				//Superclusters pushed in
+				let supercluster = [];
 				const thirdLoad = await this.getSuperclusters(secondLoad[b].dataValues.id);
-				console.log(thirdLoad.length);
-
+				
 				for(let c = 0; c < thirdLoad.length; c++) {
+					//Localclusters pushed in
+					let localcluster = [];
 					const fourthLoad = await this.getLocalclusters(thirdLoad[c].dataValues.id);
-					console.log(fourthLoad.length);
-
+					
 					for(let d = 0; d < fourthLoad.length; d++) {
+						//Interstellars pushed in
+						let interstellar = [];
 						const fifthLoad = await this.getInterstellar(fourthLoad[d].dataValues.id);
-						console.log(fifthLoad.length);
-
+						
 						for(let e = 0; e < fifthLoad.length; e++) {
+							//Galaxies pushed in
+							let galaxy = [];
 							const sixthLoad = await this.getGalaxy(fifthLoad[e].dataValues.id);
-							console.log(sixthLoad.length);
-
+							
 							for(let f = 0; f < sixthLoad.length; f++) {
+								//Solarsystems pushed in
+								let solarsystem = [];
 								const seventhLoad = await this.getSolarsystem(sixthLoad[f].dataValues.id);
-								console.log(seventhLoad.length);
 
 								for(let g = 0; g < seventhLoad.length; g++) {
+									//Stars pushed in
+									let stars = [];
 									const eigthLoad = await this.getStars(seventhLoad[g].dataValues.id);
-									console.log(eigthLoad.length);
 
 									for(let h = 0; h < eigthLoad.length; h++) {
-										solarsystem.push(eigthLoad[h].dataValues.name);
+										//console.log('\nA STAR:', eigthLoad[h].dataValues);
+										stars.push({...eigthLoad[h].dataValues});
 									}
-									galaxy.push(solarsystem);
+									//console.log('\nSTARS', stars);
+									solarsystem.push({...seventhLoad[g].dataValues, stars});
 								}
-								interstellar.push(galaxy);
+								//console.log('\nSOLARSYSTEMS', solarsystem);
+								galaxy.push({...sixthLoad[f].dataValues, solarsystem});
 							}
-							localcluster.push(interstellar);
+							//console.log('\nGALAXIES', galaxy);
+							interstellar.push({...fifthLoad[e].dataValues, galaxy});
 						}
-						supercluster.push(localcluster);
+						//console.log('\nINTERSTELLARS', interstellar);
+						localcluster.push({...fourthLoad[d].dataValues, interstellar});
 					}
-					universe.push(supercluster);
+					//console.log('\nLOCALCLUSTERS', localcluster);
+					supercluster.push({...thirdLoad[c].dataValues, localcluster});
 				}
-				multiverse.push(universe);
+				//console.log('\nSUPERCLUSTERS', supercluster);
+				universe.push({...secondLoad[b].dataValues, supercluster});
 			}
-			this.test.push(multiverse);
-		}
+			//console.log('\nUNIVERSES', universe);
 
-		const server = new ServerMap(this.Server, firstLoad[1]);
-		this.serverMaps.push(server);
+			const server = new ServerMap(this.Server, firstLoad[a], universe);
+			this.serverMaps.push(server);
+		}
 	}
 
 	async getStars(id) {

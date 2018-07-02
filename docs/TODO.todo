@@ -3,8 +3,20 @@ Bugs:
 		☐ Where (file, function(s), callback[boolean]): CharacterFacade, {manage, remove, save}, yes
 		☐ What: Sometimes gets 'typeof' (string) for 'userID' instead of (integer)
 		☐ Solution: Make sure the 'typeof' (integer) is being sent as 'userID', not 'typeof' (string)
-	☐ @critical Creating a character with the same name as another character breaks everything
-	☐ @high Trying to load stuff on session, unauthorized pleb
+  ☐ @high Trying to load stuff on session, unauthorized pleb
+  ☐ @medium Edit character doesn't work
+Client modules:
+  ☐ Change the location of 'session' when 'in-game'. Should resolve other issues
+  ☐ Utils: Validation checker, like notes
+  ☐ Admin: Move to own folder / space
+  ☐ Designer: Move to own folder / space
+  ☐ Interface: Index: Re-factor into modules
+  ☐ Keybinds: Make them work
+  ☐ Esc menu: Make it possible with different options (requires keybinds)
+  ☐ Character preview: Showcase more from it, make it prettier
+  ☐ Session: Show players online at the top
+  ☐ Server map: Some sort of notification of where you are
+  ☐ News: Fix a news section for patch notes
 General:
 	☐ Research
 	☐ Talents
@@ -12,12 +24,11 @@ General:
 	☐ Achievements
 	☐ Experience / levels
 	☐ Navigation / exploration
-	Map:
-		☐ Make the multiverse actually generate things, like the position of the solar system in a universe
 Utils:
-	☐ An entirely new interface for admins
 	☐ Options to alter game mechanics
-	☐ Options to balance the game
+  ☐ Options to balance the game
+Server:
+  ☐ @high Server soft reload after admin update
 Login:
 	☐ @low Methods
 		☐ Twitch
@@ -39,8 +50,6 @@ Account:
 Database: 
 	☐ @high Proper error logging
 Character:
-	Create:
-		☐ Fix map system for it (at least store it)
 	Resources:
 		☐ Make a tiny menu for each element
 			☐ Storage upgrade
@@ -62,6 +71,12 @@ Security:
 			☐ CSRF, csurf
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
+   ✔ @critical Creating a character with the same name as another character breaks everything @done(18-07-02 19:13) @project(Bugs)
+   ✔ An entirely new interface for admins @done(18-07-02 18:46) @project(Utils)
+   ✔ Map: @done(18-07-02 16:21) @project(General)
+   ✔ Make the multiverse actually generate things, like the position of the solar system in a universe @done(18-07-02 16:21) @project(General)
+   ✔ Create: @done(18-07-02 16:21) @project(Character)
+   ✔ Fix map system for it (at least store it) @done(18-07-02 16:20) @project(Character.Create)
    ✔ Re-factor it @done(18-07-01 13:24) @project(General.Map)
    ✔ Make the multiverses unqiue in the sense of based on people @done(18-07-01 13:24) @project(General.Map)
    ✔ Everything under, can also be based on people, but like a family tree @done(18-07-01 13:24) @project(General.Map)

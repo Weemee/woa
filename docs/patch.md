@@ -13,6 +13,39 @@
 
 <h4>General</h4>
 
+* Character creation has been improved
+	* Now generates server location accordingly to your choice
+	* Validation checking on name before sending
+	* Specializations and difficulties is no longer static on the client, it's sent from the server
+
+<h4>Bugs</h4>
+
+* Fixed a bug that caused unexpected behaviour in navigation during playthrough while playing on the 'tutorial' difficulty
+
+## Server
+
+<h4>General</h4>
+
+* Refactored 
+
+<h4>Bugs</h4>
+
+* Fixed a bug that caused a server crash when creating a character with a name that already exists
+* Fixed a bug that caused unintentional status messages being sent during character creation
+
+## Misc/Dev/Boring stuff
+
+***
+=================================================
+
+##### *Version 0.0.515*
+
+## General
+
+## Client
+
+<h4>General</h4>
+
 * Create character now sends name, specialization, server and difficulty
 * Now visually displays what is new (sort of, still prototype). It only tracks what's new from original base state (with other words, a newly created character). So every time you log in for now, it will display what is new. No major annoyance (in my personal opinion), but it will be fixed in the future. For now, it "works"
 

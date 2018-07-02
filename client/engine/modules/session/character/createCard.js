@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardBody, CardTitle, FormGroup, Input, Label, Button} from 'reactstrap';
+import {Alert, Card, CardBody, CardTitle, FormGroup, Input, Label, Button} from 'reactstrap';
 
 class CreateCard extends React.Component {
 	constructor(props) {
@@ -14,33 +14,6 @@ class CreateCard extends React.Component {
 			specialization: '',
 			spoiler: false,
 		};
-
-		this.specs = [
-			{
-				name: 'Casual',
-				description: 'is a casual pleb. Nothing special...',
-			},
-			{
-				name: 'Collector',
-				description: 'is someone to keep an eye on. Before you know it, everything there is to collect is gone in a jiffy. Speedy speedy!',
-			},
-			{
-				name: 'Engineer',
-				description: 'is THE tinkerer. Without the Engineer, there would not be anything else. Please thank the Engineer next time you her/him.',
-			},
-			{
-				name: 'Explorer',
-				description: 'is maybe not around for the cruical times. But who cares? There is an entire universe to explore, let us go!',
-			},
-			{
-				name: 'Farmer',
-				description: 'is not the person you bring to a party. Farming, harvesting, producing and repeat. No time for parties, out me way!',
-			},
-			{
-				name: 'Scientist',
-				description: 'is perhaps the most tricky individual to understand. What is the science for? Any specific subject? NO, FOR SCIENCE!',
-			},
-		];
 
 		this.return = this.return.bind(this);
 	}
@@ -166,13 +139,19 @@ class CreateCard extends React.Component {
 							<Input
 								type="text"
 								placeholder="Character name"
+								invalid={this.state.invalidName}
 								onChange={(e) => {
 									this.setState({
 										name: e.target.value,
+										invalidName: (e.target.value.length > 16 || e.target.value.length < 3) ? true : false,
 									});
 								}}
 								value={this.state.name}
 							/>
+							{
+								this.state.invalidName &&
+								<Alert color="danger">Name is not valid!</Alert>
+							}
 						</FormGroup>
 
 						<FormGroup>
@@ -290,11 +269,13 @@ class CreateCard extends React.Component {
 						}
 						{
 							this.state.difficulty === '0' ? (
+								!this.state.invalidName &&
 								this.state.name &&
 								this.state.difficulty &&
 								this.state.specialization &&
 								<Button className="themeButton" block={true} onClick={() => this.props.onClick(this.return(this.specs[this.state.specialization].name))}>Create character</Button>
 							) : (
+								!this.state.invalidName &&
 								this.state.name &&
 								this.state.difficulty &&
 								this.state.serverSelect &&

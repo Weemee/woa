@@ -582,16 +582,6 @@ export default class CharacterFacade {
 			return 'Only letters allowed!';
 		}
 
-		if(characterServer === 'random') {
-			server = this.Server.serverMapFacade.randomizeLocation();
-		} else if (characterServer.slice(0, 6) === 'friend') {
-			server = this.Server.serverMapFacade.friendLocation(characterServer.slice(6));
-		} else {
-			server = this.Server.serverMapFacade.serverLocation(characterServer);
-		}
-
-		console.log(server);
-
 		const character = await this.databaseCreate(userID, characterName, characterSpec, characterDifficulty, characterServer);
 		
 		if(!character) {
@@ -602,9 +592,27 @@ export default class CharacterFacade {
 			return character;
 		}
 
+		if(character === 'taken') {
+			return character;
+		}
+
+		if(characterServer === 'random') {
+			server = this.Server.serverMapFacade.randomizeLocation();
+		} else if (characterServer.slice(0, 6) === 'friend') {
+			server = this.Server.serverMapFacade.friendLocation(characterServer.slice(6));
+		} else {
+			server = this.Server.serverMapFacade.serverLocation(characterServer);
+		}
+
+		console.log(server);
+
 		const newCharacter = new Character(this.Server, character);
 
 		return newCharacter;
+	}
+
+	async databaseCheck(characterName) {
+
 	}
 
 	async databaseCreate(userID, characterName, characterSpec, characterDifficulty, characterServer) {
@@ -641,59 +649,65 @@ export default class CharacterFacade {
 			if(checkReserved) {
 				return 'reserved';
 			}
-			else {
-				const newCharacter = await db.characterObject.create({
-					userID: userID,
-					name: characterName,
-					spec: characterSpec,
-					difficulty: characterDifficulty,
-					stats: {
-						status: 'offline',
-					},
-					levels: {
-	
-					},
-					location: {
-	
-					},
-					research: {
 
-					},
-					resources: {
-						
-					},
-					buildings: {
-
-					},
-					talents: {
-	
-					},
-					actions: {
-
-					},
-					unlockedBuildings: {
-	
-					},
-					unlockedElements: {
-	
-					},
-					unlockedFunctions: {
-	
-					},
-					unlockedResearch: {
-	
-					},
-				},
+			const checkTaken = await db.characterObject.findOne({
+				where:
 				{
-					include: await db.include('characterObject'),
-				}).catch(err => {
-					if(err) {
-						console.log(err);
-						return err;
+					name:
+					{
+						[db.Op.like]: [characterName]
 					}
-				});
-				return newCharacter;
+				}
+			}).catch(err => {
+				if(err) {
+					return 'Error reserved names.';
+				}
+			});
+
+			if(checkTaken) {
+				return 'taken';
 			}
+
+			const newCharacter = await db.characterObject.create({
+				userID: userID,
+				name: characterName,
+				spec: characterSpec,
+				difficulty: characterDifficulty,
+				stats: {
+					status: 'offline',
+				},
+				levels: {
+				},
+				location: {
+				},
+				research: {
+				},
+				resources: {	
+				},
+				buildings: {
+				},
+				talents: {
+				},
+				actions: {
+				},
+				unlockedBuildings: {
+				},
+				unlockedElements: {
+				},
+				unlockedFunctions: {
+				},
+				unlockedResearch: {
+				},
+			},
+			{
+				include: await db.include('characterObject'),
+			}).catch(err => {
+				if(err) {
+					console.log(err);
+					return err;
+				}
+			});
+			return newCharacter;
 		}
 	}
 

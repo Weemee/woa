@@ -31,9 +31,15 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 					type: 'error',
 				},
 			});
-		}
-
-		if(newCharacter === 'reserved') {
+		} else if(newCharacter === 'taken') {
+			return Server.socketFacade.dispatchToSocket(socket, {
+				type: SET_NOTES,
+				payload: {
+					message: 'That name is taken, sorry.',
+					type: 'error',
+				},
+			});
+		} else if(newCharacter === 'reserved') {
 			return Server.socketFacade.dispatchToSocket(socket, {
 				type: SET_NOTES,
 				payload: {
@@ -41,8 +47,7 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 					type: 'error',
 				},
 			});
-		}
-		else {
+		} else {
 			Server.socketFacade.dispatchToSocket(socket, {
 				type: CHARACTER_CREATE_SUCCESS,
 				payload: {
@@ -217,7 +222,7 @@ export default [
 		params: [
 			{
 				name: 'Name',
-				rules: 'required|minimumlength:3|maximumlength:32',
+				rules: 'required|minimumlength:3|maximumlength:16',
 			},
 			{
 				spec: 'Specialization',

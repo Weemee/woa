@@ -65,13 +65,17 @@ export default class InputFacade {
 			return this.Server.eventToSocket(socket, 'error', `Input ${input} is invalid.`);
 		}
 
+		const admin = this.Server.socketFacade.checkAdmin(socket);
+
 		const character = this.Server.characterFacade.get(socket.account.userID);
 
 		const onServerInput = typeof this.inputs[input].onServerInput === 'undefined' ? true : this.inputs[input].onServerInput;
 
-		if(!character && onServerInput)
-		{
-			return;
+		if(!admin) {
+			if(!character && onServerInput)
+			{
+				return;
+			}
 		}
 
 		try {

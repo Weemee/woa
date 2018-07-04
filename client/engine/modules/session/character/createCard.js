@@ -273,14 +273,14 @@ class CreateCard extends React.Component {
 								this.state.name &&
 								this.state.difficulty &&
 								this.state.specialization &&
-								<Button className="themeButton" block={true} onClick={() => this.props.onClick(this.return(this.specs[this.state.specialization].name))}>Create character</Button>
+								<Button className="themeButton" block={true} onClick={() => this.props.onClick(this.return(this.props.specializations[this.state.specialization].name))}>Create character</Button>
 							) : (
 								!this.state.invalidName &&
 								this.state.name &&
 								this.state.difficulty &&
 								this.state.serverSelect &&
 								this.state.specialization &&
-								<Button className="themeButton" block={true} onClick={() => this.props.onClick(this.return(this.specs[this.state.specialization].name))}>Create character</Button>
+								<Button className="themeButton" block={true} onClick={() => this.props.onClick(this.return(this.props.specializations[this.state.specialization].name))}>Create character</Button>
 							)
 						}
 					</CardBody>

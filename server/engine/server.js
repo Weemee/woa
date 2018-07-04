@@ -1,22 +1,22 @@
 import Promise from 'bluebird';
 import child_process from 'child_process';
+import nodemon from 'nodemon';
 
 import SocketFacade from './modules/socket/facade';
 import CharacterFacade from './modules/character/facade';
-import UserFacade from './modules/account/facade';
+import AccountFacade from './modules/account/facade';
 import InputFacade from './modules/input/facade';
 import ServerMapFacade from './modules/serverMap/facade';
 import TimerFacade from './modules/timer/facade';
 import ThemeFacade from './modules/theme/facade';
 import BuildingFacade from './modules/building/facade';
 import ResearchFacade from './modules/research/facade';
+import AdminFacade from './modules/admin/facade';
 
 import {newEvent} from './actions';
 
 class Server {
-
 	constructor(server, config, log, autoIni = true) {
-
 		this.config = config;
 
 		if (process.env.NODE_ENV === 'development') {
@@ -29,7 +29,7 @@ class Server {
 		this.timers = [];
 
 		this.socketFacade = new SocketFacade(this, server);
-		this.userFacade = new UserFacade(this);
+		this.accountFacade = new AccountFacade(this);
 		this.characterFacade = new CharacterFacade(this);
 		this.inputFacade = new InputFacade(this);
 		this.serverMapFacade = new ServerMapFacade(this);
@@ -37,6 +37,7 @@ class Server {
 		this.themeFacade = new ThemeFacade(this);
 		this.buildingFacade = new BuildingFacade(this);
 		this.researchFacade = new ResearchFacade(this);
+		this.adminFacade = new AdminFacade(this);
 
 		if (autoIni) {
 			this.init();
@@ -53,6 +54,7 @@ class Server {
 		await this.themeFacade.init();
 		await this.buildingFacade.init();
 		await this.researchFacade.init();
+		await this.adminFacade.init();
 
 		this.setupServerTimers();
 
@@ -113,7 +115,7 @@ class Server {
 	}
 
 	shutdown() {
-		this.Server.log.info('Received shutdown signal, Running shutdown procedure');
+		this.Server.log.info('Received shutdown signal! Running shutdown procedure!');
 		return this.characterFacade.saveAll();
 	}
 }

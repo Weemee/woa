@@ -1,5 +1,4 @@
 import Promise from 'bluebird';
-import moment from 'moment';
 
 import {
 	CHARACTER_UPDATE,
@@ -263,7 +262,7 @@ export default class CharacterFacade {
 		this.managedCharacters.push(character);
 		this.Server.timerFacade.addLoop(character);
 		character.pauseResume();
-		const test = await this.Server.userFacade.setLastCharPlayed(character.userID, character.id);
+		const test = await this.Server.accountFacade.setLastCharPlayed(character.userID, character.id);
 		console.log('\nLast character played: ', test, '\n');
 
 		this.dispatchUpdateCharacterList(character.userID);
@@ -535,7 +534,7 @@ export default class CharacterFacade {
 			return false;
 		}
 
-		const test = await this.Server.userFacade.removeLastCharPlayed(userID);
+		const test = await this.Server.accountFacade.removeLastCharPlayed(userID);
 		console.log(test);
 
 		return characterObject;

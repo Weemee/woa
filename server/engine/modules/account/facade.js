@@ -9,13 +9,13 @@ import {
 
 import db from 'libs/db';
 
-export default class UserFacade {
+export default class AccountFacade {
 	constructor(Server) {
 		this.Server = Server;
 
 		Server.socketFacade.on('dispatch', this.handleDispatch.bind(this));
 
-		this.Server.log.info('UserFacade::constructor loaded');
+		this.Server.log.info('AccountFacade::constructor loaded');
 	}
 
 	handleDispatch(socket, action) {
@@ -27,10 +27,10 @@ export default class UserFacade {
 		return null;
 	}
 
-	setLastCharPlayed(userID, charID) {
+	async setLastCharPlayed(userID, charID) {
 		console.log('\nAccountID: ', userID, ' & charID: ', charID, '\n');
 
-		const updated = db.accountObject.update({
+		const updated = await db.accountObject.update({
 			lastCharPlayed: charID,
 		},
 		{
@@ -50,10 +50,32 @@ export default class UserFacade {
 		return updated;
 	}
 
-	removeLastCharPlayed(userID) {
+	async getAccount(userID) {
+		//I am stupid, missed had 'account' instead of 'const account'
+		//while getting thrown off why it didn't work and threw an 
+		//error in the catch block of 'async authenticate' in this
+		//file... GENIOUS!
+		const account = await db.accountObject.findOne({
+			where:
+			{
+				id:
+				{
+					[db.Op.like]: [userID],
+				}
+			}
+		}).catch(err => {
+			if(err) {
+				return err;
+			}
+		});
+
+		return account.dataValues;
+	}
+
+	async removeLastCharPlayed(userID) {
 		console.log('\nAccountID: ', userID, '\n');
 
-		const updated = db.accountObject.update({
+		const updated = await db.accountObject.update({
 			lastCharPlayed: null,
 		},
 		{
@@ -91,6 +113,7 @@ export default class UserFacade {
 
 			try {
 				account = await db.accountObject.findOne({where: {id: decoded.id, sessionToken: decoded.sessionToken}});
+				console.log('\nAccount level:', account.dataValues.accountLevel, '\n');
 
 				if (!account) {
 					return this.Server.socketFacade.dispatchToSocket(socket, {

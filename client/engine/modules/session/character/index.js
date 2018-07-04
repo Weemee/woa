@@ -82,16 +82,30 @@ class Character extends React.Component {
 
 	static getDerivedStateFromProps(props, state) {
 		//Can probably be improved, can't be arsed right now <.<
-		if(props.account !== state.account) {
+		if(props.account) {
+			const type = state.case.type;
 			console.log('\nAccount, charID: ', props.account.lastCharPlayed);
+			console.log('\nAdmin:', props.admin);
 			if(props.characterList) {
 				console.log('Character list exists!');
 				if(!state.case.preview) {
 					console.log('No preview');
-					if(!props.account.lastCharPlayed) {
-						console.log('Last character played: ', props.account.lastCharPlayed);
+					if(props.characterList !== state.characterList) {
 						if(!props.notes) {
 							console.log('\tNo notes');
+							if(props.account.lastCharPlayed) {
+								const lastPlayed = props.characterList.find((obj) => obj.charID === props.account.lastCharPlayed);
+								console.log('No new last played character: ', lastPlayed);
+								if(!lastPlayed) {
+									return null;
+								}
+								return {
+									case: {
+										type: type,
+										data: lastPlayed.name,
+									}
+								};
+							}
 							return null;
 						}
 						if(props.notes.type === 'success') {
@@ -115,6 +129,7 @@ class Character extends React.Component {
 						console.log('Difference in character list (props & state !==), updating...');
 						const a = props.characterList.length - 1;
 						console.log('Props: ', props.characterList[a].name);
+
 						return {
 							characterList: props.characterList,
 							case: {
@@ -125,16 +140,28 @@ class Character extends React.Component {
 					}
 					else {
 						const lastPlayed = props.characterList.find((obj) => obj.charID === props.account.lastCharPlayed);
-						console.log('No found, last played character: ', lastPlayed);
+						console.log('No new last played character: ', lastPlayed);
 						if(!lastPlayed) {
 							return null;
 						}
 						return {
 							case: {
-								type: 'preview',
+								type: type,
 								data: lastPlayed.name,
 							}
 						};
+					}
+				}
+			}
+
+			if(props.account.lastCharPlayed) {
+				if(props.characterList) {
+					const lastPlayed = props.characterList.find((obj) => obj.charID === props.account.lastCharPlayed);
+					console.log('\nLast woho:', lastPlayed);
+					return {
+						case: {
+							data: lastPlayed.name,
+						}
 					}
 				}
 			}
@@ -173,10 +200,6 @@ class Character extends React.Component {
 
 	editCharacter(name, newName) {
 		this.props.newInput(`editcharacter ${name} ${newName}`);
-		this.props.socketSend({
-			type: GET_SERVER_LIST,
-			payload: null,
-		});
 	}
 
 	handleInput(input) {
@@ -300,6 +323,7 @@ function mapStateToProps(state) {
 		notes: state.app.notes,
 		serverMaps: state.session.servers,
 		socket: state.app.socket,
+		admin: state.app.adminLoad,
 		character: state.character.selected,
 		characterList: state.character.list,
 		specializations: state.character.specializations,

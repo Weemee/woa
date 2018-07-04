@@ -285,8 +285,11 @@ export default class ServerMapFacade {
 	}
 
 	randomizeLocation() {
-		const rndMultiverse = this.serverMaps[this.getRandomInt(this.serverMaps.length)].dataValues.name;
-		console.log(this.serverMaps);
+		//console.log(this.serverMaps.length);
+		//console.log('\nThis:', this.serverMaps[this.getRandomInt(this.serverMaps.length)]);
+		const rndMultiverse = this.serverMaps[this.getRandomInt(this.serverMaps.length)].name;
+		//console.log(rndMultiverse);
+		//console.log('\nThat:', this.serverMaps);
 		return {
 			multiverse: {
 				x: this.getRandomInt(7),
@@ -339,43 +342,43 @@ export default class ServerMapFacade {
 				x: 0,
 				y: 0,
 				z: 0,
-				name: 'random'
+				name: friend,
 			},
 			universe: {
 				x: 0,
 				y: 0,
 				z: 0,
-				name: 'random'
+				name: 'random',
 			},
 			supercluster: {
 				x: 0,
 				y: 0,
 				z: 0,
-				name: 'random'
+				name: 'random',
 			},
 			localcluster: {
 				x: 0,
 				y: 0,
 				z: 0,
-				name: 'random'
+				name: 'random',
 			},
 			galaxy: {
 				x: 0,
 				y: 0,
 				z: 0,
-				name: 'random'
+				name: 'random',
 			},
 			interstellar: {
 				x: 0,
 				y: 0,
 				z: 0,
-				name: 'random'
+				name: 'random',
 			},
 			solarsystem: {
 				x: 0,
 				y: 0,
 				z: 0,
-				name: 'random'
+				name: 'random',
 			},
 		};
 	}

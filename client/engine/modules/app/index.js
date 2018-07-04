@@ -12,8 +12,9 @@ import AccountContainer from '../account';
 import SessionContainer from '../session';
 import Header from './header';
 import Feedback from './feedback';
+import Admin from '../admin';
 
-import {Button, ButtonGroup, Form, Input, FormGroup, Modal, ModalHeader, ModalBody} from 'reactstrap';
+import {Modal, ModalHeader, ModalBody} from 'reactstrap';
 import {MdBugReport, MdBrush, MdFeedback, MdVerifiedUser} from 'react-icons/lib/md';
 import Loader from '../ui/loader';
 import {SketchPicker} from 'react-color';
@@ -26,10 +27,6 @@ class App extends React.Component {
 		super(props);
 
 		this.state = {
-			tabSelected: 1,
-			subject: '',
-			message: '',
-			sent: false,
 			visible: false,
 			modalFeedback: false,
 			adminMode: false,
@@ -145,120 +142,6 @@ class App extends React.Component {
 		);
 	}
 
-	tabSelect(tabSelected) {
-		this.setState({
-			tabSelected: tabSelected,
-		});
-	 }
-
-	renderTabs() {
-		return (
-			<div>
-				<ButtonGroup>
-					<Button className="btn btn-info" onClick={() => this.tabSelect(1)} active={this.state.tabSelected === 1}>General</Button>
-					<Button className="btn btn-info" onClick={() => this.tabSelect(2)} active={this.state.tabSelected === 2}>Balancing</Button>
-					<Button className="btn btn-info" onClick={() => this.tabSelect(3)} active={this.state.tabSelected === 3}>Suggestion</Button>
-					<Button className="btn btn-info" onClick={() => this.tabSelect(4)} active={this.state.tabSelected === 4}>Complain</Button>
-				</ButtonGroup>
-			</div>
-		);
-	}
-
-	adminSend(msg) {
-		alert(msg);
-	}
-
-	renderGeneralTab() {
-		return (
-			<div>
-				<br/>
-				<Form>
-					<FormGroup>
-						<Input
-							onChange={(e) => {
-								this.setState({
-									subject: e.target.value,
-								});
-							}}
-							value={this.state.subject}
-							placeholder="Subject"
-						/>
-					</FormGroup>
-					<FormGroup>
-						<Input
-							onChange={(e) => {
-								this.setState({
-									message: e.target.value,
-								});
-							}}
-							value={this.state.message}
-							placeholder="Feedback"
-						/>
-					</FormGroup>
-					{
-						!this.state.sent &&
-						this.state.message &&
-						this.state.subject &&
-						<Button className="btn btn-info" style={{float: 'right'}} onClick={() => this.adminSend(this.state.message)} color="themeButton">Send</Button>
-					}
-				</Form>
-			</div>
-		);
-	}
-
-	renderBalancingTab() {
-		return (
-			<div>
-				Balancing
-			</div>
-		);
-	}
-
-	renderSuggestionTab() {
-		return (
-			<div>
-				Suggestion
-			</div>
-		);
-	}
-
-	renderComplainTab() {
-		return (
-			<div>
-				Complain
-			</div>
-		);
-	}
-
-	renderAdminMode() {
-		let render;
-
-		switch(this.state.tabSelected) {
-			case 1:
-				render = this.renderGeneralTab();
-			break;
-
-			case 2:
-				render = this.renderBalancingTab();
-			break;
-
-			case 3:
-				render = this.renderSuggestionTab();
-			break;
-
-			case 4:
-				render = this.renderComplainTab();
-			break;
-		}
-		//Temporary
-		return (
-			<div id="adminArea">
-				{this.renderTabs()}
-				{render}
-			</div>
-		);
-	}
-
 	renderPage() {
 		return (
 			<React.Fragment>
@@ -292,7 +175,7 @@ class App extends React.Component {
 							this.props.account &&
 							this.props.account.accountLevel === 3 &&
 							this.state.adminMode &&
-							this.renderAdminMode()
+							<Admin />
 						}
 						{
 							this.props.account &&

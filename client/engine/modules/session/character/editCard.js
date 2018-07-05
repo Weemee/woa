@@ -24,7 +24,7 @@ class EditCard extends React.Component {
 	render() {
 		return (
 			<div>
-				<Card>
+				<Card className="themeContainer">
 					<CardBody>
 					<CardTitle>Edit character</CardTitle>
 						Current name: {this.props.character.name}
@@ -59,9 +59,9 @@ class EditCard extends React.Component {
 						</FormGroup>
 						{
 							this.state.confirm === 'CONFIRM' ? (
-								<Button color='blue' onClick={() => this.props.onClick(this.return())}>Edit character</Button>
+								<Button className="themeButton" onClick={() => this.props.onClick(this.return())}>Edit character</Button>
 							) : (
-								<Button color='blue' disabled>Edit character</Button>
+								<Button className="themeDisabledButton" disabled>Edit character</Button>
 							)
 						}
 					</CardBody>

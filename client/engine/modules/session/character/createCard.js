@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardBody, CardTitle, FormGroup, Input, Button, Progress} from 'reactstrap';
+import {Alert, Card, CardBody, CardTitle, FormGroup, Input, Label, Button} from 'reactstrap';
 
 class CreateCard extends React.Component {
 	constructor(props) {
@@ -7,98 +7,206 @@ class CreateCard extends React.Component {
 
 		this.state = {
 			name: '',
-			serverSelect: '',
+			serverSelect: 'random',
+			friendName: '',
+			serverType: 'random',
+			difficulty: '',
 			specialization: '',
+			spoiler: false,
 		};
 
 		this.return = this.return.bind(this);
 	}
 
 	return(spec) {
+		let sendServer = this.state.serverSelect;
+		if(this.state.difficulty === '0') {
+			sendServer = 'tutorial';
+		}
+
+		if(this.state.friendName) {
+			sendServer = 'friend' + this.state.friendName;
+		}
+
+		console.log(sendServer);
+
 		return {
 			object: {
 				name: this.state.name,
-				server: this.state.serverSelect,
+				server: sendServer,
 				spec: spec,
+				difficulty: this.state.difficulty,
 			},
 			type: 'create',
 		};
 	}
 
-	render() {
-		const specs = [
-			{
-				name: 'Arithmetic',
-				description: 'is a very smart person when it comes to numbers! 01+11=100 (or 4 if you prefer), easy!',
-			},
-			{
-				name: 'Capitalist',
-				description: 'is the one the loves money. More money, more love. More love, more fun!',
-			},
-			{
-				name: 'Casual',
-				description: 'is a casual pleb. Nothing special...',
-			},
-			{
-				name: 'Collector',
-				description: 'is someone to keep an eye on. Before you know it, everything there is to collect is gone in a jiffy. Speedy speedy!',
-			},
-			{
-				name: 'Engineer',
-				description: 'is THE tinkerer. Without the Engineer, there would not be anything else. Please thank the Engineer next time you her/him.',
-			},
-			{
-				name: 'Explorer',
-				description: 'is maybe not around for the cruical times. But who cares? There is an entire universe to explore, let us go!',
-			},
-			{
-				name: 'Farmer',
-				description: 'is not the person you bring to a party. Farming, harvesting, producing and repeat. No time for parties, out me way!',
-			},
-			{
-				name: 'Scientist',
-				description: 'is perhaps the most tricky individual to understand. What is the science for? Any specific subject? NO, FOR SCIENCE!',
-			},
-		];
+	firstUppercase(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
 
+	renderServerOptions() {
 		return (
 			<div>
-				<Card>
+				<Label>Location & Server</Label>
+				<FormGroup check>
+					<Label check>
+						<Input
+							type="radio"
+							name="server"
+							checked ={this.state.serverType === 'random'}
+							onChange={(e) => {
+								this.setState({
+									serverType: e.target.value,
+									serverSelect: e.target.value,
+								});
+							}}
+							value='random'
+						/>
+							Random location
+						<br />
+					</Label>
+				</FormGroup>
+
+				<FormGroup check>
+					<Label check>
+						<Input
+							type="radio"
+							name="server"
+							checked ={this.state.serverType === 'select'}
+							onChange={(e) => {
+								this.setState({
+									serverType: e.target.value,
+								});
+							}}
+							value='select'
+						/>
+							Select server
+						<br />
+					</Label>
+				</FormGroup>
+				{
+					this.state.serverType === 'select' &&
+					<FormGroup>
+						<Input
+							type="select"
+							onChange={(e) => {
+								this.setState({
+									serverSelect: e.target.value,
+								});
+							}}
+							value={this.state.serverSelect}
+						>
+							<option value="" defaultValue hidden>Select server</option>
+							{
+								Object.keys(this.props.serverMaps).map((serverID) => {
+									return <option key={serverID} value={`"${this.props.serverMaps[serverID].name}"`}>{this.props.serverMaps[serverID].name}</option>
+								})
+							}
+						</Input>
+					</FormGroup>
+				}
+				<FormGroup check>
+					<Label check>
+						<Input
+							type="radio"
+							name="server"
+							checked ={this.state.serverType === 'friend'}
+							onChange={(e) => {
+								this.setState({
+									serverType: e.target.value,
+									serverSelect: '',
+								});
+							}}
+							value='friend'
+						/>
+							Spawn near friend
+					</Label>
+				</FormGroup>
+			</div>
+		);
+	}
+
+	render() {
+		return (
+			<div>
+				<Card className="themeContainer">
 					<CardBody>
 						<CardTitle>Create character {this.state.name && <b>'{this.state.name}'</b>}</CardTitle>
+
 						<FormGroup>
+							<Label>Name</Label>
 							<Input
 								type="text"
 								placeholder="Character name"
+								invalid={this.state.invalidName}
 								onChange={(e) => {
 									this.setState({
 										name: e.target.value,
+										invalidName: (e.target.value.length > 16 || e.target.value.length < 3) ? true : false,
 									});
 								}}
 								value={this.state.name}
 							/>
+							{
+								this.state.invalidName &&
+								<Alert color="danger">Name is not valid!</Alert>
+							}
 						</FormGroup>
+
 						<FormGroup>
+							<Label>Difficulty</Label>
 							<Input
-								type='select'
+								type="select"
 								onChange={(e) => {
 									this.setState({
-										serverSelect: e.target.value,
+										difficulty: e.target.value,
+										spoiler: false,
 									});
 								}}
-								value={this.state.serverSelect}
+								value={this.state.difficulty}
 							>
-								<option value="" defaultValue hidden>Select server</option>
+								<option value="" defaultValue hidden>Select difficulty</option>
 								{
-									Object.keys(this.props.serverMaps).map((serverID) => {
-										return <option key={serverID} value={`"${this.props.serverMaps[serverID].name}"`}>{this.props.serverMaps[serverID].name}</option>
+									Object.keys(this.props.difficulties).map((index) => {
+										return <option key={index} value={index}>{this.firstUppercase(this.props.difficulties[index].name)}</option>
 									})
 								}
 							</Input>
 						</FormGroup>
+						{
+							this.state.difficulty !== '0' ?
+							(
+								this.renderServerOptions()
+							) : (
+								<div>
+									If the difficulty <b>'{this.firstUppercase(this.props.difficulties[this.state.difficulty].name)}'</b> is selected, you can't select any server option. <br />
+									The <b>{this.firstUppercase(this.props.difficulties[this.state.difficulty].name)}</b> is <b>only</b> meant to help you understand the game and learn the interface.
+								</div>
+							)
+						}
+						{
+							this.state.serverType === 'friend' &&
+							<FormGroup>
+								<Input
+									type="text"
+									placeholder="Friend character name"
+									onChange={(e) => {
+										this.setState({
+											friendName: e.target.value,
+											serverSelect: 'friend',
+										});
+									}}
+									value={this.state.friendName}
+								/>
+							</FormGroup>
+						}
+						<br />
+
 						<FormGroup>
+							<Label>Specialization</Label>
 							<Input
-								type='select'
+								type="select"
 								onChange={(e) => {
 									this.setState({
 										specialization: e.target.value,
@@ -108,24 +216,72 @@ class CreateCard extends React.Component {
 							>
 								<option value="" defaultValue hidden>Select specialization</option>
 								{
-									Object.keys(specs).map((index) => {
-										return <option key={index} value={index}>{specs[index].name}</option>
+									Object.keys(this.props.specializations).map((index) => {
+										return <option key={index} value={index}>{this.firstUppercase(this.props.specializations[index].name)}</option>
 									})
 								}
 							</Input>
 						</FormGroup>
+
 						{
-							this.state.specialization &&
+							this.state.difficulty &&
 							<div>
-								Description: <b>{specs[this.state.specialization].name}</b> <br />
-								The <b>{specs[this.state.specialization].name}</b> {specs[this.state.specialization].description}
+								Difficulty: <b>{this.firstUppercase(this.props.difficulties[this.state.difficulty].name)}</b> <br />
+								{this.props.difficulties[this.state.difficulty].description}
 							</div>
 						}
 						{
-							this.state.name &&
-							this.state.serverSelect &&
+							this.state.difficulty !== '' &&
+							this.props.difficulties[this.state.difficulty].spoiler &&
+							<div>
+								<br />
+								If you want a <b>HUGE</b> spoiler of what the <b>{this.props.difficulties[this.state.difficulty].name}</b> difficulty brings, click the button.
+								<br />
+								{
+									!this.state.spoiler ? (
+										<button
+										type="button"
+										className="themeButton"
+										onClick={(e) => {
+											this.setState({
+												spoiler: !this.state.spoiler,
+											});
+										}}
+										>
+											Spoiler
+										</button>
+									) : (
+										<div>
+											<br />
+											<p>{this.props.difficulties[this.state.difficulty].spoiler}</p>
+										</div>
+									)	
+								}
+							</div>
+						}
+						{
 							this.state.specialization &&
-							<Button color='blue' block={true} onClick={() => this.props.onClick(this.return(specs[this.state.specialization].name))}>Create character</Button>
+							<div>
+								<br />
+								Description: <b>{this.firstUppercase(this.props.specializations[this.state.specialization].name)}</b> <br />
+								The <b>'{this.props.specializations[this.state.specialization].name}'</b> {this.props.specializations[this.state.specialization].description}
+							</div>
+						}
+						{
+							this.state.difficulty === '0' ? (
+								!this.state.invalidName &&
+								this.state.name &&
+								this.state.difficulty &&
+								this.state.specialization &&
+								<Button className="themeButton" block={true} onClick={() => this.props.onClick(this.return(this.props.specializations[this.state.specialization].name))}>Create character</Button>
+							) : (
+								!this.state.invalidName &&
+								this.state.name &&
+								this.state.difficulty &&
+								this.state.serverSelect &&
+								this.state.specialization &&
+								<Button className="themeButton" block={true} onClick={() => this.props.onClick(this.return(this.props.specializations[this.state.specialization].name))}>Create character</Button>
+							)
 						}
 					</CardBody>
 				</Card>

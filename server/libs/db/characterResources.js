@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-module.exports = (sequelize, DataTypes) =>
+export default (sequelize, DataTypes) =>
 {
 	const CharacterResources = sequelize.define('characterResources',
 	{
@@ -41,14 +41,6 @@ module.exports = (sequelize, DataTypes) =>
 			},
 		},
 		boron:
-		{
-			type: DataTypes.JSON,
-			defaultValue: {
-				max: 100,
-				owned: 0
-			},
-		},
-		carbon:
 		{
 			type: DataTypes.JSON,
 			defaultValue: {

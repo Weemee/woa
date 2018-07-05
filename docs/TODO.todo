@@ -1,0 +1,341 @@
+Bugs:
+	☐ Wrong 'typeof' for Character handling
+		☐ Where (file, function(s), callback[boolean]): CharacterFacade, {manage, remove, save}, yes
+		☐ What: Sometimes gets 'typeof' (string) for 'userID' instead of (integer)
+		☐ Solution: Make sure the 'typeof' (integer) is being sent as 'userID', not 'typeof' (string)
+  ☐ @high Trying to load stuff on session, unauthorized pleb
+  ☐ @medium Edit character doesn't work
+Client modules:
+  ☐ Change the location of 'session' when 'in-game'. Should resolve other issues
+  ☐ Utils: Validation checker, like notes
+  ☐ Admin: Move to own folder / space
+  ☐ Designer: Move to own folder / space
+  ☐ Interface: Index: Re-factor into modules
+  ☐ Keybinds: Make them work
+  ☐ Esc menu: Make it possible with different options (requires keybinds)
+  ☐ Character preview: Showcase more from it, make it prettier
+  ☐ Session: Show players online at the top
+  ☐ Server map: Some sort of notification of where you are
+  ☐ News: Fix a news section for patch notes
+General:
+	☐ Research
+	☐ Talents
+	☐ Drones
+	☐ Achievements
+	☐ Experience / levels
+	☐ Navigation / exploration
+Utils:
+	☐ Options to alter game mechanics
+  ☐ Options to balance the game
+Server:
+  ☐ @high Server soft reload after admin update
+Login:
+	☐ @low Methods
+		☐ Twitch
+		☐ Google
+		☐ Facebook
+	☐ @low Trial account
+		☐ Captcha
+			☐ Can create account / authenticate with saved trial account
+	☐ @low Otp
+Account:
+	☐ Define methods
+	☐ Link methods
+	☐ Unlink methods
+	☐ Change password
+	☐ Add otp
+	Register:
+		☐ Verify email
+		☐ Email sent with link
+Database: 
+	☐ @high Proper error logging
+Character:
+	Resources:
+		☐ Make a tiny menu for each element
+			☐ Storage upgrade
+			☐ Add / remove drones
+			☐ Upgrades
+			☐ Something
+Improvements:
+	☐ @high Comment everything
+Security:
+	https://expressjs.com/en/advanced/developing-template-engines.html
+	☐ Express security
+		☐ TLS
+		☐ Cookies
+		☐ Session
+		☐ NPM security
+		☐ Node checklist
+		☐ Other
+			☐ Rate-limiting, loopback.io, express-limiter, Strongloop
+			☐ CSRF, csurf
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+   ✔ @critical Creating a character with the same name as another character breaks everything @done(18-07-02 19:13) @project(Bugs)
+   ✔ An entirely new interface for admins @done(18-07-02 18:46) @project(Utils)
+   ✔ Map: @done(18-07-02 16:21) @project(General)
+   ✔ Make the multiverse actually generate things, like the position of the solar system in a universe @done(18-07-02 16:21) @project(General)
+   ✔ Create: @done(18-07-02 16:21) @project(Character)
+   ✔ Fix map system for it (at least store it) @done(18-07-02 16:20) @project(Character.Create)
+   ✔ Re-factor it @done(18-07-01 13:24) @project(General.Map)
+   ✔ Make the multiverses unqiue in the sense of based on people @done(18-07-01 13:24) @project(General.Map)
+   ✔ Everything under, can also be based on people, but like a family tree @done(18-07-01 13:24) @project(General.Map)
+   ✔ Finish character creation @done(18-07-01 13:22) @project(Character.Create)
+   ✔ Fix specialization (make the system somehow) @done(18-07-01 13:22) @project(Character.Create)
+   ✔ Include: @done(18-07-01 08:47) @project(General.Map)
+   ✔ (J.O-H.AN): @done(18-07-01 08:47) @project(General.Map)
+   ✔ Type: Super cluster @done(18-07-01 08:47) @project(General.Map)
+   ✔ Name: Just an Ordinary, Handsome and Awesome Neutron @done(18-07-01 08:47) @project(General.Map)
+   ✔ Description: It's the super cluster which has a balance between positivity and negativity, like a neutron! @done(18-07-01 08:47) @project(General.Map)
+   ✔ (MI-LEN:E): @done(18-07-01 08:43) @project(General.Map)
+   ✔ Type: Super cluster @done(18-07-01 08:43) @project(General.Map)
+   ✔ Name: Most Intensive, Labile Energy Nucleus: Extruded @done(18-07-01 08:43) @project(General.Map)
+   ✔ Description: The result of multiple black hole extrusions, pushing down all matter into a densed space of raw energy. @done(18-07-01 08:43) @project(General.Map)
+   ✔ (MORROM): @done(18-07-01 08:42) @project(General.Map)
+   ✔ Type: Multiverse @done(18-07-01 08:42) @project(General.Map)
+   ✔ Name: Many Octaves Randomly Redestributed Orbit Mass @done(18-07-01 08:42) @project(General.Map)
+   ✔ Description: The first multiverse, holding everything we know @done(18-07-01 08:42) @project(General.Map)
+   ✔ @high Move difficulty to db (to make it editable) @done(18-06-30 19:33) @project(Database)
+   ✔ Type (tutorial, easy, etc) @done(18-06-30 19:33) @project(Database)
+   ✔ Triggers @done(18-06-30 19:33) @project(Database)
+   ✔ Buildings @done(18-06-30 19:33) @project(Database)
+   ✔ Research @done(18-06-30 19:33) @project(Database)
+   ✔ @critical Reset function, warp / reset / black hole @done(18-06-29 15:35) @project(Character.General)
+   ✔ Timer fucking off to the right, not good @done(18-06-28 08:20) @project(Bugs)
+   ✔ Grid broken @done(18-06-28 08:20) @project(Bugs)
+   ✔ Tooltip @done(18-06-28 08:11) @project(General)
+   ✘ Character reset @cancelled(18-06-28 08:11) @project(General)
+   ✘ Check: @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Loading bar @cancelled(18-06-28 08:10) @project(Character)
+   ✘ @high Generate @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Resources @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Unlocks @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Research @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Talents @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Location @cancelled(18-06-28 08:10) @project(Character)
+   ✘ Stats @cancelled(18-06-28 08:10) @project(Character)
+   ✔ Buildings: @done(18-06-28 08:10)
+   ✔ Check resources @done(18-06-28 08:10)
+   ✔ Undo @done(18-06-28 08:10)
+   ✘ Give back resources @cancelled(18-06-28 08:10)
+   ✔ Remove building @done(18-06-28 08:10)
+   ✔ Add to buildings owned @done(18-06-28 08:10)
+   ✔ Maybe change to base on 1000ms instead of 100ms (or more like, make it fit to diff) @done(18-06-28 08:10)
+   ✘ @low ? Re-structure loading to be handled server side (call when loading and loading done) and client only renders @cancelled(18-06-28 08:10) @project(Improvements)
+   ✔ @high Fix pleb code structures, make it modular @done(18-06-28 08:09) @project(Improvements)
+   ✘ Other: @cancelled(18-06-28 08:10)
+   ✘ Improve logging @cancelled(18-06-28 08:10)
+   ✔ @high Build and structure the rousource panel @done(18-06-26 14:58) @project(Active)
+   ✔ Look at ideas.txt @done(18-06-26 14:58) @project(Active)
+   ✔ @high Character interface automated @done(18-06-26 14:58) @project(Active)
+   ✔ Fix how it looks and works @done(18-06-26 14:58) @project(Active)
+   ✔ @medium Localization for accounts @done(18-06-26 14:58) @project(Active)
+   ✔ Save the set language @done(18-06-26 14:58) @project(Active)
+   ✔ @high Make a proper account save/update @done(18-06-26 14:58) @project(Active)
+   ✔ @medium not showing right build timer complete percentage on client if t > 10 @done(18-06-26 14:57) @project(Bugs)
+   ✔ @high Visuals broken after update (timer = timer / 10 => ≠10) @done(18-06-26 14:57) @project(Bugs)
+   ✔ Add build button @done(18-06-20 07:29) @project(Character.Check.Buildings)
+   ✔ Don't run the unlock/trigger check if certain things have been unlocked/triggered @done(18-06-20 07:28) @project(Active)
+   ✔ Add undo button @done(18-06-18 15:54) @project(Character.Check.Buildings)
+   ✔ @critical Building system is completely BORKEN @done(18-06-20 05:59) @project(Bugs)
+   ✔ @medium Make things 'flash' at nice yellow/orange color when new. Make it like notes, but with a fade out timer @done(18-06-18 06:40) @project(Active)
+   ✔ Key input broken on client (fullscreen mode) @done(18-06-15 13:30) @project(Bugs)
+   ✔ Create character not selecting the newly created character @done(18-06-18 06:40) @project(Bugs)
+   ✔ Make things appear/load once a certain unlock/trigger has been activated. Example of this would be, once the trigger for buildings is done, give access to the building panel @done(18-06-11 12:49) @project(Active)
+   ✔ Account update not working properly @done(18-06-11 08:30) @project(Bugs)
+   ✔ Session and back button not supported, add a state "playing" or something @done(18-06-11 08:29) @project(Bugs)
+   ✔ Fix the issue with navigation during 'session' and going back in page history @done(18-06-10 10:24) @project(Active)
+   ✔ Players online delayed / not synced in visual client @done(18-06-09 14:24) @project(Bugs)
+   ✔ Disconnect event / character online during disconnect, causes client to misbehave @done(18-06-09 14:24) @project(Bugs)
+   ✔ It's still in the session/character online mode with header, whilst going back a page @done(18-06-09 14:24) @project(Bugs)
+   ✔ Solution: Alter page history @done(18-06-09 14:24) @project(Bugs)
+   ✔ https://stackoverflow.com/questions/30915173/react-router-go-back-a-page-how-do-you-configure-history @done(18-06-09 14:24) @project(Bugs)
+   ✔ Save account @done(18-06-09 06:00) @project(Account)
+   ✔ Update account @done(18-06-09 05:59) @project(Account.Register.Functions)
+   ✔ @medium Re-structure 'character/index.js', split 'create', 'preview' and 'editing' into seperate files @done(18-06-09 05:59) @project(Improvements)
+   ✔ @low Re-structure/re-build themes @done(18-06-09 05:59) @project(Improvements)
+   ✔ Check for injections @done(18-06-09 05:59) @project(Improvements)
+   ✔ @high Change the entire layout for logged in character @done(18-06-09 05:59) @project(Improvements)
+   ✔ Loading screen @done(18-06-09 05:59) @project(Improvements)
+   ✔ Make the layout for 'inside the game' @done(18-06-09 05:59) @project(Improvements)
+   ✔ @high Refactor modules to ES6 @done(18-06-09 05:58) @project(Database)
+   ✔ Theme elements @done(18-06-09 05:59) @project(Theme system)
+   ✔ Main @done(18-06-09 05:59) @project(Theme system)
+   ✔ UI @done(18-06-09 05:59) @project(Theme system)
+   ✔ Buttons @done(18-06-09 05:59) @project(Theme system)
+   ✔ Labels @done(18-06-09 05:59) @project(Theme system)
+   ✔ Text @done(18-06-09 05:59) @project(Theme system)
+   ✔ Hover @done(18-06-09 05:59) @project(Theme system)
+   ✔ Click @done(18-06-09 05:59) @project(Theme system)
+   ✔ @high Update account for 'lastPlayed' @done(18-06-06 12:27) @project(Active)
+   ✔ @high Feedback button @done(18-06-04 20:47) @project(Active)
+   ✔ Opens a new window with different forms @done(18-06-04 20:47) @project(Active)
+   ✔ Based on account level/permission @done(18-06-09 05:49) @project(Active)
+   ✔ @high Account levels/permissions @done(18-06-04 20:56) @project(Active)
+   ✔ Different options for different levels @done(18-06-09 05:49) @project(Active)
+   ✔ Shows feedback and admin stuff @done(18-06-06 12:27) @project(Active)
+   ✔ @high Admin level visuals @done(18-06-04 21:04) @project(Active)
+   ✔ @high Finish building the theme system @done(18-06-04 19:56) @project(Active)
+   ✔ Put it in the database @done(18-06-09 05:50) @project(Active)
+   ✔ Make sure all elements are attached to the theme system @done(18-06-09 05:50) @project(Active)
+   ✔ @high Fix the database structures to prepare for the unlock/trigger system @done(18-06-09 05:50) @project(Active)
+   ✔ Re-make unlock/trigger system @done(18-06-09 05:50) @project(Active)
+   ✔ Interact with the database and save it to the database @done(18-06-09 05:50) @project(Active)
+   ✔ If the character is logging in for the first time @done(18-06-05 20:11) @project(Character.Check)
+   ✔ @critical Save everything @done(18-06-05 16:20) @project(Character.Check)
+   ✔ Choose what to generate @done(18-06-03 18:33) @project(Character.Check.Generate resources)
+   ✔ Can not go over maximum @done(18-06-03 18:33) @project(Character.Check.Generate resources)
+   ✔ Add action state @done(18-06-03 18:33) @project(Character.Check)
+   ✔ Add the HUD @done(18-06-03 11:19) @project(UI)
+   ✔ Stuff in HUD @done(18-06-03 11:19) @project(UI)
+   ✔ Droplist for character select @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Put it into a theme @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Show needed information @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Make it show in the middle @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Structure character @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Make "Play" appear on the top @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Make "Delete" in the corner @done(18-06-03 11:19) @project(UI.Re-design character create)
+   ✔ Make it look like the mock-up @done(18-06-03 11:19) @project(UI.Re-design header)
+   ✔ Create the dropdown fields for login/register @done(18-06-03 11:19) @project(UI.Re-design header)
+   ✔ Use inner join? @done(18-06-03 11:18) @project(Character.Load)
+   ✔ Load resources @done(18-06-03 11:18) @project(Character.Load)
+   ✔ Load unlocks @done(18-06-03 11:18) @project(Character.Load)
+   ✔ Load research @done(18-06-03 11:18) @project(Character.Load)
+   ✔ Load talents @done(18-06-03 11:18) @project(Character.Load)
+   ✔ Create character stats @done(18-06-03 11:18) @project(Character.Load.Create)
+   ✔ Specialization @done(18-06-03 11:18) @project(Character.Load.Create.Preview)
+   ✔ Level @done(18-06-03 11:18) @project(Character.Load.Create.Preview)
+   ✔ Location @done(18-06-03 11:18) @project(Character.Load.Create.Preview)
+   ✔ Resources @done(18-06-03 11:18) @project(Character.Load.Create.Preview)
+   ✔ Logout @done(18-06-03 11:18) @project(Character.Save)
+   ✔ Disconnect @done(18-06-03 11:18) @project(Character.Save)
+   ✔ Fix character delete @done(18-05-30 20:21) @project(Active)
+   ✔ Fix 'lastPlayed' bug, causing issues with loading @done(18-05-30 21:09) @project(Active)
+   ✔ Continue create tables @done(18-05-31 19:58) @project(Active)
+   ✔ Reserve names @done(18-05-31 20:01) @project(Active)
+   ✔ Edit character can still steal reserved name @done(18-06-01 12:10) @project(Active)
+   ✔ Fix character create @done(18-05-30 19:52) @project(Active)
+   ✔ Fix character edit @done(18-05-30 19:53) @project(Active)
+   ✘ Category: @cancelled(18-05-27 13:20)
+   ✘ Bugs @bugs @cancelled(18-05-27 13:20)
+   ✘ Login @login @cancelled(18-05-27 13:20)
+   ✘ Register @register @cancelled(18-05-27 13:20)
+   ✘ Account @account @cancelled(18-05-27 13:20)
+   ✘ Character @character @cancelled(18-05-27 13:20)
+   ✘ Theme @theme @cancelled(18-05-27 13:20)
+   ✘ UI @ui @cancelled(18-05-27 13:20)
+   ✘ Imrpovements @improvements @cancelled(18-05-27 13:20)
+   ✘ Server security @security @cancelled(18-05-27 13:20)
+   ✘ Misc: @cancelled(18-05-27 13:20) @project(Character.Load.Create)
+   ✘ View character @character @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Show after list selection @character @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Show @character @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Specialization @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Location @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Server @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Super Cluster @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Galaxy @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Cluster @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Solar system @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ X @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Y @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Options @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Delete @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Edit name @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Play @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+   ✘ Time played @cancelled(18-05-27 13:18) @project(Character.Load.Create)
+ 	✔ Load specialization @character @done(18-05-27 13:02) @project(Character.Load)
+	✔ Specialization schema @character @done(18-05-27 13:02) @project(Character.Load.Create)
+  	✔ Github RSS feed (5/21/2018, 10:45:40 AM) @project(Post updates) @done(18-05-27 12:49)
+	✔ https://github.com/Weemee/woa/commits/dev.atom (5/21/2018, 10:45:37 AM) @project(Post updates) @done(18-05-27 12:49)
+	✔ Edit character (18-05-25 20:04) @project(Character / Misc) @done(18-05-27 12:49)
+	✔ Load character stats @character (18-05-25 20:03) @project(Character / Load) @done(18-05-27 12:49)
+	✔ Load character @character (18-05-25 20:03) @project(Character / Load) @done(18-05-27 12:49)
+	✔ Post updates: (18-05-25 17:05) @done(18-05-27 12:49)
+	✔ Sets you in play mode (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Play button (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Name (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Name (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ List on the right as World of Warcraft (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Enabled after filling the form with 'DELETE' (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Editable (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Edit button (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Disabled (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Delete button (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Clicking character shows a 'preview' of the character (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Being able to edit your character in the menu (18-05-25 17:05) @project(UI / Current) @done(18-05-27 12:49)
+	✔ Update character @character (18-05-25 17:04) @project(Character / Misc) @done(18-05-27 12:49)
+	✔ Name (18-05-25 17:04) @project(Character / Misc) @done(18-05-27 12:49)
+	✔ Name (18-05-25 17:04) @project(Character / Misc) @done(18-05-27 12:49)
+	✔ Maximum characters (5) @character (18-05-25 09:00) @project(Character / Misc) @done(18-05-27 12:49)
+	✔ Delete character @character (18-05-25 09:00) @project(Character / Misc) @done(18-05-27 12:49)
+	✔ Move db to global import, not "from '../../../api/models' " but "from 'libs/db' " (18-05-16 15:12) @project(Other) @done(18-05-27 12:49)
+	✔ Remove all debugging, aka, 'console.log'....... (18-05-16 14:55) @project(Other) @done(18-05-27 12:49)
+	✔ Fix logout on live (18-05-12 17:27) @project(Bugs) @done(18-05-27 12:49)
+	✔ Fix complete logout after browser closing, character stuck in limbo. TEMP FIX (18-05-12 17:26) @project(Bugs) @done(18-05-27 12:49)
+	✔ Move utils to global import, not "from '../../../libs/utils' " but "from 'libs/utils' " (18-05-09 12:18) @project(Other) @done(18-05-27 12:49)
+	✔ Improve error handling (18-05-09 11:50) @project(Other) @done(18-05-27 12:49)
+	✔ Fix character login (not logging out/changing) (18-05-07 01:25) @project(Bugs) @done(18-05-27 12:49)
+	✔ Database @DB (18-05-06 18:15) @project(Main functions) @done(18-05-27 12:49)
+	✔ Create character (18-05-06 18:14) @project(Play) @done(18-05-27 12:49)
+	✔ Choose character (drop list) (18-05-06 18:14) @project(Play) @done(18-05-27 12:49)
+	✔ Patch Notes .md file (18-05-06 18:13) @project(Other) @done(18-05-27 12:49)
+	✔ timePlayed (18-05-06 12:43) @project(Database) @done(18-05-27 12:49)
+	✔ stats (18-05-06 12:43) @project(Database) @done(18-05-27 12:49)
+	✔ characterID P I (18-05-06 12:43) @project(Database) @done(18-05-27 12:49)
+	✔ talents (18-05-06 12:42) @project(Database) @done(18-05-27 12:49)
+	✔ production (18-05-06 12:42) @project(Database) @done(18-05-27 12:49)
+	✔ characterID P I (18-05-06 12:42) @project(Database) @done(18-05-27 12:49)
+	✔ position (18-05-06 12:41) @project(Database) @done(18-05-27 12:49)
+	✔ exploration (18-05-06 12:41) @project(Database) @done(18-05-27 12:49)
+	✔ characterID P I (18-05-06 12:41) @project(Database) @done(18-05-27 12:49)
+	✔ resources (18-05-06 12:40) @project(Database) @done(18-05-27 12:49)
+	✔ characterID P I (18-05-06 12:40) @project(Database) @done(18-05-27 12:49)
+	✔ atoms (18-05-06 12:40) @project(Database) @done(18-05-27 12:49)
+	✔ research (18-05-06 12:38) @project(Database) @done(18-05-27 12:49)
+	✔ fusion (18-05-06 12:38) @project(Database) @done(18-05-27 12:49)
+	✔ characterID P I (18-05-06 12:38) @project(Database) @done(18-05-27 12:49)
+	✔ unlocks (18-05-06 12:36) @project(Database) @done(18-05-27 12:49)
+	✔ research (18-05-06 12:36) @project(Database) @done(18-05-27 12:49)
+	✔ characterID P I (18-05-06 12:36) @project(Database) @done(18-05-27 12:49)
+	✔ Or make it like WoW (18-05-05 17:04) @project(UI / Re-design character create) @done(18-05-27 12:49)
+	✔ Move create character to a seperate instance (18-05-05 17:04) @project(UI / Re-design character create) @done(18-05-27 12:49)
+	✔ Show account information (18-05-05 15:14) @project(Account) @done(18-05-27 12:49)
+	✔ Create character (18-04-24 14:59) @project(Character) @done(18-05-27 12:49)
+	✔ account (18-04-24 13:41) @project(Database) @done(18-05-27 12:49)
+	✔ password hash (18-04-23 19:21) @project(Database) @done(18-05-27 12:49)
+	✔ accountLevel (18-04-23 19:21) @project(Database) @done(18-05-27 12:49)
+	✔ Hash (18-04-23 19:21) @project(Register) @done(18-05-27 12:49)
+	✔ Hash (18-04-23 19:21) @project(Login) @done(18-05-27 12:49)
+	✔ Login with wrong credentials "Unhandled rejection TypeError". Send error message on false login. (18-04-23 12:08) @project(Bugs) @done(18-05-27 12:49)
+	✔ spec (18-04-23 12:01) @project(Database) @done(18-05-27 12:49)
+	✔ loggedIn (18-04-23 12:01) @project(Database) @done(18-05-27 12:49)
+	✔ Refactor then entire config (18-04-13 13:36) @project(Other) @done(18-05-27 12:49)
+	✔ Load character (18-04-13 13:36) @project(Character) @done(18-05-27 12:49)
+	✔ @critical Bug fix character name failure (18-04-13 13:34) @project(Main functions) @done(18-05-27 12:49)
+	✔ Load character (18-04-09 17:28) @project(Load) @done(18-05-27 12:49)
+	✔ userID I (18-04-09 09:06) @project(Database) @done(18-05-27 12:49)
+	✔ updatedAt (18-04-09 09:06) @project(Database) @done(18-05-27 12:49)
+	✔ name (18-04-09 09:06) @project(Database) @done(18-05-27 12:49)
+	✔ id P AI (18-04-09 09:06) @project(Database) @done(18-05-27 12:49)
+	✔ createdAt (18-04-09 09:06) @project(Database) @done(18-05-27 12:49)
+	✔ character (18-04-09 09:06) @project(Database) @done(18-05-27 12:49)
+	✔ Load account (18-04-09 09:06) @project(Load) @done(18-05-27 12:49)
+	✔ Username (18-04-08 19:51) @project(Register) @done(18-05-27 12:49)
+	✔ SessionToken (18-04-08 19:51) @project(Register) @done(18-05-27 12:49)
+	✔ Password (18-04-08 19:51) @project(Register) @done(18-05-27 12:49)
+	✔ Email (18-04-08 19:51) @project(Register) @done(18-05-27 12:49)
+	✔ Link (18-04-07 23:25) @project(Theme system) @done(18-05-27 12:49)
+	✔ Header (18-04-07 23:25) @project(Theme system) @done(18-05-27 12:49)
+	✔ Theme manager (18-04-07 23:24) @project(Theme system) @done(18-05-27 12:49)
+	✔ usr I U (18-04-02 18:23) @project(Database) @done(18-05-27 12:49)
+	✔ updatedAt (18-04-02 18:23) @project(Database) @done(18-05-27 12:49)
+	✔ sessiontoken (18-04-02 18:23) @project(Database) @done(18-05-27 12:49)
+	✔ id P AI (18-04-02 18:23) @project(Database) @done(18-05-27 12:49)
+	✔ email I U (18-04-02 18:23) @project(Database) @done(18-05-27 12:49)
+	✔ createdAt (18-04-02 18:23) @project(Database) @done(18-05-27 12:49)
+	✔ Username (18-04-02 18:23) @project(Login) @done(18-05-27 12:49)
+	✔ Password (18-04-02 18:23) @project(Login) @done(18-05-27 12:49)
+	✔ Gently call disconnect on server (18-04-02 18:23) @project(Logout) @done(18-05-27 12:49)
+	✔ Authenticate (18-04-02 18:23) @project(Login) @done(18-05-27 12:49)
+	✔ Local (18-04-02 18:22) @project(Login) @done(18-05-27 12:49)

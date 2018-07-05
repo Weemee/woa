@@ -1,29 +1,44 @@
 import {
-	GET_THEME,
+	THEME_LIST,
 	SET_THEME,
-	SET_CUSTOM_THEME,
+} from 'libs/constants';
+
+import {
+	SET_DESIGNER,
+	GET_DESIGNER,
 } from './types';
 
 const defaultState = {
-	name: 'dark',
+	selected: {
+		name: 'blue',
+	},
+	list: [],
+	designer: null,
 };
 
 export default function(state = defaultState, action) {
 	switch (action.type) {
-		case GET_THEME:
+		case THEME_LIST:
 			return {
-				defaultState,
-				themes,
+				...state,
+				list: action.payload,
 		};
 
 		case SET_THEME:
 			return {
-				name: action.payload
+				...state,
+				selected: action.payload,
 		};
 
-		case SET_CUSTOM_THEME:
+		case SET_DESIGNER:
 			return {
-				name: action.payload,
+				...state,
+				designer: action.payload,
+		};
+
+		case GET_DESIGNER:
+			return {
+				designer: state.designer,
 		};
 	}
 

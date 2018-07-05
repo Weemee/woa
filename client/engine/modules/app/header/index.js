@@ -4,8 +4,10 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 import {authLogout} from '../../authentication/actions';
+import {newInput} from '../../session/actions';
+import {setLanguage} from '../../localization/actions';
 
-import {Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav} from 'reactstrap';
+import {Container, Collapse, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, FormGroup, Input, Navbar, NavbarToggler, NavbarBrand, Nav} from 'reactstrap';
 
 class Header extends React.Component {
 	constructor(props) {
@@ -13,8 +15,16 @@ class Header extends React.Component {
 
 		this.state = {
 			issueURL: 'https://github.com/Weemee/woa/issues/new',
-			isOpen: false,
+			themeSelect: '',
+			open: {
+				nav: false,
+				theme: false,
+				lang: false,
+			},
 		};
+
+		this.toggleTheme = this.toggleTheme.bind(this);
+		this.toggleLang = this.toggleLang.bind(this);
 	}
 
 	logout() {
@@ -22,30 +32,67 @@ class Header extends React.Component {
 		this.props.authLogout();
 	}
 
+	getString(string) {
+		if(this.props.locale.messages[string])
+		{	
+			return this.props.locale.messages[string];
+		}
+	}
+
 	renderNavAuth() {
 		if (this.props.loggedIn) {
 			return (
 				<React.Fragment>
-					<NavLink className="themeButton" to="/session">Play Game</NavLink>
-					<NavLink className="themeButton" to="/account">Account</NavLink>
-					<a className="themeButton" href="#" onClick={this.logout.bind(this)}>Logout</a>
+					<NavLink className="themeButton" to="/session">{this.getString('strings.playGame')}</NavLink>
+					<NavLink className="themeButton" to="/account">{this.getString('strings.account')}</NavLink>
+					<a className="themeButton" href="#" onClick={this.logout.bind(this)}>
+						{this.getString('strings.logout')}
+					</a>
 				</React.Fragment>
 			);
 		} else {
 			return (
 				<React.Fragment>
-					<NavLink className="themeButton" exact to="/authentication">Login</NavLink>
+					<NavLink className="themeButton" exact to="/authentication">
+						{this.getString('strings.login')}
+					</NavLink>
 					<NavLink className="themeButton" to="/authentication/register">Sign up</NavLink>
 				</React.Fragment>
 			);
 		}
 	}
 
-
 	toggle() {
 		this.setState({
-			isOpen: !this.state.isOpen,
+			open: {
+				nav: !this.state.open.nav,
+			}
 		});
+	}
+
+	toggleTheme() {
+		this.setState({
+			open: {
+				theme: !this.state.open.theme,
+			}
+		});
+	}
+
+	toggleLang() {
+		this.setState({
+			open: {
+				lang: !this.state.open.lang,
+			}
+		});
+	}
+
+	changeTheme(theme) {
+		this.props.newInput(`changetheme ${theme}`);
+	}
+
+	changeLang(lang) {
+		console.log(lang);
+		this.props.setLanguage(lang);
 	}
 
 	disableContext(event) {
@@ -57,22 +104,38 @@ class Header extends React.Component {
 		return (
 			<Navbar className="themeHeader" expand="md" onContextMenu={this.disableContext}>
 				<Container>
-				<NavbarBrand className="themeTitle" href="#" onClick={() => this.props.history.push('/')}>Penis</NavbarBrand>
+				<NavbarBrand className="themeTitle" href="#" onClick={() => this.props.history.push('/')}>World of Atoms</NavbarBrand>
+				{
+					this.props.loggedIn &&
+					<Dropdown isOpen={this.state.open.theme} toggle={this.toggleTheme}>
+						<DropdownToggle caret>
+							Theme
+						</DropdownToggle>
+						<DropdownMenu>
+							{
+								Object.keys(this.props.themes).map((themeID) => {
+									return <DropdownItem key={themeID} onClick={() => this.changeTheme(this.props.themes[themeID].name)}>{this.props.themes[themeID].name}</DropdownItem>
+								})
+							}
+						</DropdownMenu>
+					</Dropdown>
+				}
+				{
+					this.props.loggedIn &&
+					<Dropdown isOpen={this.state.open.lang} toggle={this.toggleLang}>
+						<DropdownToggle caret>
+							Language
+						</DropdownToggle>
+						<DropdownMenu>
+							<DropdownItem key="en-UK" onClick={() => this.changeLang('en-UK')}>English</DropdownItem>
+							<DropdownItem key="sv-SE" onClick={() => this.changeLang('sv-SE')}>Svenska</DropdownItem>
+							<DropdownItem key="de-DE" onClick={() => this.changeLang('de-DE')}>Deutsch</DropdownItem>
+						</DropdownMenu>
+					</Dropdown>
+				}
 
 				<NavbarToggler onClick={this.toggle.bind(this)} className="mr-2" />
-					<Collapse isOpen={!this.state.isOpen} navbar>
-						<Nav className="mr-auto" navbar>
-						{
-							this.props.pages && this.props.pages.length > 0 &&
-							this.props.pages.map((page, index) => {
-								if (!page.meta.showInNav) {
-									return null;
-								}
-
-								return <NavLink className="nav-link" key={index} exact to={'/' + page.meta.path}>{page.meta.title}</NavLink>;
-							})
-						}
-						</Nav>
+					<Collapse isOpen={!this.state.open.nav} navbar>
 						<Nav className="ml-auto" navbar>
 							{this.renderNavAuth()}
 						</Nav>
@@ -89,12 +152,18 @@ function mapStateToProps(state) {
 		isConnected: state.app.connected,
 		loggedIn: state.account.loggedIn,
 		socket: state.app.socket,
-		selectedTheme: state.theme.name,
+		themes: state.theme.list,
+		locale: state.locale,
+		account: state.account.account,
 	};
 }
 
 function mapDispatchToProps(dispatch) {
-	return bindActionCreators({authLogout}, dispatch);
+	return bindActionCreators({
+		authLogout,
+		newInput,
+		setLanguage,
+	}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

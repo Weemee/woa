@@ -7,6 +7,10 @@ import {
 	CHARACTER_GET_LIST,
 	CHARACTER_LIST,
 	CHARACTER_LEFT_SERVER,
+	GET_DIFF_LIST,
+	DIFFICULTY_LIST,
+	GET_SPEC_LIST,
+	SPECIALIZATION_LIST,
 } from 'libs/constants';
 
 import Character from './object';
@@ -40,6 +44,10 @@ export default class CharacterFacade {
 		switch(action.type) {
 			case CHARACTER_GET_LIST:
 				return this.getCharacterList(socket, action);
+			case GET_DIFF_LIST:
+				return this.getSpecializationList(socket, action);
+			case GET_SPEC_LIST:
+				return this.getDifficultyList(socket, action);
 		}
 
 		return null;
@@ -112,6 +120,67 @@ export default class CharacterFacade {
 		});
 	}
 
+	async getDifficultyList(socket, action) {
+		try {
+			const list = await db.difficultyObject.findAll({
+
+			}).then(async(result) =>
+			{
+				return result;
+			}).catch(err => {
+				if(err) {
+					return err;
+				}
+			});
+
+			this.Server.socketFacade.dispatchToSocket(socket, {
+				type: DIFFICULTY_LIST,
+				payload: list.map((obj) => {
+					return {
+						name: obj.name,
+						description: obj.description,
+						spoiler: obj.spoiler,
+						loopSpeed: obj.loopSpeed,
+						gatheringMult: obj.gatheringMult,
+						buildingsSpeed: obj.buildingSpeed,
+						researchSpeed: obj.researchSpeed,
+					};
+				}),
+			});
+		} catch(err) {
+			this.Server.onError(err, socket);
+		}
+	}
+
+	async getSpecializationList(socket, action) {
+		try {
+			const list = await db.specializations.findAll({
+
+			}).then(async(result) =>
+			{
+				return result;
+			}).catch(err => {
+				if(err) {
+					return err;
+				}
+			});
+
+			this.Server.socketFacade.dispatchToSocket(socket, {
+				type: SPECIALIZATION_LIST,
+				payload: list.map((obj) => {
+					return {
+						name: obj.name,
+						description: obj.description,
+						talentPoints: obj.talentPoints,
+						talentLock: obj.talentLock,
+					};
+				}),
+			});
+		} catch(err) {
+			this.Server.onError(err, socket);
+		}
+	}
+
 	async getCharacterList(socket, action) {
 		try {
 			const managedCharacters = await db.characterObject.findAll({
@@ -122,40 +191,7 @@ export default class CharacterFacade {
 						[db.Op.like]: [socket.account.userID]
 					}
 				},
-				include: [
-					{
-						model: db.characterStats,
-						as: 'stats',
-					},
-					{
-						model: db.characterLevels,
-						as: 'levels',
-					},
-					{
-						model: db.characterLocation,
-						as: 'location',
-					},
-					{
-						model: db.characterResources,
-						as: 'resources',
-					},
-					{
-						model: db.characterResearch,
-						as: 'research',
-					},
-					{
-						model: db.characterTalents,
-						as: 'talents',
-					},
-					{
-						model: db.characterUnlocks,
-						as: 'unlocks',
-					},
-					{
-						model: db.characterActions,
-						as: 'actions',
-					}
-				]
+				include: await db.include(['stats', 'levels', 'location', 'talents']),
 			}).then(async(result) =>
 			{
 				return result;
@@ -187,11 +223,7 @@ export default class CharacterFacade {
 							stats: obj.stats,
 							levels: obj.levels,
 							location: obj.location,
-							resources: obj.resources,
-							research: obj.research,
 							talents: obj.talents,
-							unlocks: obj.unlocks,
-							actions: obj.actions,
 						};
 					}),
 				});
@@ -210,211 +242,28 @@ export default class CharacterFacade {
 	}
 
 	async firstLogin(character) {
-		console.log('This character is new! Generating penises... ID: ', character.id,'\n');
-
-		if(!character.spec) {
-			console.log('You have no spec, generating...');
-		}
-
-		//Check stats
-		console.log('Generating stats...');
-		const stats = await this.databaseRowExist(character.id, 'characterStats');
-		if(!stats) {
-			console.log('- No row in stats, generating...');
-		} else {
-			console.log('- Found in stats, next...');
-		}
-
-		//Check levels
-		console.log('Generating levels...');
-		const levels = await this.databaseRowExist(character.id, 'characterLevels');
-		if(!levels) {
-			console.log('- No row in levels, generating...');
-		} else {
-			console.log('- Found in levels, next...');
-		}
-
-		//Check location
-		console.log('Generating location...');
-		const location = await this.databaseRowExist(character.id, 'characterLocation');
-		if(!location) {
-			console.log('- No row in location, generating...');
-		} else {
-			console.log('- Found in location, next...');
-		}
-
-		//Check resources
-		console.log('Generating resources...');
-		const resources = await this.databaseRowExist(character.id, 'characterResources');
-		if(!resources) {
-			console.log('- No row in resources, generating...');
-		} else {
-			console.log('- Found in resources, next...');
-		}
-
-		//Check research
-		console.log('Generating research...');
-		const research = await this.databaseRowExist(character.id, 'characterResearch');
-		if(!research) {
-			console.log('- No row in research, generating...');
-		} else {
-			console.log('- Found in research, next...');
-		}
-
-		//Check talents
-		console.log('Generating talents...');
-		const talents = await this.databaseRowExist(character.id, 'characterTalents');
-		if(!talents) {
-			console.log('- No row in talents, generating...');
-		} else {
-			console.log('- Found in talents, next...');
-		}
-
-		//Check unlocks
-		console.log('Generating unlocks...');
-		const unlocks = await this.databaseRowExist(character.id, 'characterUnlocks');
-		if(!unlocks) {
-			console.log('- No row in unlocks, generating...');
-		} else {
-			console.log('- Found in unlocks, next...');
-		}
-
-		character.firstLogin(stats, levels, location, resources, research, talents, unlocks);
+		character.firstLogin();
 
 		await this.manage(character);
 	}
 
 	async databaseRowExist(charID, table) {
-		if(table === 'characterStats') {
-			const rowExist = await db.characterStats.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in stats -';
-				}
-			});
-			return rowExist;
-		}
-
-		if(table === 'characterLevels') {
-			const rowExist = await db.characterLevels.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in levels -';
-				}
-			});
-			return rowExist;
-		}
-
-		if(table === 'characterLocation') {
-			const rowExist = await db.characterLocation.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in location -';
-				}
-			});
-			return rowExist;
-		}
-
-		if(table === 'characterResources') {
-			const rowExist = await db.characterResources.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in resources -';
-				}
-			});
-			return rowExist;
-		}
-
-		if(table === 'characterResearch') {
-			const rowExist = await db.characterResearch.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in research -';
-				}
-			});
-			return rowExist;
-		}
-
-		if(table === 'characterTalents') {
-			const rowExist = await db.characterTalents.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in talents -';
-				}
-			});
-			return rowExist;
-		}
-
-		if(table === 'characterUnlocks') {
-			const rowExist = await db.characterUnlocks.findOne({
-				where:
-				{
-					charID:
-					{
-						[db.Op.like]: [charID]
-					},
-				}
-			}).catch(err => {
-				if (err) {
-					return '- Error in unlocks -';
-				}
-			});
-			return rowExist;
-		}
+		
 	}
 
 	async manage(character, isNew = false) {
 		const wasLoggedIn = this.Server.socketFacade.clearTimer(character);
 		const existingCharacter = this.managedCharacters.find((obj) => obj.userID === character.userID);
-		const isLoggedIn = character.loggedIn;
 
 		if (wasLoggedIn && existingCharacter) {
 			await this.remove(character.userID);
 		}
 
 		this.managedCharacters.push(character);
+		this.Server.timerFacade.addLoop(character);
+		character.pauseResume();
+		const test = await this.Server.accountFacade.setLastCharPlayed(character.userID, character.id);
+		console.log('\nLast character played: ', test, '\n');
 
 		this.dispatchUpdateCharacterList(character.userID);
 
@@ -433,19 +282,24 @@ export default class CharacterFacade {
 	}
 
 	async remove(userID) {
-
-		if (typeof userID != 'number') {
+		if(typeof userID != 'number') {
 			userID = parseInt(userID);
 		}
 
 		const character = this.get(userID);
 
-		if (!character) {
+		if(!character) {
 			return;
 		}
 
+		if(this.Server.timerFacade.checkLoopExist(character)) {
+			this.Server.timerFacade.removeLoop(character);
+		}
+		
+		character.unmountCharacter();
+
 		try {
-			await this.save(character.userID);
+			await this.save(character.userID, true);
 		} catch (err) {
 			this.Server.onError(err);
 		}
@@ -456,7 +310,6 @@ export default class CharacterFacade {
 		});
 
 		this.managedCharacters = this.managedCharacters.filter((obj) => obj.userID !== userID);
-		this.Server.timerFacade.removeLoop(character);
 
 		this.dispatchRemoveFromCharacterList(userID);
 	}
@@ -473,79 +326,133 @@ export default class CharacterFacade {
 		const character = await this.databaseLoad(parseInt(userID), characterName);
 		if (character === null) {
 			return null;
-			}
+		}
 
 		const newCharacter = new Character(this.Server, character);
 
 		return newCharacter;
 	}
 
-	async databaseLoad(userID, characterName) {
-		try {
-		const newCharacter = await db.characterObject.findOne({
-			where:
-			{
-				[db.Op.and]: [
-				{
-					userID:
-					{
-						[db.Op.like]: [userID]
-					}
-				},
-				{
-					nameLowerCase:
-					{
-						[db.Op.like]: [characterName.toLowerCase()]
-					}
-				}],
-			},
-			include: [
-				{
-					model: db.characterStats,
-					as: 'stats',
-				},
-				{
-					model: db.characterLevels,
-					as: 'levels',
-				},
-				{
-					model: db.characterLocation,
-					as: 'location',
-				},
-				{
-					model: db.characterResources,
-					as: 'resources',
-				},
-				{
-					model: db.characterResearch,
-					as: 'research',
-				},
-				{
-					model: db.characterTalents,
-					as: 'talents',
-				},
-				{
-					model: db.characterUnlocks,
-					as: 'unlocks',
-				},
-				{
-					model: db.characterActions,
-					as: 'actions',
-				}
-			]
-		}).then (result => {
+	async getDifficulty(diff) {
+		diff++;
+		const d = await this.databaseDiff(diff);
+		if (d.base === null || d.triggers === null || d.buildings === null) {
+			return null;
+		}
 
-			return result;
-		}).catch(err => {
-			if (err) {
-				return 'Error load character.';
+		return d;
+	}
+
+	async databaseDiff(diff) {
+		try {
+			const base = await db.difficultyObject.findOne({
+				where:
+				{
+					id:
+					{
+						[db.Op.like]: [diff]
+					}
+				}
+			}).then (result => {
+				return result;
+			}).catch(err => {
+				if (err) {
+					return 'Error load DB.', err;
+				}
+			});
+
+			const triggers = await db.difficultyTriggers.findAll({
+				where:
+				{
+					diffID:
+					{
+						[db.Op.like]: [base.id]
+					}
+				},
+			}).then (result => {
+				return result;
+			}).catch(err => {
+				if (err) {
+					return 'Error load DB.', err;
+				}
+			});
+
+			const buildings = await db.difficultyBuildings.findAll({
+				where:
+				{
+					diffID:
+					{
+						[db.Op.like]: [base.id]
+					}
+				},
+			}).then (result => {
+				return result;
+			}).catch(err => {
+				if (err) {
+					return 'Error load DB.', err;
+				}
+			});
+
+			return {
+				base: base,
+				triggers: triggers,
+				buildings: buildings,
 			}
-		});
-		return newCharacter;
 		}
 		catch (err) {
 			this.Server.onError(err);
 		}
+	}
+
+	stripFetched(object) {
+		if(!object) {
+			return {};
+		}
+		
+		delete object.dataValues['id'];
+		delete object.dataValues['createdAt'];
+		delete object.dataValues['updatedAt'];
+
+		return object.dataValues;
+	}
+
+	async databaseLoad(userID, characterName) {
+		try {
+			const newCharacter = await db.characterObject.findOne({
+				where:
+				{
+					[db.Op.and]: [
+					{
+						userID:
+						{
+							[db.Op.like]: [userID]
+						}
+					},
+					{
+						nameLowerCase:
+						{
+							[db.Op.like]: [characterName.toLowerCase()]
+						}
+					}],
+				},
+				include: await db.include('characterObject'),
+			}).then (result => {
+				return result;
+			}).catch(err => {
+				if (err) {
+					return 'Error load character.', err;
+				}
+			});
+			return newCharacter;
+		}
+		catch (err) {
+			this.Server.onError(err);
+		}
+	}
+
+	async reset(userID) {
+		const character = this.get(userID);
+		character.reset();
 	}
 
 	async edit(userID, characterName, newName) {
@@ -620,11 +527,15 @@ export default class CharacterFacade {
 	}
 
 	async delete(userID, characterName) {
+		console.log('ID: ', userID, ' & name: ', characterName);
 		const characterObject = await this.databaseDeleteCharacter(userID, characterName);
 		if(!characterObject) 
 		{
 			return false;
 		}
+
+		const test = await this.Server.accountFacade.removeLastCharPlayed(userID);
+		console.log(test);
 
 		return characterObject;
 	}
@@ -661,15 +572,16 @@ export default class CharacterFacade {
 		return checkDelete;
 	}
 
-	async create(userID, characterName, characterSpec) {
+	async create(userID, characterName, characterSpec, characterDifficulty, characterServer) {
 		//Move this check to input::facade, since multiple names will be checked
 		const nameFormat = /^[\u00C0-\u017Fa-zA-Z][\u00C0-\u017Fa-zA-Z]+[\u00C0-\u017Fa-zA-Z]?$/g;
-		
+		let server;
+
 		if(!nameFormat.test(characterName)) {
 			return 'Only letters allowed!';
 		}
 
-		const character = await this.databaseCreate(userID, characterName, characterSpec);
+		const character = await this.databaseCreate(userID, characterName, characterSpec, characterDifficulty, characterServer);
 		
 		if(!character) {
 			return;
@@ -679,12 +591,30 @@ export default class CharacterFacade {
 			return character;
 		}
 
+		if(character === 'taken') {
+			return character;
+		}
+
+		if(characterServer === 'random') {
+			server = this.Server.serverMapFacade.randomizeLocation();
+		} else if (characterServer.slice(0, 6) === 'friend') {
+			server = this.Server.serverMapFacade.friendLocation(characterServer.slice(6));
+		} else {
+			server = this.Server.serverMapFacade.serverLocation(characterServer);
+		}
+
+		console.log(server);
+
 		const newCharacter = new Character(this.Server, character);
 
 		return newCharacter;
 	}
 
-	async databaseCreate(userID, characterName, characterSpec) {
+	async databaseCheck(characterName) {
+
+	}
+
+	async databaseCreate(userID, characterName, characterSpec, characterDifficulty, characterServer) {
 		//Find and count all, check if you have 5 already.
 		const checkLimit = await db.characterObject.count({
 			where:
@@ -718,78 +648,65 @@ export default class CharacterFacade {
 			if(checkReserved) {
 				return 'reserved';
 			}
-			else {
-				const newCharacter = await db.characterObject.create({
-					userID: userID,
-					name: characterName,
-					spec: characterSpec,
-					stats: {
-						status: 'offline',
-					},
-					levels: {
-	
-					},
-					location: {
-	
-					},
-					resources: {
-						
-					},
-					research: {
-	
-					},
-					talents: {
-	
-					},
-					unlocks: {
-	
-					},
-					actions: {
 
-					},
-				},
+			const checkTaken = await db.characterObject.findOne({
+				where:
 				{
-					include: [
-						{
-							model: db.characterStats,
-							as: 'stats',
-						},
-						{
-							model: db.characterLevels,
-							as: 'levels',
-						},
-						{
-							model: db.characterLocation,
-							as: 'location',
-						},
-						{
-							model: db.characterResources,
-							as: 'resources',
-						},
-						{
-							model: db.characterResearch,
-							as: 'research',
-						},
-						{
-							model: db.characterTalents,
-							as: 'talents',
-						},
-						{
-							model: db.characterUnlocks,
-							as: 'unlocks',
-						},
-						{
-							model: db.characterActions,
-							as: 'actions',
-						},
-					],
-				}).catch(err => {
-					if(err) {
-						return err;
+					name:
+					{
+						[db.Op.like]: [characterName]
 					}
-				});
-				return newCharacter;
+				}
+			}).catch(err => {
+				if(err) {
+					return 'Error reserved names.';
+				}
+			});
+
+			if(checkTaken) {
+				return 'taken';
 			}
+
+			const newCharacter = await db.characterObject.create({
+				userID: userID,
+				name: characterName,
+				spec: characterSpec,
+				difficulty: characterDifficulty,
+				stats: {
+					status: 'offline',
+				},
+				levels: {
+				},
+				location: {
+				},
+				research: {
+				},
+				resources: {	
+				},
+				buildings: {
+				},
+				talents: {
+				},
+				actions: {
+				},
+				unlockedBuildings: {
+				},
+				unlockedElements: {
+				},
+				unlockedFunctions: {
+				},
+				unlockedResearch: {
+				},
+			},
+			{
+				include: await db.include('characterObject'),
+			}).catch(err => {
+				if(err) {
+					console.log(err);
+					return err;
+				}
+			});
+			return newCharacter;
 		}
 	}
 
@@ -803,7 +720,7 @@ export default class CharacterFacade {
 		}));
 	}
 
-	async save(userID) {
+	async save(userID, disconnect = false) {
 		if(!userID) {
 			throw new Error('No userID for save()');
 		}
@@ -818,11 +735,22 @@ export default class CharacterFacade {
 			throw new Error(`No character found online, matching userID ${userID}`);
 		}
 
-		this.Server.log.info(`Saving characters ${userID}`);
+		if(disconnect) {
+			console.log('\nCharacter forcing, pausing updates...');
+			const pausing = await character.pauseResume();
+			if(pausing) {
+				console.log('\tUpdates paused!');
+				this.Server.timerFacade.removeLoop(character);
 
-		await this.databaseSave(character);
-
-		this.Server.log.info(`Saved ${character.name} (${userID})`);
+				this.Server.log.info(`Saving character ${userID}`);
+				await this.databaseSave(character);
+				this.Server.log.info(`Saved ${character.name} (${userID})`);
+			}
+		} else {
+			this.Server.log.info(`Saving character ${userID}`);
+			await this.databaseSave(character);
+			this.Server.log.info(`Saved ${character.name} (${userID})`);
+		}
 	}
 
 	async databaseSave(character) {
@@ -830,7 +758,7 @@ export default class CharacterFacade {
 			const database = 'character' + key.charAt(0).toUpperCase() + key.slice(1);
 			if(db[database]) {
 				await db[database].update(
-					character[key].dataValues,
+				character[key].dataValues,
 				{
 					where:
 					{
@@ -840,9 +768,24 @@ export default class CharacterFacade {
 						}
 					}
 				}).catch (err => {
+					console.log(err);
 					return err;
 				});
 			}
+		});
+
+		db.characterObject.update(
+			character['updatedAt'],
+			{
+				where:
+				{
+					id:
+					{
+						[db.Op.like]: [character.id]
+					}
+				}
+			}).catch(err => {
+			return err;
 		});
 	}
 

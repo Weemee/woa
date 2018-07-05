@@ -5,13 +5,178 @@
 ***
 =================================================
 
-##### *Version 0.0.308*
+##### *Version 0.0.515*
+
+## General
+
+## Client
+
+<h4>General</h4>
+
+* Character creation has been improved
+	* Now generates server location accordingly to your choice
+	* Validation checking on name before sending
+	* Specializations and difficulties is no longer static on the client, it's sent from the server
+
+<h4>Bugs</h4>
+
+* Fixed a bug that caused unexpected behaviour in navigation during playthrough while playing on the 'tutorial' difficulty
+
+## Server
+
+<h4>General</h4>
+
+* Refactored 
+
+<h4>Bugs</h4>
+
+* Fixed a bug that caused a server crash when creating a character with a name that already exists
+* Fixed a bug that caused unintentional status messages being sent during character creation
+
+## Misc/Dev/Boring stuff
+
+***
+=================================================
+
+##### *Version 0.0.515*
+
+## General
+
+## Client
+
+<h4>General</h4>
+
+* Create character now sends name, specialization, server and difficulty
+* Now visually displays what is new (sort of, still prototype). It only tracks what's new from original base state (with other words, a newly created character). So every time you log in for now, it will display what is new. No major annoyance (in my personal opinion), but it will be fixed in the future. For now, it "works"
+
+<h4>Bugs</h4>
+
+1. Fixed a bug with the 'enter' key spamming errors in the log, when pressing it after going back from a logged in character
+2. Fixed a bug causing the 'session' path through navigation to not correctly load account details
+3. Fixed a bug causing accounts to be able to navigate back to the logged in state if they navigate too fast. Nothing worked in this state, since there's no logged in character 
+
+	3.1 Fixed another bug relating to the bug above which caused unwanted behaviours when navigating too fast with special nagivation keybinds (like extra mouse buttons)
+4. 
+
+## Server
+
+<h4>General</h4>
+
+* Character difficulty applies to everything
+* Refactored triggers
+* Database interaction is more modular and fluid (got annoyed every time I had to add an association to something)
+* Buildings are now building. Following functions are now supported to send from the client:
+	* Add building to building queue (buy building)
+	* Start timer (build)
+	* Stop timer (not building anymore, maybe gathering or research)
+	* Remove building from queue (regret buy or building done)
+	* Get building (to remove or something else)
+	* Start next building (previous building done, starting next)
+	* Queue empty (if nothing is left, nothing to build)
+	* Saves time left as you logout and continues from where you left off
+
+<h4>Bugs</h4>
+
+## Misc/Dev/Boring stuff
+
+
+Fixed a few things regarding the build system, that made it behave unexpectedly. Some variables were passed as 'strings' when an 'integer' was expected. This caused other/new issues regarding the following 'if-statement', which checked if an object ID was sent with the function. This object ID could be 0, which made the if-statement 
+
+***
+=================================================
+
+##### *Version 0.0.491*
+
+## General
+* Changed the description for the 'Arithmetic' specialization
+	* From: 01+11=100 (or 4 if you prefer), easy!'
+	* To: 10+11=101 (or 5 if you prefer), easy!'
+* Changed the expire value of the 'signing secret' from 1h to 24h (to make it less annoying)
+
+## Client
+
+<h4>General</h4>
+
+* Added more support and visuals depending on your account level. All the buttons have their unique icon to tell them apart
+	* Admin button
+	* Designer button
+	* Feedback button
+	* Bug report button
+* Started the development for different modes, with the focus on 'admin mode' and 'designer mode'. They will allow you to change the game through your account
+* Your last character played should now be stored and be pre-selected as you get to the character screen while logged in to your account
+* Slowly updating the deprecating components within React
+* Refactored props to match the new 'trigger & update' system
+
+<h4>Themes</h4>
+
+* All theme related implementations have been moved around and put in the 'theme system'
+* Updated the header to support theme switching. Navigation drop down for resolutions matching tablets and phones is being re-made (broken for now)
+* Applied the theme system to most visual elements, with some still untouched. The structure is still being worked on, but general testing and funcitonality is working as intended
+* Implemented a modular way of dealing with updating css variables, adding support for database storing and using it all as props (which will help with editing/making themes)
+* Slowly storing all css related stuff on the server side
+
+<h4>Languages</h4>
+
+* Now supports multiple languages
+* Languages that has been implemented (briefly) is en-UK, sv-SE, de-DE
+
+<h4>Bugs</h4>
+
+* Fixed an issue that caused the header visuals to still be hidden after character logout through the browser 'back button'
+
+## Server
+
+<h4>General</h4>
+
+* Added an error boundary
+* Implemented themes and last character played
+* Added more character support and variables, binding the character to more databases (like actions, unlocks)
+* Removed redundant spaghetti code for checking databases, working on a new way to do it (was mainly for testing too, but probably need it to check that the character has all the databases related)
+* Added a pause game state for the player (just pausing the update loop from being executed, still neat)
+* Now has individual characterUnlocked tables
+	* Changed 'research' to 'modifiers'. Might be put inside the unlock JSON
+	* 'unlocks' removed and split into multiple sections
+		* unlockedBuildings, tracking what buildings you can access
+		* unlockedElements, tracking what elements you can access
+		* unlockedFunctions, tracking something (don't know yet, think it will be gameplay unlocks)
+		* unlockedResearch, tracking what research you can access
+* The function 'stripFetched' inside the character object is now removing id, charID, createdAt and updatedAt, before exporting to the client (used for all database fetching that is not the actual 'characterObject' database). This is to send less to the client, while also not exposing too much
+* Minor code tweeks for unused variables, functions, console.log, while also optimizing here and there (sometimes the opposite, ugh)
+* Changed different triggers inside the object while also making it JSON friendly
+* Added the entire theme system to be handled on the server side
+* Changed the timer system so it could support the 'pause' functionality for characters
+* Added all database support inside the 'libs/db' folder
+* Started support for buildings
+
+<h4>Triggers & progression</h4>
+Now acts as the main way to progress in the game. Every character update call (game loop), there's a check to see if you have reached a certain trigger. The logic for that is built within the character object in multiple functions and checks, and will only go past the first function if certain criterias are met.<br><br>
+Once a criteria is met, it filters through where to unlock something and trigger the functions associated to it. Depending on the gameplay, different things can happen, like (these are all examples):
+
+***
+* Elements - Reaching 15 'Hydrogen', will give access to 'Helium'
+* Buildings - Having 10 Hydrogen and 10 Helium, will unlock the building tab, giving you access to the build tab
+* Research - After building your first thing, will give you access to research 'exploration'
+* Functions - When you have researched 'exploration', will unlock an entire new gameplay element
+
+Most of the things being unlocked, will be announced in some way. Most likely it will render something new for you on the client, but future options could be pop-up text or chat text.
+
+<h4>Bugs</h4>
+
+## Misc/Dev/Boring stuff
+* Refactored all database modules to ES6 while also cleaning them up
+* Re-structured the patch notes layout
+
+***
+=================================================
+
+##### *Version 0.0.387*
 
 ## General
 * Can now generate Hydrogen and Helium as resources (not saving)
 * Now has triggers based on resource levels
 * Now supports 'account level', to determine admins, plebs, etc
 * Admin support has been added
+* Design mode has been added
 
 ## Client
 * Various support for upcoming functions, examples:
@@ -23,7 +188,6 @@
 * Added a feedback button next to the 'bug' button
 	* You will be able to send direct feedback in here, with a navigation bar on the top for subject
 * Themes are now fully functional and has been re-factored, supporting a more smooth solution (and a basic way for a modular scss configuration, based on database tables)
-	* <h5>Bugs</h5>
 
 ## Server
 * Auto save now actually saves the character
@@ -37,10 +201,15 @@
 		* Research
 	* More to come
 * Database support for the 118 elements
-	* <h5>Bugs</h5>
+* Dynamically saves the databases related to the character
+* Now stores the themes in the database
+* Loads all the themes in the database
+* Fetches theme from account
+* Saves theme to account
 
 ## Misc/Dev/Git/Boring stuff
 * All 118 elements are now in the database
+* Moved everything from github to gitlab (F Microsoft with them ruining everything). Might swap back in-case Microsoft does not fuck things up this time, I'll keep an eye out. Until then, I move my OPEN SOURCE somewhere else
 
 ***
 =================================================
@@ -58,13 +227,10 @@
 * Added a bottom menu for interface containers
 * Added multiple interface containers for testing
 * Full navigation for all character items
-	* <h5>Bugs</h5>
 
 
 ## Server
 * Reserved names now apply to 'edit character'
-	* <h5>Bugs</h5>
-
 
 
 ## Misc/Dev/Git/Boring stuff
@@ -84,7 +250,7 @@
 	* Most of the things are now in modules, instead of a huge chunk in one file
 * You can now 'create', 'edit', 'play' and 'delete' characters freely. The client updates and checks all states
 
-<h5>Bugs</h5>
+<h4>Bugs</h4>
 
 * Fixed an issue with the character screen not updating after deleting characters
 

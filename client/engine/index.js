@@ -5,7 +5,6 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
 import createHistory from 'history/createBrowserHistory';
-import {Route} from 'react-router';
 import {ConnectedRouter, routerMiddleware} from 'react-router-redux';
 
 const history = createHistory();
@@ -14,11 +13,10 @@ const middleware = routerMiddleware(history);
 import reducers from './reducers';
 import App from './modules/app';
 import sagas from './sagas';
+import ErrorBoundary from './errors';
 
 //CSS
 import './styles/merged.scss';
-
-//@test
 
 const sagaMiddleware = createSagaMiddleware();
 let store;
@@ -41,8 +39,10 @@ sagaMiddleware.run(sagas);
 ReactDOM.render(
 	<Provider store={store}>
 		<ConnectedRouter history={history}>
-			<App/>
-		</ConnectedRouter>
+				<ErrorBoundary>
+					<App/>
+				</ErrorBoundary>
+		</ConnectedRouter>	
 	</Provider>,
 document.querySelector('#root')
 );

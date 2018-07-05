@@ -1,22 +1,7 @@
-import moment from 'moment';
-
-module.exports = (sequelize, DataTypes) =>
+export default (sequelize, DataTypes) =>
 {
-	const ServerSupercluster = sequelize.define('serverSuperclusters',
-	{
-		serverUniverseID:
-		{
-			type: DataTypes.INTEGER,
-		}
-	});
-
 	const ServerUniverse = sequelize.define('serverUniverses',
 	{
-		id:
-		{
-			type: DataTypes.INTEGER,
-			primaryKey: true,
-		},
 		serverMultiverseID:
 		{
 			type: DataTypes.INTEGER,
@@ -25,20 +10,36 @@ module.exports = (sequelize, DataTypes) =>
 		{
 			type: DataTypes.STRING,
 		},
+		fullName:
+		{
+			type: DataTypes.STRING,
+		},
+		posX:
+		{
+			type: DataTypes.DOUBLE,
+		},
+		posY:
+		{
+			type: DataTypes.DOUBLE,
+		},
+		posZ:
+		{
+			type: DataTypes.DOUBLE,
+		},
 		gridSizeX:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 7,
 		},
 		gridSizeY:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 7,
 		},
 		gridSizeZ:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 7,
 		},
 		ownedBy:
 		{
@@ -66,10 +67,21 @@ module.exports = (sequelize, DataTypes) =>
 	},
 	{
 		freezeTableName: true,
+		nulle: false,
 	});
 
-	ServerUniverse.hasMany(ServerSupercluster);
-	ServerSupercluster.belongsTo(ServerUniverse, {foreignKey: 'serverUniverseID', targetKey: 'id'});
+	ServerUniverse.a = [
+		'superclusters',
+	];
 
+	ServerUniverse.associate = (model) => {
+		for(let i = 0; i < ServerUniverse.a.length; i++) {
+			ServerUniverse.hasOne(model['server' + ServerUniverse.a[i].charAt(0).toUpperCase() + ServerUniverse.a[i].slice(1)], {
+				as: ServerUniverse.a[i],
+				foreignKey: 'serverUniverseID',
+			});
+		}
+	};
+	
 	return ServerUniverse;
 }

@@ -1,22 +1,18 @@
-import {GET_THEME, SET_THEME, SET_CUSTOM_THEME} from './types';
+import {
+	GET_DESIGNER,
+	SET_DESIGNER,
+} from './types';
 
-export function getTheme() {
+export function getDesigner(design) {
 	return {
-		'type': GET_THEME,
-		'payload': null,
+		type: GET_DESIGNER,
+		payload: design,
 	};
 }
 
-export function setTheme(name) {
+export function setDesigner(design) {
 	return {
-		'type': SET_THEME,
-		'payload': name,
-	};
-}
-
-export function setCustomTheme(name) {
-	return {
-		'type': SET_CUSTOM_THEME,
-		'payload': name,
+		type: SET_DESIGNER,
+		payload: design,
 	};
 }

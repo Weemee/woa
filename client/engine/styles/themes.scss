@@ -28,7 +28,7 @@ $themes:(
 
 	cyan:(
 		//Basic
-		backgroundColor: #222,
+		backgroundColor: #14a2ce,
 		textColor: #ddd,
 		buttonTextColor: #aaa,
 		buttonTextTransform: uppercase,
@@ -98,7 +98,7 @@ $themes:(
 
 	red:(
 		//Basic
-		backgroundColor: #222,
+		backgroundColor: #810b0b,
 		textColor: #ddd,
 		buttonTextColor: #aaa,
 		buttonTextTransform: uppercase,
@@ -166,6 +166,8 @@ $themes:(
 		headerButtonTextColor: #a3c3e3,
 	),
 );
+
+
 
 @mixin themed($themes) {
 	@each $theme, $map in $themes {

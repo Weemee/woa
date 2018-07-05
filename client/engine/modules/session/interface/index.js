@@ -1,13 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Modal, ModalHeader, ModalBody, Navbar, Nav, NavItem, Row, Col} from 'reactstrap';
+import {bindActionCreators} from 'redux';
+import {Fade, Navbar, Nav, NavItem, Row, Col} from 'reactstrap';
+import { CSSTransitionGroup } from 'react-transition-group';
 
 import {MdAddCircleOutline, MdAccessible, Md3dRotation, MdAirlineSeatFlatAngled, MdAvTimer, MdBatteryChargingFull} from 'react-icons/lib/md';
 
 import Resources from './resources';
 import Levels from './levels';
 import Location from './location';
-import Unlocks from './unlocks';
+import Buildings from './buildings';
 import Stats from './stats';
 import Research from './research';
 
@@ -16,52 +18,92 @@ class Interface extends React.Component {
 		super(props);
 
 		this.state = {
-			left: false,
-			top: false,
-			right: false,
-			middle: false,
-			bottomRight: false,
-			bottomLeft: false,
+			resources: {
+				fadeIn: true,
+				triggered: (this.props.character.unlocked.elements.hydrogen ? true : false),
+			},
+			top: {
+				fadeIn: false,
+				triggered: (this.props.character.unlocked.functions.location ? true : false),
+			},
+			right: {
+				fadeIn: false,
+				triggered: (this.props.character.unlocked.buildings.storage ? true : false),
+			},
+			middle: {
+				fadeIn: false,
+				triggered: (this.props.character.unlocked.functions.talents ? true : false),
+			},
+			bottomRight: {
+				fadeIn: false,
+				triggered: (this.props.character.unlocked.functions.research ? true : false),
+			},
+			bottomLeft: {
+				fadeIn: true,
+				triggered: (this.props.character.unlocked.elements.hydrogen ? true : false),
+			},
 		};
 
 		this.toggleContainer = this.toggleContainer.bind(this);
 	}
 
+	componentDidMount() {
+		console.log('\nUpdated at:', this.props.character.updatedAt);
+		console.log('\nCurrent time: ' + new Date().getSeconds());
+	}
+
 	toggleContainer(con) {
-		console.log(con);
-		if(con === 'left') {
+		if(con === 'resources') {
 			this.setState({
-				left: !this.state.left,
+				resources: {
+					fadeIn: !this.state.resources.fadeIn,
+					triggered: true,
+				},
 			});
 		}
 
 		if(con === 'top') {
 			this.setState({
-				top: !this.state.top,
+				top: {
+					fadeIn: !this.state.top.fadeIn,
+					triggered: true,
+				},
 			});
 		}
 
 		if(con === 'right') {
 			this.setState({
-				right: !this.state.right,
+				right: {
+					fadeIn: !this.state.right.fadeIn,
+					triggered: true,
+				},
 			});
 		}
 
 		if(con === 'middle') {
 			this.setState({
-				middle: !this.state.middle,
+				middle: {
+					fadeIn: !this.state.middle.fadeIn,
+					triggered: true,
+				},
 			});
 		}
 
 		if(con === 'bottomRight') {
 			this.setState({
-				bottomRight: !this.state.bottomRight,
+				bottomRight: {
+					fadeIn: !this.state.bottomRight.fadeIn,
+					triggered: true,
+				},
 			});
 		}
 
 		if(con === 'bottomLeft') {
 			this.setState({
-				bottomLeft: !this.state.bottomLeft,
+				bottomLeft: {
+					fadeIn: !this.state.bottomLeft.fadeIn,
+					triggered: true,
+				},
 			});
 		}	
 	}
@@ -70,38 +112,38 @@ class Interface extends React.Component {
 		return (	
 			<React.Fragment>
 				{
-					this.state.left &&
-					<div style={{position: 'absolute', width: '15%', height: '30%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', top: '40%', left: '0'}}>
+					this.state.resources.triggered &&
+					<div className="resourceContainer" style={this.state.resources.fadeIn && this.props.character.unlocked.elements.hydrogen ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Resources />
 					</div>
 				}
 				{
-					this.state.top &&
-					<div style={{position: 'absolute', width: '40%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', marginLeft: '30%'}}>
+					this.state.top.triggered &&
+					<div className="topContainer" style={this.state.top.fadeIn && this.props.character.unlocked.functions.location ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Location />
 					</div>
 				}
 				{
-					this.state.right &&
-					<div style={{position: 'absolute', width: '15%', height: '30%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', top: '40%', right: '0'}}>
-						<Unlocks />
+					this.state.right.triggered &&
+					<div className="rightContainer" style={this.state.right.fadeIn && this.props.character.unlocked.functions.research ? ({display: 'inline'}) : ({display: 'none'})}>
+						<Buildings />
 					</div>
 				}
 				{
-					this.state.middle &&
-					<div style={{position: 'absolute', width: '20%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', marginTop: '20%', marginLeft: '40%'}}>
+					this.state.middle.triggered &&
+					<div className="middleContainer" style={this.state.middle.fadeIn && this.props.character.unlocked.functions.talents ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Levels />
 					</div>
 				}
 				{
-					this.state.bottomRight &&
-					<div style={{position: 'absolute', width: '20%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', bottom: '0', right: '0'}}>
+					this.state.bottomRight.triggered &&
+					<div className="bRightContainer" style={this.state.bottomRight.fadeIn && this.props.character.unlocked.functions.research && this.props.character.buildings.owned.researchlab.complete ? ({display: 'inline'}) : ({display: 'none'})}>
 						<Research />
 					</div>
 				}
 				{
-					this.state.bottomLeft &&
-					<div style={{position: 'absolute', width: '20%', height: '20%', borderStyle: 'solid', borderWidth: '2px', backgroundColor: 'rgba(92, 137, 137, 0.90)', bottom: '0', left: '0'}}>
+					this.state.bottomLeft.triggered &&
+					<div className="bLeftContainer" style={this.state.bottomLeft.fadeIn && this.props.character.unlocked.elements.hydrogen? ({display: 'inline'}) : ({display: 'none'})}>
 						<Stats />
 					</div>
 				}
@@ -110,24 +152,93 @@ class Interface extends React.Component {
 					<div id="bottomBar">
 						<Navbar>
 							<Nav>
+							{
+								this.props.character.unlocked.elements.hydrogen &&
 								<NavItem>
-									<a href="#" onClick={() => this.toggleContainer('left')} className="btn btn-primary"><MdAddCircleOutline /></a>
+									{
+										!this.state.resources.triggered &&
+										<Fade in={true} timeout={150}>
+											<div className="btn-warning newThing">
+												<b>!</b>
+											</div>
+										</Fade>
+									}
+									<a href="#" onClick={() => this.toggleContainer('resources')} className={'btn btn-' + (this.state.resources ? 'primary active' : 'info')}><MdAddCircleOutline /></a>
 								</NavItem>
+							}
+							{
+								this.props.character.unlocked.functions.location &&
 								<NavItem>
-									<a href="#" onClick={() => this.toggleContainer('top')} className="btn btn-primary"><MdAccessible /></a>
+								{
+									!this.state.top.triggered &&
+									<Fade in={true} timeout={150}>
+										<div className="btn-warning newThing">
+											<b>!</b>
+										</div>
+									</Fade>
+								}
+									<a href="#" onClick={() => this.toggleContainer('top')} className={'btn btn-' + (this.state.top ? 'primary active' : 'info')}><MdAccessible /></a>
 								</NavItem>
+							}
+							{
+								this.props.character.unlocked.functions.research &&
 								<NavItem>
-									<a href="#" onClick={() => this.toggleContainer('right')} className="btn btn-primary"><Md3dRotation /></a>
+								{
+									!this.state.right.triggered &&
+									<Fade in={true} timeout={150}>
+										<div className="btn-warning newThing">
+											<b>!</b>
+										</div>
+									</Fade>
+								}
+									<a href="#" onClick={() => this.toggleContainer('right')} className={'btn btn-' + (this.state.right ? 'primary active' : 'info')}><Md3dRotation /></a>
 								</NavItem>
+							}
+							{
+								this.props.character.unlocked.functions.talents &&
 								<NavItem>
-									<a href="#" onClick={() => this.toggleContainer('middle')} className="btn btn-primary"><MdAirlineSeatFlatAngled /></a>
+								{
+									!this.state.middle.triggered &&
+									<Fade in={true} timeout={150}>
+										<div className="btn-warning newThing">
+											<b>!</b>
+										</div>
+									</Fade>
+								}
+									
+									<a href="#" onClick={() => this.toggleContainer('middle')} className={'btn btn-' + (this.state.middle ? 'primary active' : 'info')}><MdAirlineSeatFlatAngled /></a>
 								</NavItem>
+							}
+							{
+								this.props.character.unlocked.functions.research &&
+								this.props.character.buildings.owned.researchlab.complete &&
 								<NavItem>
-									<a href="#" onClick={() => this.toggleContainer('bottomRight')} className="btn btn-primary"><MdAvTimer /></a>
+								{
+									!this.state.bottomRight.triggered &&
+									<Fade in={true} timeout={150}>
+										<div className="btn-warning newThing">
+											<b>!</b>
+										</div>
+									</Fade>
+								}
+									
+									<a href="#" onClick={() => this.toggleContainer('bottomRight')} className={'btn btn-' + (this.state.bottomRight ? 'primary active' : 'info')}><MdAvTimer /></a>
 								</NavItem>
+							}
+							{
+								this.props.character.unlocked.elements.hydrogen &&
 								<NavItem>
-									<a href="#" onClick={() => this.toggleContainer('bottomLeft')} className="btn btn-primary"><MdBatteryChargingFull /></a>
+								{
+									!this.state.bottomLeft.triggered &&
+									<Fade in={true} timeout={150}>
+										<div className="btn-warning newThing">
+											<b>!</b>
+										</div>
+									</Fade>
+								}
+									<a href="#" onClick={() => this.toggleContainer('bottomLeft')} className={'btn btn-' + (this.state.bottomLeft ? 'primary active' : 'info')}><MdBatteryChargingFull /></a>
 								</NavItem>
+							}
 							</Nav>
 						</Navbar>
 					</div>
@@ -137,4 +248,16 @@ class Interface extends React.Component {
 	}
 }
 
-export default Interface;
+function mapActionsToProps(dispatch) {
+	return bindActionCreators({
+		
+	}, dispatch);
+}
+
+function mapStateToProps(state) {
+	return {
+		character: state.character.selected,
+	};
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(Interface);

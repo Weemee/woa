@@ -125,6 +125,10 @@ class TestThree extends Component {
 			});
 		}
 		else {
+			if(!this.mount) {
+				return;
+			}
+			
 			if(this.mount.webkitExistFullscreen) {
 				this.setState({
 					width: window.innerWidth,
@@ -156,8 +160,13 @@ class TestThree extends Component {
 
 	onKeyPress(e) {
 		if(!this.props.character) {
-			return;	
+			return;
 		}
+
+		if(!this.mount) {
+			return;
+		}
+
 		if(!this.mount.webkitExistFullscreen)
 		{
 			if (e.keyCode == 13) {

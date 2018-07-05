@@ -13,32 +13,37 @@ class Account extends React.Component {
 		super(props);
 
 		this.state = {
-			keyToken: 'derp',
+			keyToken: '',
 		};
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		if (!this.props.loggedIn) {
 			return this.props.history.push('/authentication');
 		}
-
+		
 		this.props.getStrategies();
 		this.props.getAccountDetails(this.props.account.id, this.props.authToken);
 	}
 
-	componentDidUpdate() {
-		if (this.state.keyToken !== this.props.account.keyToken) {
-			this.setState({
-				keyToken: this.props.account.keyToken,
-			});
+	static getDerivedStateFromProps(props, state) {
+		if(!props.loggedIn) {
+			return null;
 		}
+		if(state.keyToken !== props.account.keyToken) {
+			return {
+				keyToken: props.account.keyToken,
+			};
+		}
+
+		return null;
 	}
 
 	render() {
 		return (
 			<Row>
 				<Col sm="3">
-					<Card>
+					<Card className="themeContainer">
 						<CardHeader>Account</CardHeader>
 						<ListGroup>
 							<NavLink exact to="/account" className="list-group-item">Info</NavLink>

@@ -1,11 +1,4 @@
-const dev = true;
-let host = '';
-
-if(dev) {
-	host = 'http://localhost';
-} else {
-	host = 'http://yourOwnHost.com';
-}
+const host = 'localhost || http://yourhost.whatever';
 
 const Config = {
 	socket: {
@@ -21,7 +14,7 @@ const Config = {
 		strategies: 300,
 	},
 
-	version: '0.0.168',
+	version: '0.0.515',
 };
 
 export default Config;

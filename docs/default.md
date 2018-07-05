@@ -11,18 +11,20 @@
 ***
 =================================================
 
-##### *Version 0.0.159*
+##### *Version 0.0.387*
 
 ## General
-* Temp
 
 ## Client
-* Temp
-	* <h5>Bugs</h5>
+
+<h4>General</h4>
+
+<h4>Bugs</h4>
 
 ## Server
-* Temp
-	* <h5>Bugs</h5>
 
-## Misc/Dev/Git/Boring stuff
-* Temp
+<h4>General</h4>
+
+<h4>Bugs</h4>
+
+## Misc/Dev/Boring stuff

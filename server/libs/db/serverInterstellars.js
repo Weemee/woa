@@ -1,15 +1,5 @@
-import moment from 'moment';
-
-module.exports = (sequelize, DataTypes) =>
+export default (sequelize, DataTypes) =>
 {
-	const ServerGalaxy = sequelize.define('serverGalaxies',
-	{
-		serverInterstellarID:
-		{
-			type: DataTypes.INTEGER,
-		}
-	});
-
 	const ServerInterstellar = sequelize.define('serverInterstellars',
 	{
 		serverLocalclusterID:
@@ -63,8 +53,18 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	ServerInterstellar.hasMany(ServerGalaxy);
-	ServerGalaxy.belongsTo(ServerInterstellar, {foreignKey: 'serverInterstellarID', targetKey: 'id'});
+	ServerInterstellar.a = [
+		'galaxies',
+	];
+
+	ServerInterstellar.associate = (model) => {
+		for(let i = 0; i < ServerInterstellar.a.length; i++) {
+			ServerInterstellar.hasOne(model['server' + ServerInterstellar.a[i].charAt(0).toUpperCase() + ServerInterstellar.a[i].slice(1)], {
+				as: ServerInterstellar.a[i],
+				foreignKey: 'serverInterstellarID',
+			});
+		}
+	};
 
 	return ServerInterstellar;
 }

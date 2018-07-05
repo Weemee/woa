@@ -1,5 +1,5 @@
 import {parsedJsonData} from 'libs/utils/functions';
-import {ACCOUNT_INPUT} from 'libs/constants';
+import {ACCOUNT_INPUT, SET_NOTES} from 'libs/constants';
 
 export default class InputFacade {
 	constructor(Server) {
@@ -65,21 +65,32 @@ export default class InputFacade {
 			return this.Server.eventToSocket(socket, 'error', `Input ${input} is invalid.`);
 		}
 
+		const admin = this.Server.socketFacade.checkAdmin(socket);
+
 		const character = this.Server.characterFacade.get(socket.account.userID);
 
 		const onServerInput = typeof this.inputs[input].onServerInput === 'undefined' ? true : this.inputs[input].onServerInput;
 
-		if(!character && onServerInput)
-		{
-			return;
+		if(!admin) {
+			if(!character && onServerInput)
+			{
+				return;
+			}
 		}
 
 		try {
 			const parsedParams = await this.validate(character, params, this.inputs[input].params, socket);
 
 			if(typeof parsedParams === 'string') {
-				this.Server.eventToSocket(socket, 'error', parsedParams);
-				return this.Server.eventToSocket(socket, 'multiline', this.getInfo(input));
+				return this.Server.socketFacade.dispatchToSocket(socket, {
+					type: SET_NOTES,
+					payload: {
+						message: parsedParams,
+						type: 'error',
+					},
+				});
+				/*this.Server.eventToSocket(socket, 'error', parsedParams);
+				return this.Server.eventToSocket(socket, 'multiline', this.getInfo(input));*/
 			}
 			return this.inputs[input].method(
 				socket,
@@ -203,7 +214,35 @@ export default class InputFacade {
 							}
 						break;
 
+						case 'server':
+							if(!temp) {
+								return 'No server';
+							}
+
+							if(temp.slice(0, 6) === 'friend') {
+								//console.log('\nYou are playing with your friend, ', temp.slice(6));
+							} else {
+								//console.log(temp);
+							}
+						break;
+
+						case 'building':
+							if(!rule[1]) {
+								//Check if building exists
+								temp = 'penis';
+								if(!temp) {
+									return 'I smell penis';
+								}
+							} else {
+								if(rule[1] === 'name') {
+									//Fetch the building by name
+								}
+							}
+						break;
+
 						case 'player':
+
+						case 'status':
 					};
 
 					msgPars[i] = temp;

@@ -3,7 +3,7 @@ import uuid from 'uuid/v4';
 import bcrypt from 'bcrypt';
 import config from 'config/security';
 
-module.exports = (sequelize, DataTypes) =>
+export default (sequelize, DataTypes) =>
 {
 	const AccountObject = sequelize.define('accountObject',
 	{
@@ -47,6 +47,16 @@ module.exports = (sequelize, DataTypes) =>
 			type: DataTypes.INTEGER,
 			defaultValue: null,
 		},
+		theme:
+		{
+			type: DataTypes.STRING,
+			defaultValue: 'dark',
+		},
+		language:
+		{
+			type: DataTypes.STRING,
+			defaultValue: 'en-UK',
+		},
 		createdAt:
 		{
 			type: DataTypes.DATE,
@@ -80,6 +90,21 @@ module.exports = (sequelize, DataTypes) =>
 	AccountObject.verifyHash = function(string, password) {
 		return bcrypt.compare(string, password);
 	}
+
+	AccountObject.a = [
+		'keybinds',
+		'reservedNames',
+	];
+
+	AccountObject.associate = (model) => {
+		for(let i = 0; i < AccountObject.a.length; i++) {
+			AccountObject.hasOne(model['account' + AccountObject.a[i].charAt(0).toUpperCase() + AccountObject.a[i].slice(1)], {
+				as: AccountObject.a[i],
+				foreignKey: 'userID',
+				onDelete: 'CASCADE',
+			});
+		}
+	};
 
 	return AccountObject;
 }

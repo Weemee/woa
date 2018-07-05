@@ -1,15 +1,5 @@
-import moment from 'moment';
-
-module.exports = (sequelize, DataTypes) =>
+export default (sequelize, DataTypes) =>
 {
-	const ServerSolarsystem = sequelize.define('serverSolarsystems',
-	{
-		serverGalaxyID:
-		{
-			type: DataTypes.INTEGER,
-		}
-	});
-
 	const ServerGalaxy = sequelize.define('serverGalaxies',
 	{
 		serverInterstellarID:
@@ -63,8 +53,18 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	ServerGalaxy.hasMany(ServerSolarsystem);
-	ServerSolarsystem.belongsTo(ServerGalaxy, {foreignKey: 'serverGalaxyID', targetKey: 'id'});
+	ServerGalaxy.a = [
+		'solarsystems',
+	];
+
+	ServerGalaxy.associate = (model) => {
+		for(let i = 0; i < ServerGalaxy.a.length; i++) {
+			ServerGalaxy.hasOne(model['server' + ServerGalaxy.a[i].charAt(0).toUpperCase() + ServerGalaxy.a[i].slice(1)], {
+				as: ServerGalaxy.a[i],
+				foreignKey: 'serverGalaxyID',
+			});
+		}
+	};
 
 	return ServerGalaxy;
 }

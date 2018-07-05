@@ -68,6 +68,9 @@ export default function(app, webServerAPI, config) {
 		.get(getAuthList)
 		.post(authenticate);
 
+	routes.route('/session')
+		.get(isAuthenticated, getAccount);
+
 	/*routes.route('/autehnticate/veritfyOtp')
 		.get(getOtpAuth)
 		.post(authenticateOtp);*/

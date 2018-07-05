@@ -40,7 +40,7 @@ class AuthRegister extends React.Component {
 
 	render() {
 		return (
-			<Card className="card-small">
+			<Card className="themeContainer">
 				<CardHeader>Join us!</CardHeader>
 				{
 					this.props.strategies.length > 0 &&
@@ -110,7 +110,7 @@ class AuthRegister extends React.Component {
 								value={this.state.passwordConfirm}
 								/>
 							</FormGroup>
-							<Button onClick={this.register} disabled={this.state.sending} color="blue">Create account</Button>
+							<Button className="themeContainer" onClick={this.register} disabled={this.state.sending}>Create account</Button>
 							<hr/>
 						</Form>
 					</CardBody>

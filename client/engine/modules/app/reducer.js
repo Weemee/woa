@@ -9,6 +9,7 @@ import {
 	ACCOUNT_LOGOUT,
 	SET_NOTES,
 	CLEAR_LOADING,
+	ADMIN_EVENT,
 } from 'libs/constants';
 
 const defaultState = {
@@ -44,6 +45,11 @@ export default function(state = defaultState, action) {
 			return {
 				...state,
 				notes: null,
+			};
+		
+		case ADMIN_EVENT:
+				return {
+				...state,
 			};
 
 		case SET_LOADING:

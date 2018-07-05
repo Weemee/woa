@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-module.exports = (sequelize, DataTypes) =>
+export default (sequelize, DataTypes) =>
 {
 	const CharacterResearch = sequelize.define('characterResearch',
 	{
@@ -10,13 +10,19 @@ module.exports = (sequelize, DataTypes) =>
 		},
 		fusion:
 		{
-			type: DataTypes.INTEGER,
-			defaultValue: 0,
+			type: DataTypes.JSON,
+			defaultValue: {
+				owned: 0,
+				max: 100,
+			},
 		},
-		production:
+		lithium:
 		{
-			type: DataTypes.INTEGER,
-			defaultValue: 0,
+			type: DataTypes.JSON,
+			defaultValue: {
+				complete: false,
+				progress: false,
+			},
 		},
 		createdAt:
 		{
@@ -31,7 +37,7 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	CharacterResearch.beforeCreate(async function(characterResearch, options) {
+	CharacterResearch.beforeCreate(async function(characterResearch) {
 		characterResearch.updatedAt = moment().format('ddd, D MMM YYYY H:mm:ss [GMT]');
 	});
 

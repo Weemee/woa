@@ -122,19 +122,18 @@ export function isAuthenticated(req, res, next) {
 		db.accountObject.findOne({
 		where:
 		{
-			[db.Op.and]: [
-			{
+			[db.Op.and]: [{
 				id:
 				{
-					[db.Op.like]: [decoded.id]
-				}
+					[db.Op.like]: [decoded.id],
+				},
 			},
 			{
 				sessionToken:
 				{
-					[db.Op.like]: [decoded.sessionToken]
-				}
-			}]
+					[db.Op.like]: [decoded.sessionToken],
+				},
+			}],
 		},
 		}).then(result => {
 			const userDetails = result;
@@ -144,7 +143,7 @@ export function isAuthenticated(req, res, next) {
 		}).catch(err => {
 			return output(req, res, {
 				status: 401,
-				message: 'Invalid authorisation token third.',
+				message: `Invalid authorisation token third, ${err}`,
 			});
 		});
 	});
@@ -159,7 +158,9 @@ export function onAuth(req, res, data, redirect) {
 		identity: data.identity.id || null,
 		lastCharPlayed: data.account.dataValues.lastCharPlayed,
 		accountLevel: data.account.dataValues.accountLevel,
-	}, req.app.get('config').protocol.signingSecret, {expiresIn: '1h'});
+		theme: data.account.dataValues.theme,
+		language: data.account.dataValues.language,
+	}, req.app.get('config').protocol.signingSecret, {expiresIn: '24h'});
 
 	//Move this if statement to account action
 	if(!data.account.dataValues.keyToken) {

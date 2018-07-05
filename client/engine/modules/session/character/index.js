@@ -1,6 +1,9 @@
 import {
 	CHARACTER_GET_LIST,
 	GET_SERVER_LIST,
+	GET_SPEC_LIST,
+	GET_DIFF_LIST,
+	CHARACTER_LOGOUT,
 } from 'libs/constants';
 
 import React from 'react';
@@ -20,6 +23,7 @@ import CreateCard from './createCard';
 import EditCard from './editCard';
 
 import {setLoading} from '../../app/actions';
+import {getAccountDetails} from '../../account/actions';
 
 class Character extends React.Component {
 	constructor(props) {
@@ -44,8 +48,16 @@ class Character extends React.Component {
 
 	componentDidMount() {
 		if(!this.props.loggedIn) {
+			if(this.props.character) {
+				this.props.socketSend({
+					type: CHARACTER_LOGOUT,
+					payload: null,
+				});
+			}
 			return this.props.history.push('/authentication');
 		}
+
+		this.props.getAccountDetails(this.props.account.id, this.props.authToken);
 
 		this.props.socketSend({
 			type: CHARACTER_GET_LIST,
@@ -56,24 +68,50 @@ class Character extends React.Component {
 			type: GET_SERVER_LIST,
 			payload: null,
 		});
+
+		this.props.socketSend({
+			type: GET_SPEC_LIST,
+			payload: null,
+		});
+
+		this.props.socketSend({
+			type: GET_DIFF_LIST,
+			payload: null,
+		});
 	}
 
 	static getDerivedStateFromProps(props, state) {
 		//Can probably be improved, can't be arsed right now <.<
-		if(props.account !== state.account) {
+		if(props.account) {
+			const type = state.case.type;
 			console.log('\nAccount, charID: ', props.account.lastCharPlayed);
+			console.log('\nAdmin:', props.admin);
 			if(props.characterList) {
 				console.log('Character list exists!');
 				if(!state.case.preview) {
 					console.log('No preview');
-					if(!props.account.lastCharPlayed) {
-						console.log('Last character played: ', props.account.lastCharPlayed);
+					if(props.characterList !== state.characterList) {
 						if(!props.notes) {
 							console.log('\tNo notes');
+							if(props.account.lastCharPlayed) {
+								const lastPlayed = props.characterList.find((obj) => obj.charID === props.account.lastCharPlayed);
+								console.log('No new last played character: ', lastPlayed);
+								if(!lastPlayed) {
+									return null;
+								}
+								return {
+									case: {
+										type: type,
+										data: lastPlayed.name,
+									}
+								};
+							}
 							return null;
 						}
 						if(props.notes.type === 'success') {
+							console.log('success');
 							if(props.characterList !== state.characterList) {
+								console.log('Change in list');
 								if(props.characterList <= 0) {
 									console.log('Empty block array');
 									if(props.characterList) {
@@ -85,30 +123,45 @@ class Character extends React.Component {
 										}
 									}
 								}
-								else {
-									console.log('Difference in character list (props & state !==), updating...');
-									const a = props.characterList.length - 1;
-									console.log('Props: ', props.characterList[a].name);
-									return {
-										characterList: props.characterList,
-										case: {
-											type: 'preview',
-											data: props.characterList[a].name,
-										},
-									};
-								}
-							}
+							} 
 						}
+
+						console.log('Difference in character list (props & state !==), updating...');
+						const a = props.characterList.length - 1;
+						console.log('Props: ', props.characterList[a].name);
+
+						return {
+							characterList: props.characterList,
+							case: {
+								type: 'preview',
+								data: props.characterList[a].name,
+							},
+						};
 					}
 					else {
 						const lastPlayed = props.characterList.find((obj) => obj.charID === props.account.lastCharPlayed);
-						console.log('The one: ', lastPlayed.name);
+						console.log('No new last played character: ', lastPlayed);
+						if(!lastPlayed) {
+							return null;
+						}
 						return {
 							case: {
-								type: 'preview',
+								type: type,
 								data: lastPlayed.name,
 							}
 						};
+					}
+				}
+			}
+
+			if(props.account.lastCharPlayed) {
+				if(props.characterList) {
+					const lastPlayed = props.characterList.find((obj) => obj.charID === props.account.lastCharPlayed);
+					console.log('\nLast woho:', lastPlayed);
+					return {
+						case: {
+							data: lastPlayed.name,
+						}
 					}
 				}
 			}
@@ -137,8 +190,8 @@ class Character extends React.Component {
 		this.props.newInput(`selectcharacter ${name}`);
 	}
 
-	createCharacter(name, spec) {
-		this.props.newInput(`createcharacter ${name} ${spec}`);
+	createCharacter(name, spec, difficulty, server) {
+		this.props.newInput(`createcharacter ${name} ${spec} ${difficulty} ${server}`);
 	}
 
 	deleteCharacter(name) {
@@ -147,10 +200,6 @@ class Character extends React.Component {
 
 	editCharacter(name, newName) {
 		this.props.newInput(`editcharacter ${name} ${newName}`);
-		this.props.socketSend({
-			type: GET_SERVER_LIST,
-			payload: null,
-		});
 	}
 
 	handleInput(input) {
@@ -181,7 +230,7 @@ class Character extends React.Component {
 		}
 
 		if(type === 'create') {
-			this.createCharacter(input.object.name, input.object.spec);
+			this.createCharacter(input.object.name, input.object.spec, input.object.difficulty, input.object.server);
 		}
 	}
 
@@ -201,13 +250,13 @@ class Character extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<Container>
+				<Container className="themeContainer">
 					<Row>
 						<Col xs="6" sm="9">
 							<Notes />
 							{
 								this.state.case.type === 'create' &&
-								<CreateCard onClick={this.handleInput} serverMaps={this.props.serverMaps}/>
+								<CreateCard onClick={this.handleInput} serverMaps={this.props.serverMaps} specializations={this.props.specializations} difficulties={this.props.difficulties}/>
 							}
 							{
 								this.state.case.type === 'preview' &&
@@ -244,11 +293,11 @@ class Character extends React.Component {
 								}
 								{
 									this.state.case.type !== 'create' &&
-									<Button color='blue' block={true} onClick={() => this.toggle('create')}>New character</Button>
+									<button className="themeButton" color='blue' block='true' onClick={() => this.toggle('create')}>New character</button>
 								}
 								{
 									this.state.case.type === 'create' &&
-									<Button color='red' block={true} onClick={() => this.toggle(this.state.case.last)}>Back</Button>
+									<button className="themeButton" color='red' block='true' onClick={() => this.toggle(this.state.case.last)}>Back</button>
 								}
 
 							</Col>
@@ -264,6 +313,7 @@ function mapDispatchToProps(dispatch) {
 		socketSend,
 		newInput,
 		setLoading,
+		getAccountDetails,
 	}, dispatch);
 }
 
@@ -273,8 +323,11 @@ function mapStateToProps(state) {
 		notes: state.app.notes,
 		serverMaps: state.session.servers,
 		socket: state.app.socket,
+		admin: state.app.adminLoad,
 		character: state.character.selected,
 		characterList: state.character.list,
+		specializations: state.character.specializations,
+		difficulties: state.character.difficulties,
 		loggedIn: state.account.loggedIn,
 	};
 }

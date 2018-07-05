@@ -12,19 +12,34 @@ fs.readdirSync(__dirname).filter(file => {
 	return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
 }).forEach(file => {
 	const model = sequelize['import'](path.join(__dirname, file));
-	console.log('\nLoaded db: ', model.name);
-	if(model.associate) {
-		console.log('\tWith a model association!');
-	}
+	console.log('Loaded db: ', model.name);
 	db[model.name] = model;
+	db[model.name].sync();
 });
-
 
 Object.keys(db).forEach((modelName) => {
 	if('associate' in db[modelName]) {
 		db[modelName].associate(db);
 	}
 });
+
+db.include = (obj) => {
+	if(typeof(obj) === 'string') {
+		return db[obj].a;
+	}
+
+	if(typeof(obj) === 'object') {
+		let result = [];
+		for(let i = 0; i < obj.length; i++) {
+			let object = {
+				model: db['character' + obj[i].charAt(0).toUpperCase() + obj[i].slice(1)],
+				as: obj[i],
+			}
+			result.push(object);
+		}
+		return result;
+	}
+};
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

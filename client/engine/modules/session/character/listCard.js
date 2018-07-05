@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardBody, Button, Progress} from 'reactstrap';
+import {Card, CardBody} from 'reactstrap';
 
 class ListCard extends React.Component {
 	constructor(props) {
@@ -17,14 +17,12 @@ class ListCard extends React.Component {
 
 	render() {
 		return (
-			<Card className="characterCard" onClick={() => this.props.onClick(this.selected(this.props.character.name))}>
+			<Card className="themeContainer" onClick={() => this.props.onClick(this.selected(this.props.character.name))}>
 				<div>
 					{this.props.character.name}
 				</div>
 				<CardBody style={{backgroundColor: `${this.props.color}`}}>
-					<Progress color="success" value="32" max="40">
-						Health: 32
-					</Progress>
+					
 				</CardBody>
 			</Card>
 		);

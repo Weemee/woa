@@ -1,22 +1,24 @@
+import {
+	GET_THEME_LIST,
+	CHARACTER_LOGOUT,
+} from 'libs/constants';
+
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import ServerMap from './server';
-
-import {newEvent} from './'
-import {gameLogout, newInput} from './actions';
+import {gameLogout} from './actions';
 import {socketSend} from '../app/actions';
 
-import {Container, Navbar, Nav, NavItem, Row, Col, Input, Button, Form} from 'reactstrap';
 import Character from './character';
-import CharacterUI from './character/ui';
-import SelectedCard from './character/selectedCard';
 
 import TestThree from './three';
 import Interface from './interface';
 import ConfigUI from './interface/config'
+import {setLanguage} from '../localization/actions';
+
+import {getAccountDetails} from '../account/actions';
 
 import {MdAddCircleOutline} from 'react-icons/lib/md';
 
@@ -40,10 +42,26 @@ class Session extends React.Component {
 		this.toggleGrid = this.toggleGrid.bind(this);
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		if(!this.props.loggedIn) {
 			return this.props.history.push('/authentication');
 		}
+
+		if(this.props.character && this.props.characterList) {
+			return this.props.socketSend({
+				type: CHARACTER_LOGOUT,
+				payload: null,
+			});
+		}
+
+		this.props.getAccountDetails(this.props.account.id, this.props.authToken);
+
+		this.props.setLanguage(this.props.account.language);
+
+		this.props.socketSend({
+			type: GET_THEME_LIST,
+			payload: null,
+		});
 
 		document.addEventListener('keydown', this.onKeyPress.bind(this));
 	}
@@ -54,6 +72,7 @@ class Session extends React.Component {
 		document.removeEventListener('keydown', this.onKeyPress.bind(this));
 	}
 
+	//Change all these to static getDerivedStateFromProps()
 	componentDidUpdate(prevProps) {
 		if(!this.props.character) {
 			return;
@@ -68,8 +87,7 @@ class Session extends React.Component {
 		if(document.activeElement.value) {
 			return;
 		}
-
-		//Keystate switch
+		//e.preventDefault();
 	}
 
 	isActiveTab(tabName) {
@@ -98,7 +116,7 @@ class Session extends React.Component {
 					<div>
 						<ConfigUI />
 						<div className="toggleGridBtn">
-							<a href="#" onClick={this.toggleGrid} className="btn btn-primary"><MdAddCircleOutline /> Grid</a>
+							<a href="#" onClick={this.toggleGrid} className="themeButton"><MdAddCircleOutline /> Grid</a>
 						</div>
 					</div>
 				}
@@ -106,9 +124,9 @@ class Session extends React.Component {
 					!this.state.editGrid &&
 					<div>
 						<div className="toggleGridBtn">
-							<a href="#" onClick={this.toggleGrid} className="btn btn-primary"><MdAddCircleOutline /> Grid</a>
+							<a href="#" onClick={this.toggleGrid} className="themeButton"><MdAddCircleOutline /> Grid</a>
 						</div>
-						<Interface />
+						<Interface character={this.props.character}/>
 					</div>
 				}
 			</React.Fragment>
@@ -130,7 +148,7 @@ class Session extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<div id="session">
+				<div id="session" className="themeContainer">
 					{this.render3DGraphics()}
 					{this.renderUI()}
 				</div>
@@ -143,6 +161,8 @@ function mapActionsToProps(dispatch) {
 	return bindActionCreators({
 		socketSend,
 		gameLogout,
+		setLanguage,
+		getAccountDetails,
 	}, dispatch);
 }
 
@@ -150,9 +170,11 @@ function mapStateToProps(state) {
 	return {
 		session: {...state.session},
 		character: state.character.selected,
+		characterList: state.character.list,
 		players: state.session.players,
 		socket: state.app.socket,
 		loggedIn: state.account.loggedIn,
+		account: state.account.account,
 		authToken: state.account.authToken,
 		connection: {
 			isConnected: state.app.connected,

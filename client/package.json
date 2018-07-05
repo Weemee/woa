@@ -1,13 +1,13 @@
 {
 	"name": "woa",
-	"version": "0.0.79",
+	"version": "0.0.515",
 	"description": "Client for World of Atoms",
 	"scripts": {
 		"start": "webpack-dev-server --progress --colors --inline --config webpack.development.js",
 		"lint": "eslint engine",
 		"prebuild": "rimraf distribution",
 		"postinstall": "cp -n engine/config.temp.js engine/config.js",
-		"build": "webpack --optimize-minimize --progress --config webpack.production.js"
+		"build": "cross-env NODE_ENV=production webpack --optimize-minimize --progress --config webpack.production.js"
 	},
 	"repository": {
 		"type": "git",
@@ -30,6 +30,7 @@
 		"jsonwebtoken": "^8.2.1",
 		"orbit-controls-es6": "^1.0.12",
 		"react": "^16.3.2",
+		"react-color": "^2.14.1",
 		"react-contextmenu": "^2.9.2",
 		"react-dnd": "^3.0.2",
 		"react-dnd-html5-backend": "^3.0.2",

@@ -19,7 +19,8 @@
 					"alias": {
 						"libs": "./libs",
 						"config": "./libs/conf",
-						"utils": "./libs/utils"
+						"utils": "./libs/utils",
+						"data": "./libs/serverdata"
 					}
 				}]
 			]
@@ -31,7 +32,8 @@
 					"alias": {
 						"libs": "./distribution/libs",
 						"config": "./distribution/libs/conf",
-						"utils": "./distribution/libs"
+						"utils": "./distribution/libs",
+						"data": "./distribution/libs/serverdata"
 					}
 				}]
 			]

@@ -5,11 +5,15 @@ import {
 	CHARACTER_LIST,
 	CHARACTER_UPDATE,
 	CHARACTER_CREATE_SUCCESS,
+	SPECIALIZATION_LIST,
+	DIFFICULTY_LIST,
 } from 'libs/constants';
 
 const defaultState = {
 	selected: null,
 	list: null,
+	specializations: null,
+	difficulties: null,
 };
 
 export default function(state = defaultState, action) {
@@ -23,6 +27,18 @@ export default function(state = defaultState, action) {
 			return {
 				...state,
 				list: action.payload,
+			};
+
+		case SPECIALIZATION_LIST:
+			return {
+				...state,
+				specializations: action.payload,
+			};
+
+		case DIFFICULTY_LIST:
+			return {
+				...state,
+				difficulties: action.payload,
 			};
 
 		case CHARACTER_LOGIN:

@@ -1,35 +1,29 @@
-import moment from 'moment';
-
-module.exports = (sequelize, DataTypes) =>
+export default (sequelize, DataTypes) =>
 {
-	const ServerUniverse = sequelize.define('serverUniverses',
-	{
-		serverMultiverseID:
-		{
-			type: DataTypes.INTEGER,
-		}
-	});
-
 	const ServerMultiverse = sequelize.define('serverMultiverses',
 	{
 		name:
 		{
 			type: DataTypes.STRING,
 		},
+		fullName:
+		{
+			type: DataTypes.STRING,
+		},
 		gridSizeX:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 7,
 		},
 		gridSizeY:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 7,
 		},
 		gridSizeZ:
 		{
 			type: DataTypes.INTEGER,
-			defaultValue: 10,
+			defaultValue: 7,
 		},
 		createdAt:
 		{
@@ -42,10 +36,21 @@ module.exports = (sequelize, DataTypes) =>
 	},
 	{
 		freezeTableName: true,
+		null: false,
 	});
 
-	ServerMultiverse.hasMany(ServerUniverse);
-	ServerUniverse.belongsTo(ServerMultiverse, {foreignKey: 'serverMultiverseID', targetKey: 'id'});
+	ServerMultiverse.a = [
+		'universes',
+	];
+
+	ServerMultiverse.associate = (model) => {
+		for(let i = 0; i < ServerMultiverse.a.length; i++) {
+			ServerMultiverse.hasOne(model['server' + ServerMultiverse.a[i].charAt(0).toUpperCase() + ServerMultiverse.a[i].slice(1)], {
+				as: ServerMultiverse.a[i],
+				foreignKey: 'serverMultiverseID',
+			});
+		}
+	};
 
 	return ServerMultiverse;
 }

@@ -8,10 +8,11 @@ import {
 async function inputCreateCharacter(socket, character, input, params, inputObject, Server) {
 	let name = params[0];
 	let spec = params[1];
+	let difficulty = params[2];
+	let server = params[3];
 
 	try{
-		const newCharacter = await Server.characterFacade.create(socket.account.userID, name, spec);
-		console.log(newCharacter);
+		const newCharacter = await Server.characterFacade.create(socket.account.userID, name, spec, difficulty, server);
 		if(!newCharacter) {
 			return Server.socketFacade.dispatchToSocket(socket, {
 				type: SET_NOTES,
@@ -30,9 +31,15 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 					type: 'error',
 				},
 			});
-		}
-
-		if(newCharacter === 'reserved') {
+		} else if(newCharacter === 'taken') {
+			return Server.socketFacade.dispatchToSocket(socket, {
+				type: SET_NOTES,
+				payload: {
+					message: 'That name is taken, sorry.',
+					type: 'error',
+				},
+			});
+		} else if(newCharacter === 'reserved') {
 			return Server.socketFacade.dispatchToSocket(socket, {
 				type: SET_NOTES,
 				payload: {
@@ -40,8 +47,7 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 					type: 'error',
 				},
 			});
-		}
-		else {
+		} else {
 			Server.socketFacade.dispatchToSocket(socket, {
 				type: CHARACTER_CREATE_SUCCESS,
 				payload: {
@@ -73,8 +79,8 @@ async function inputCreateCharacter(socket, character, input, params, inputObjec
 
 async function inputSelectCharacter(socket, character, input, params, inputObject, Server) {
 	const characterToLoad = params[0];
-	await Server.socketFacade.logoutOutSession(socket, socket.account.userID);
 
+	await Server.socketFacade.logoutOutSession(socket, socket.account.userID);
 	try {
 		if(characterToLoad.stats.firstLogin) {
 			console.log('\nFirst login: ', characterToLoad.stats.firstLogin, '\n');
@@ -101,6 +107,10 @@ async function inputSelectCharacter(socket, character, input, params, inputObjec
 	} catch (err) {
 		Server.onError(err, socket);
 	}
+}
+
+async function inputResetCharacter(socket, character, input, params, inputObject, Server) {
+	Server.characterFacade.reset(socket.account.userID);
 }
 
 async function inputDeleteCharacter(socket, character, input, params, inputObject, Server) {
@@ -185,10 +195,11 @@ async function inputEditCharacter(socket, character, input, params, inputObject,
 	}
 }
 
-function inputGenerateResource(socket, character, input, params, inputObject, Server) {
-	const resource = params[0];
-	console.log(resource);
-	character.setGenerating(resource);
+function inputSetCharacterAction(socket, character, input, params, inputObject, Server) {
+	const status = params[0];
+	const source = params[1];
+	character.setActionStatus(status, source);
+	Server.characterFacade.updateClient(character.userID);
 }
 
 export default [
@@ -211,11 +222,19 @@ export default [
 		params: [
 			{
 				name: 'Name',
-				rules: 'required|minimumlength:3|maximumlength:32',
+				rules: 'required|minimumlength:3|maximumlength:16',
 			},
 			{
 				spec: 'Specialization',
 				rules: 'required',
+			},
+			{
+				difficulty: 'Difficulty',
+				rules: 'required',
+			},
+			{
+				server: 'Server',
+				rules: 'required|server',
 			},
 		],
 		onServerInput: false,
@@ -253,16 +272,28 @@ export default [
 		method: inputEditCharacter,
 	},
 	{
-		input: 'generateresource',
+		input: 'setcharacteraction',
 		aliases: [],
 		params: [
 			{
-				resource: 'Resource',
-				rules: 'required',
+				status: 'Status',
+				rules: 'status',
+			},
+			{
+				source: 'Source',
+				rules: 'status',
 			}
 		],
 		onServerInput: false,
-		description: 'Set resource to generate',
-		method: inputGenerateResource,
+		description: 'Set character action',
+		method: inputSetCharacterAction,
+	},
+	{
+		input: 'resetcharacter',
+		aliases: [],
+		params: [],
+		onServerInput: false,
+		description: 'Reset character',
+		method: inputResetCharacter,
 	},
 ];

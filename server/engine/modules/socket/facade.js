@@ -6,6 +6,7 @@ import {
 	ACCOUNT_LOGOUT,
 	CHARACTER_LOGOUT,
 	CHARACTER_REMOTE_LOGOUT,
+	ADMIN_EVENT,
 } from 'libs/constants';
 
 export default class SocketFacade extends EventEmitter
@@ -36,6 +37,19 @@ export default class SocketFacade extends EventEmitter
 		}
 
 		return socket;
+	}
+
+	checkAdmin(socket) {
+		if(!this.get(socket.account.userID)) {
+			return false;
+		}
+
+		const account = this.Server.accountFacade.getAccount(socket.account.userID);
+		if(account.accountLevel !== 3) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	listen()
@@ -114,7 +128,7 @@ export default class SocketFacade extends EventEmitter
 					return;
 				}
 
-				await this.Server.characterFacade.save(account.userID);
+				await this.Server.characterFacade.save(account.userID, true);
 			} catch (err) {
 				this.Server.onError(err);
 			}
@@ -151,6 +165,30 @@ export default class SocketFacade extends EventEmitter
 		}
 		//Send the dispatch with listeners
 		this.emit('dispatch', socket, action);
+	}
+
+	updateSockets(type) {
+		if(!type) {
+			return;
+		}
+
+		Object.keys(this.clients).map((key, index) => {
+			//console.log('\nKey:', key, '\nIndex:', index, '\n');
+			const socket = this.get(key);	
+			switch(type) {
+				case 'Difficulty':
+					this.Server.characterFacade.getDifficultyList(socket);
+					break;
+				case 'Specialization':
+					this.Server.characterFacade.getSpecializationList(socket);
+					break;
+			}
+
+			this.dispatchToUser(key, {
+				type: ADMIN_EVENT,
+				payload: null,
+			});
+		});
 	}
 
 	dispatchToSocket(socket, action) {

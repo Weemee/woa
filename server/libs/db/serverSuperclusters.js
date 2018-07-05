@@ -1,15 +1,5 @@
-import moment from 'moment';
-
-module.exports = (sequelize, DataTypes) =>
+export default (sequelize, DataTypes) =>
 {
-	const ServerLocalcluster = sequelize.define('serverLocalclusters',
-	{
-		serverSuperclusterID:
-		{
-			type: DataTypes.INTEGER,
-		}
-	});
-
 	const ServerSupercluster = sequelize.define('serverSuperclusters',
 	{
 		serverUniverseID:
@@ -63,8 +53,18 @@ module.exports = (sequelize, DataTypes) =>
 		freezeTableName: true,
 	});
 
-	ServerSupercluster.hasMany(ServerLocalcluster);
-	ServerLocalcluster.belongsTo(ServerSupercluster, {foreignKey: 'serverSuperclusterID', targetKey: 'id'});
+	ServerSupercluster.a = [
+		'localclusters',
+	];
+
+	ServerSupercluster.associate = (model) => {
+		for(let i = 0; i < ServerSupercluster.a.length; i++) {
+			ServerSupercluster.hasOne(model['server' + ServerSupercluster.a[i].charAt(0).toUpperCase() + ServerSupercluster.a[i].slice(1)], {
+				as: ServerSupercluster.a[i],
+				foreignKey: 'serverSuperclusterID',
+			});
+		}
+	};
 
 	return ServerSupercluster;
 }

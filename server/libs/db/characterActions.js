@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-module.exports = (sequelize, DataTypes) =>
+export default (sequelize, DataTypes) =>
 {
 	const CharacterActions = sequelize.define('characterActions',
 	{
@@ -8,10 +8,10 @@ module.exports = (sequelize, DataTypes) =>
 		{
 			type: DataTypes.INTEGER,
 		},
-		generating:
+		current:
 		{
-			type: DataTypes.STRING,
-			defaultValue: 'slacking',
+			type: DataTypes.JSON,
+			defaultValue: {status: null, source: null},
 		},
 		buildingQueue:
 		{
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) =>
 		researching:
 		{
 			type: DataTypes.JSON,
-			defaultValue: {},
+			defaultValue: [],
 		},
 		createdAt:
 		{

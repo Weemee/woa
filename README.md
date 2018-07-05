@@ -1,3 +1,5 @@
+# MOVED to gitlab (for now, last commit)
+
 # World of Atoms
 
 This is a game project of mine about rebuilding your own world, solar system, cluster and eventually universe. I can't say exactly what will be included in the game yet, since I haven't figured it out myself yet. I will add my list of ideas eventually, but for now things will be in development for a while.

@@ -48,7 +48,7 @@
 		"passport-local": "^1.0.0",
 		"passport-totp": "0.0.2",
 		"sequelize": "^4.37.7",
-		"socket.io": "^2.0.4",
+		"socket.io": "^2.4.0",
 		"thirty-two": "^1.0.2",
 		"uuid": "^3.2.1"
 	},

@@ -38,7 +38,7 @@
 		"chalk": "^2.4.1",
 		"content-filter": "^1.1.2",
 		"dotenv": "^5.0.1",
-		"express": "^4.16.2",
+		"express": "^4.17.3",
 		"helmet": "^3.12.0",
 		"jsonwebtoken": "^8.2.1",
 		"mkdirp": "^0.5.1",
